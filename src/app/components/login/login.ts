@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -8,5 +8,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './login.css',
 })
 export class LoginComponent {
-  showPassword = false;
+  showPassword = signal<boolean>(false);
 }

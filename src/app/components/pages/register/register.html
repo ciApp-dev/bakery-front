@@ -7,27 +7,17 @@
       </h1>
       <form class="max-w-md">
         <div class="relative z-0 w-full mb-5 group">
-          <input type="email" name="floating_email" id="floating_email"
-            class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer dark:text-white dark:border-gray-600 dark:focus:border-fg-brand"
-            placeholder=" " required />
-          <label for="floating_email"
-            class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto dark:text-white">Email
-            address</label>
+          <app-input-label [label]="'Email'" [typeVar]="'email'"></app-input-label>
         </div>
         <div class="relative z-0 w-full mb-5 group">
-          <input type="password" name="floating_password" id="floating_password"
-            class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer dark:text-white dark:border-gray-600 dark:focus:border-fg-brand"
-            placeholder=" " required />
-          <label for="floating_password"
-            class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto dark:text-white ">Contraseña</label>
+
+          <app-input-pass [label]="'Contraseña'" ></app-input-pass>
+        
         </div>
         <div class="relative z-0 w-full mb-5 group">
-          <input type="password" name="repeat_password" id="floating_repeat_password"
-            class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer dark:text-white dark:border-gray-600 dark:focus:border-fg-brand"
-            placeholder=" " required />
-          <label for="floating_repeat_password"
-            class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto dark:text-white">Confirmar
-            contraseña</label>
+         
+          <app-input-pass [label]="'Confirmar contraseña'" ></app-input-pass>  
+
         </div>
         <div class="grid md:grid-cols-2 md:gap-6">
           <div class="relative z-0 w-full mb-5 group">

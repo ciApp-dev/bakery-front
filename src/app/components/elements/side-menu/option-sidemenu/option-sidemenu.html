@@ -1,0 +1,19 @@
+<nav class="mt-6 space-y-2">
+				@for (item of navItems; track item.path) {
+					<a
+						[routerLink]="item.path"
+						routerLinkActive
+						#link="routerLinkActive"
+						(click)="toggleCloseSidebar()"
+						class="flex w-full items-center rounded-xl px-3 py-2 text-left text-sm font-medium transition"
+						[class.bg-amber-50]="link.isActive"
+						[class.text-amber-800]="link.isActive"
+						[class.ring-1]="link.isActive"
+						[class.ring-amber-200]="link.isActive"
+						[class.text-slate-600]="!link.isActive"
+						[class.hover\:bg-slate-100]="!link.isActive"
+					>
+						{{ item.label }}
+					</a>
+				}
+			</nav>

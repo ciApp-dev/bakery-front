@@ -1,0 +1,22 @@
+<div
+  id="toast-danger"
+  class="w-full max-w-xs rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 shadow-sm dark:border-red-800 dark:bg-red-950/90 dark:text-red-200"
+  role="alert"
+>
+    <h3 class="font-semibold text-red-900 dark:text-red-100">Whoops! Algo salió mal</h3>
+    <div class="mt-2 mb-4 text-red-700 dark:text-red-200">
+        {{ message() }}
+        <div class="mt-1 whitespace-pre-line font-medium">{{ messageDetails() }}</div>
+    </div>
+    <div class="flex items-center space-x-3">
+        <button
+          type="button"
+          data-dismiss-target="#toast-danger"
+          class="inline-flex items-center rounded-lg border border-red-200 bg-red-100 px-3 py-1.5 text-xs font-medium leading-5 text-red-700 shadow-sm transition-colors hover:border-red-300 hover:bg-red-200 hover:text-red-900 focus:outline-none focus:ring-4 focus:ring-red-300 dark:border-red-700 dark:bg-red-900/60 dark:text-red-200 dark:hover:border-red-500 dark:hover:bg-red-800 dark:hover:text-white dark:focus:ring-red-900"
+          (click)="closeToast()"
+        >
+            Close
+        </button>
+    </div>
+</div>
+

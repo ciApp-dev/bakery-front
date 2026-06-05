@@ -6,12 +6,16 @@
       </h1>
       <form class="space-y-4 md:space-y-6" action="#">
         <div>
-          <app-input-solo></app-input-solo>
+          <app-input-solo
+            [inputId]="'login_email'"
+            [placeHolder]="'nombre@empresa.com'"
+            (valueChange)="onEmailChange($event)"
+          ></app-input-solo>
         </div>
         <div>
-          <label for="password" class="block mb-2 text-sm font-medium text-gray-900 {{darkModeText}}">Password</label>
+          <label for="login_password" class="block mb-2 text-sm font-medium text-gray-900 {{darkModeText}}">Password</label>
           <div class="relative">
-            <app-input-pass-solo [label]="'password'"></app-input-pass-solo>
+            <app-input-pass-solo [inputId]="'login_password'"></app-input-pass-solo>
           </div>
         </div>
         <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">

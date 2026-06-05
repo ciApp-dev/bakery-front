@@ -18,11 +18,8 @@ export class OptionSidemenu {
 
    readonly navItems: DashboardNavItem[] = [
     { path: 'overview', label: 'Resumen General' },
-    { path: 'sales', label: 'Ventas' },
-    { path: 'inventory', label: 'Inventario' },
-    { path: 'orders', label: 'Pedidos' },
-    { path: 'customers', label: 'Clientes' },
-    { path: 'reports', label: 'Reportes' },
+    { path: 'sucursales', label: 'Sucursales' },
+
   ];
 
   toggleCloseSidebar(): void {

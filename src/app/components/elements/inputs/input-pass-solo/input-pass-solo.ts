@@ -11,5 +11,5 @@ export class InputPassSolo {
 
   showPassword = signal<boolean>(false);
 
-  label =  input.required<string>();
+  inputId = input.required<string>();
 }

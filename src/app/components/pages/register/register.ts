@@ -1,31 +1,91 @@
-import { Component, inject,signal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RegisterService } from 'src/app/service/register-service';
+import { ToastService } from 'src/app/service/toast-service';
 import { InputLabel } from '../../elements/inputs/input-label/input-label';
-import { PassInputsButton } from '../../elements/pass-inputs-button/pass-inputs-button';
 import { InputPass } from '../../elements/inputs/input-pass/input-pass';
+import { RegisterUserRequest } from '../../../interfaces/resposnes';
+import { ErrorformatterService } from 'src/app/service/errorformatter-service';
 
 
 
 
 @Component({
   selector: 'app-register',
-  imports: [RouterLink, InputLabel, PassInputsButton, InputPass],
+  imports: [RouterLink, InputLabel, InputPass],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
 export class RegisterComponent {
 
   registerService = inject(RegisterService);
+  errorFormatter = inject(ErrorformatterService);
+  toastService = inject(ToastService);
 
-  showPassword = signal<boolean>(false);
+  readonly email = signal('');
+  readonly password = signal('');
+  readonly passwordConfirmation = signal('');
+  readonly name = signal('');
+  readonly lastName = signal('');
 
-  saveUser(){
-    this.registerService.saveUser([]).subscribe(response => {
-      console.log('User saved successfully', response);
+ 
+
+  onEmailChange(value: string): void {
+    this.email.set(value);
+  }
+
+  onPasswordChange(value: string): void {
+    this.password.set(value);
+  }
+
+  onPasswordConfirmationChange(value: string): void {
+    this.passwordConfirmation.set(value);
+  }
+
+  onNameChange(value: string): void {
+    this.name.set(value);
+  }
+
+  onLastNameChange(value: string): void {
+    this.lastName.set(value);
+  }
+
+  createAccount(event: Event): void {
+    event.preventDefault();
+    const user: RegisterUserRequest = {
+      name: this.name() + ' ' + this.lastName(),
+      email: this.email(),
+      password: this.password(),
+      password_confirmation: this.passwordConfirmation(),
+    };
+
+    console.log('Creating account', user);
+
+    this.saveUser(user);
+  }
+
+  saveUser(user: RegisterUserRequest): void {
+    this.registerService.saveUser(user).subscribe(response => {
+      this.toastService.showSuccessToast('Usuario registrado correctamente');
     },
-    error => {
-      console.error('Error saving user', error);
+    (error: HttpErrorResponse) => {
+      const apiError = error.error as {
+        message?: string;
+        errors?: Record<string, string[]>;
+      };
+
+      const message = apiError?.message ?? 'No se pudo completar el registro.';
+      const messageDetails = this.errorFormatter.buildMessageDetails(apiError?.errors);
+
+      this.toastService.showErrorToast(message, messageDetails);
     });
   }
+
+ 
+
+   
+
+  
+
 }

@@ -1,1 +1,16 @@
 <router-outlet></router-outlet>
+
+<div class="pointer-events-none fixed bottom-6 left-1/2 z-50 w-full max-w-sm -translate-x-1/2 px-4">
+	<div class="pointer-events-auto" [class.hidden]="!activeSuccessToast()" [attr.aria-hidden]="!activeSuccessToast()">
+		<app-toast-successfully
+			[message]="activeSuccessToast()?.message ?? ''"
+			(closed)="closeToast()"
+		></app-toast-successfully>
+	</div>
+    <div class="pointer-events-auto" [class.hidden]="!activeErrorToast()" [attr.aria-hidden]="!activeErrorToast()">
+        <app-toast-wrong
+            [message]="activeErrorToast()?.message ?? ''"
+            [messageDetails]="activeErrorToast()?.messageDetails ?? ''"
+            (closed)="closeToast()"
+        ></app-toast-wrong>
+</div>

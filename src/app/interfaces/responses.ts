@@ -29,3 +29,21 @@ export interface ToastWrong {
     durationMs: number;
     closable: boolean;
 }
+
+export interface LoginUserRequest {
+    email: string;
+    password: string;
+}
+
+export interface LoginResponse {
+    access_token: string;
+    token_type: string;
+    expires_in: number;
+    user:{
+        id: number;
+        name: string;
+        email: string;
+        estado: string;
+    }
+}
+

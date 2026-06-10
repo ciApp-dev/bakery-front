@@ -10,6 +10,7 @@ export class InputLabel {
   label = input.required<string>();
   inputId = input.required<string>();
   typeVar = input.required<string>();
+  value = input<string>('');
   valueChange = output<string>();
 
   onInput(event: Event): void {

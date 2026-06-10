@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { ToastSuccessfully,ToastWrong } from '../interfaces/resposnes';
+import { ToastSuccessfully,ToastWrong } from '../interfaces/responses';
 
 
 @Injectable({

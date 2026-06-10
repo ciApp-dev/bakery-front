@@ -1,4 +1,4 @@
-<input [id]="inputId()" [type]="showPassword() ? 'text' : 'password'" (input)="onInput($event)"
+<input [id]="inputId()" [type]="showPassword() ? 'text' : 'password'" [value]="value()" (input)="onInput($event)"
     class="block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer dark:text-white dark:border-gray-600 dark:focus:border-fg-brand"
     placeholder=" " required />
 <label [for]="inputId()"

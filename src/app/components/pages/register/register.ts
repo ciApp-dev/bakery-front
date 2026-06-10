@@ -5,7 +5,7 @@ import { RegisterService } from 'src/app/service/register-service';
 import { ToastService } from 'src/app/service/toast-service';
 import { InputLabel } from '../../elements/inputs/input-label/input-label';
 import { InputPass } from '../../elements/inputs/input-pass/input-pass';
-import { RegisterUserRequest } from '../../../interfaces/resposnes';
+import { RegisterUserRequest } from '../../../interfaces/responses';
 import { ErrorformatterService } from 'src/app/service/errorformatter-service';
 
 
@@ -59,15 +59,18 @@ export class RegisterComponent {
       password: this.password(),
       password_confirmation: this.passwordConfirmation(),
     };
-
-    console.log('Creating account', user);
+    
 
     this.saveUser(user);
+
+    
+  
   }
 
   saveUser(user: RegisterUserRequest): void {
     this.registerService.saveUser(user).subscribe(response => {
       this.toastService.showSuccessToast('Usuario registrado correctamente');
+      this.clearForm();
     },
     (error: HttpErrorResponse) => {
       const apiError = error.error as {
@@ -81,7 +84,14 @@ export class RegisterComponent {
       this.toastService.showErrorToast(message, messageDetails);
     });
   }
-
+  
+  clearForm(): void {
+    this.email.set('');
+    this.password.set('');
+    this.passwordConfirmation.set('');
+    this.name.set('');
+    this.lastName.set('');
+  }
  
 
    

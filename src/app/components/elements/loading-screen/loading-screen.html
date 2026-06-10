@@ -1,0 +1,16 @@
+@if (loadingService.isLoading()) {
+<div
+	class="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/60 px-4 backdrop-blur-sm"
+	role="status"
+	aria-live="polite"
+	aria-busy="true"
+>
+	<div class="flex flex-col items-center gap-4 rounded-3xl bg-white px-8 py-7 shadow-2xl dark:bg-slate-900">
+		<div class="h-14 w-14 animate-spin rounded-full border-4 border-slate-200 border-t-blue-600 dark:border-slate-700 dark:border-t-blue-400"></div>
+		<div class="text-center">
+			<p class="text-sm font-semibold text-slate-700 dark:text-slate-100">Cargando</p>
+			<p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Procesando la solicitud...</p>
+		</div>
+	</div>
+</div>
+}

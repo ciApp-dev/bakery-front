@@ -11,6 +11,7 @@
             [label]="'Email'"
             [inputId]="'register_email'"
             [typeVar]="'email'"
+            [value]="email()"
             (valueChange)="onEmailChange($event)"
           ></app-input-label>
         </div>
@@ -18,6 +19,7 @@
           <app-input-pass
             [label]="'Contraseña'"
             [inputId]="'register_password'"
+            [value]="password()"
             (valueChange)="onPasswordChange($event)"
           ></app-input-pass>
           
@@ -28,6 +30,7 @@
           <app-input-pass
             [label]="'Confirmar contraseña'"
             [inputId]="'register_password_confirmation'"
+            [value]="passwordConfirmation()"
             (valueChange)="onPasswordConfirmationChange($event)"
           ></app-input-pass>  
 
@@ -38,6 +41,7 @@
               [label]="'Nombre'"
               [inputId]="'register_name'"
               [typeVar]="'text'"
+              [value]="name()"
               (valueChange)="onNameChange($event)"
             ></app-input-label>
           </div>
@@ -46,15 +50,15 @@
               [label]="'Apellido'"
               [inputId]="'register_lastname'"
               [typeVar]="'text'"
+              [value]="lastName()"
               (valueChange)="onLastNameChange($event)"
             ></app-input-label>
             
           </div>
         </div>
 
-        <button
-          (click)="createAccount($event)"
-           type="submit"
+          <button
+            (type="submit") 
           class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >Crear
           cuenta</button>

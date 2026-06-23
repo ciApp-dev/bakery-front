@@ -18,7 +18,14 @@ export class OptionSidemenu {
 
    readonly navItems: DashboardNavItem[] = [
     { path: 'overview', label: 'Resumen General' },
-    { path: 'sucursales', label: 'Sucursales' },
+    { path: 'administracion', label: 'Administración' },
+    { path: 'clientes', label: 'Clientes'},
+    { path: 'productos', label: 'Productos'},
+    { path: 'ventas', label: 'Ventas'},
+    { path: 'inventario', label: 'Inventario'},
+    { path: 'reportes', label: 'Reportes'},
+    { path: 'configuracion', label: 'Configuración'},
+    { path: 'ayuda', label: 'Ayuda'}
 
   ];
 

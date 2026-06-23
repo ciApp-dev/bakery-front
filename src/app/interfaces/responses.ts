@@ -44,12 +44,13 @@ export interface LoginResponse {
         name: string;
         email: string;
         estado: string;
+        roles: string[];
+        permissions: string[];
     }
 }
 
 export interface Permission {
     id: number;
     name: string;
-    description: string;
 }
 

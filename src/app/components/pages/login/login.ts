@@ -1,10 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { InputPassSolo } from "../../elements/inputs/input-pass-solo/input-pass-solo";
 import { InputSolo } from "../../elements/inputs/input-solo/input-solo";
 import { environment } from '@environments/environment.development';
 import { LoginResponse, LoginUserRequest } from 'src/app/interfaces/responses';
 import { LoginService } from 'src/app/service/login-service';
+import { PermissionsService } from 'src/app/service/permissions-service';
 import { ToastService } from 'src/app/service/toast-service';
 
 
@@ -15,7 +17,10 @@ import { ToastService } from 'src/app/service/toast-service';
   styleUrl: './login.css',
 })
 export class LoginComponent {
+
+  router = inject(Router);
   loginService = inject(LoginService);
+  permissionsService = inject(PermissionsService);
   tostService = inject(ToastService);
 
   showPassword = signal<boolean>(false);
@@ -48,9 +53,11 @@ export class LoginComponent {
     this.loginService.loginUser(loginData).subscribe({
       next: (response: LoginResponse) => {
         localStorage.setItem('access_token', response.access_token);
-        localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem('name_user', JSON.stringify(response.user.name));
         localStorage.setItem('id_user', response.user.id.toString());
-
+        localStorage.setItem('estado_user', JSON.stringify(response.user.estado));
+        this.permissionsService.setPermissions(response.user.permissions);
+        this.router.navigate(['/dashboard']);
       },
       error: (error) => {
         this.tostService.showErrorToast('Error al iniciar sesión', 'Por favor, verifica tus credenciales e intenta nuevamente.');

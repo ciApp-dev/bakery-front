@@ -7,8 +7,8 @@ import { Component, input, output } from '@angular/core';
   styleUrl: './button-main-form.css',
 })
 export class ButtonMainForm {
-  label = input('Create');
-  iconName = input<string | null>(null);
+  label = input.required<string>();
+  iconName = input.required<string | null>();
   pressed = output<void>();
 
   onPress(): void {

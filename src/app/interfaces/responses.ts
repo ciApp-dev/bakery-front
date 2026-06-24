@@ -6,6 +6,8 @@ export interface ApiResponse {
     }
 }
 
+
+
 export interface RegisterUserRequest {
     name: string;
     email: string;
@@ -54,3 +56,11 @@ export interface Permission {
     name: string;
 }
 
+export interface Category {
+    id: number;
+    nombre: string;
+}
+
+export interface ProductResponse {
+    mensaje: string;
+}

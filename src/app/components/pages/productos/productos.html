@@ -7,114 +7,52 @@
 					<app-input-search-form></app-input-search-form>
 				</div>
 
-				<app-button-main-form label="Create" iconName="add" (pressed)="showCreateSection.set(true)"></app-button-main-form>
+				<app-button-main-form label="Agregar" iconName="add" (pressed)="showCreateSection.set(true)"></app-button-main-form>
 			</div>
 		</div>
 
 		@if (showCreateSection()) {
 			<div class="create-panel-enter mt-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-5">
 				<div class="mb-4 flex items-center justify-between">
-					<h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">Create product</h2>
-					<button
-						type="button"
-						(click)="showCreateSection.set(false)"
-						class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
-					>
-						Close
-					</button>
-				</div>
+				
+                    <app-label-form label="{{ modeForm() }}"></app-label-form>
+					
+                    
+                    
+                </div>
 
 				<div class="grid gap-3 sm:grid-cols-3">
-					<label class="block">
-						<span class="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300">Name</span>
-						<input
-							type="text"
-							placeholder="Product name"
-							class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20"
-						/>
-					</label>
+					
+					<app-input-form label="Nombre" placeholder="Nombre del producto" type="text" [value]="name()" (valueChange)="onNameChange($event)"></app-input-form>
+                    
+                    <app-input-form label="Codigo" placeholder="SKU-00" type="text" [value]="code()" (valueChange)="onCodeChange($event)"></app-input-form>
 
-					<label class="block">
-						<span class="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300">Category</span>
-						<input
-							type="text"
-							placeholder="Category"
-							class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20"
-						/>
-					</label>
+					<div class="sm:row-span-2">
+						<app-input-form label="Descripción" placeholder="Descripción del producto" type="textarea" [value]="description()" (valueChange)="onDescriptionChange($event)"></app-input-form>
+					</div>
 
-					<label class="block">
-						<span class="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300">Price</span>
-						<input
-							type="number"
-							placeholder="0.00"
-							class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20"
-						/>
-					</label>
+					<app-selector-form [options]="options()" [value]="idCategory()" label="Categoria" placeholder="Seleccione una categoría" (valueChange)="idCategory.set($event)"></app-selector-form>
+
+					<app-input-form label="Precio" placeholder="0.00" type="decimal" [value]="price()" (valueChange)="onPriceChange($event)"></app-input-form>
 
                    
 				</div>
+
+                <div class="mt-4 flex justify-end gap-2">
+                    <app-button-secundary-form color="text-red-500" label="Cancelar" iconName="close" (pressed)="cancelSave()"></app-button-secundary-form>
+                    <app-button-main-form label="Guardar" iconName="save" (click)="saveProduct()"></app-button-main-form>
+                </div>
+
 			</div>
 		}
 
 		<div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
 			<div class="border-b border-slate-200 px-4 py-3 dark:border-slate-800">
-				<h2 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Products</h2>
+				<app-label-form label="Productos"></app-label-form>
 			</div>
 
-			<div class="overflow-x-auto">
-				<table class="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
-					<thead class="bg-slate-50 dark:bg-slate-950/40">
-						<tr>
-							<th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">Name</th>
-							<th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">Category</th>
-							<th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">Price</th>
-							<th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">Stock</th>
-						</tr>
-					</thead>
-
-					<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
-						@for (row of paginatedRows(); track row.id) {
-							<tr class="transition hover:bg-slate-50 dark:hover:bg-slate-800/40">
-								<td class="whitespace-nowrap px-4 py-3 text-sm font-medium text-slate-900 dark:text-slate-100">{{ row.name }}</td>
-								<td class="whitespace-nowrap px-4 py-3 text-sm text-slate-600 dark:text-slate-300">{{ row.category }}</td>
-								<td class="whitespace-nowrap px-4 py-3 text-sm text-slate-700 dark:text-slate-200">${{ row.price }}</td>
-								<td class="whitespace-nowrap px-4 py-3 text-sm text-slate-700 dark:text-slate-200">{{ row.stock }}</td>
-							</tr>
-						} @empty {
-							<tr>
-								<td colspan="4" class="px-4 py-6 text-center text-sm text-slate-500 dark:text-slate-400">No products available.</td>
-							</tr>
-						}
-					</tbody>
-				</table>
-			</div>
-
-			<div class="flex flex-col gap-3 border-t border-slate-200 px-4 py-3 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
-				<p class="text-sm text-slate-500 dark:text-slate-400">
-					Page {{ currentPage() }} of {{ totalPages() }}
-				</p>
-
-				<div class="flex items-center gap-2">
-					<button
-						type="button"
-						(click)="previousPage()"
-						[disabled]="currentPage() === 1"
-						class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
-					>
-						Previous
-					</button>
-
-					<button
-						type="button"
-						(click)="nextPage()"
-						[disabled]="currentPage() === totalPages()"
-						class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
-					>
-						Next
-					</button>
-				</div>
-			</div>
+            <app-table-form label="Productos" [contentLabel]="productName" [content]="productRows" (editSelected)="editProduct($event)"></app-table-form>
+			
 		</div>
 	</div>
 

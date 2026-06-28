@@ -12,6 +12,8 @@
 		</div>
 
 		@if (showCreateSection()) {
+			
+			<div>
 			<div class="create-panel-enter mt-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-5">
 				<div class="mb-4 flex items-center justify-between">
 				
@@ -23,26 +25,47 @@
 
 				<div class="grid gap-3 sm:grid-cols-3">
 					
-					<app-input-form label="Nombre" placeholder="Nombre del producto" type="text" [value]="name()" (valueChange)="onNameChange($event)"></app-input-form>
+					<div>
+						<app-input-form 
+						label="Nombre" 
+						placeholder="Nombre del producto" 
+						type="text" [value]="name()"
+						(valueChange)="onNameChange($event)" 
+						[required]="true"
+						(errorEstatus)="errorEstatus()"></app-input-form>
+						
+					</div>
                     
-                    <app-input-form label="Codigo" placeholder="SKU-00" type="text" [value]="code()" (valueChange)="onCodeChange($event)"></app-input-form>
-
-					<div class="sm:row-span-2">
-						<app-input-form label="Descripción" placeholder="Descripción del producto" type="textarea" [value]="description()" (valueChange)="onDescriptionChange($event)"></app-input-form>
+					<div>
+						<app-input-form label="Codigo" placeholder="SKU-00" type="text" [value]="code()" (valueChange)="onCodeChange($event)" [required]="true"></app-input-form>
+						
 					</div>
 
-					<app-selector-form [options]="options()" [value]="idCategory()" label="Categoria" placeholder="Seleccione una categoría" (valueChange)="idCategory.set($event)"></app-selector-form>
+					<div class="sm:row-span-2">
+						<app-input-form label="Descripción" placeholder="Descripción del producto" type="textarea" [value]="description()" (valueChange)="onDescriptionChange($event)" [required]="true"></app-input-form>
+						
+					</div>
 
-					<app-input-form label="Precio" placeholder="0.00" type="decimal" [value]="price()" (valueChange)="onPriceChange($event)"></app-input-form>
+					<div>
+						<app-selector-form [options]="options()" [value]="idCategory()" label="Categoria" placeholder="Seleccione una categoría" (valueChange)="onCategoryChange($event)"></app-selector-form>
+						@if (categoryError()) {
+							<p class="mt-1 text-xs text-red-600">{{ categoryError() }}</p>
+						}
+					</div>
 
+					<div>
+						<app-input-form label="Precio" placeholder="Precio del producto" type="decimal" [value]="price()" (valueChange)="onPriceChange($event)" [required]="true"></app-input-form>
+						
+					</div>
                    
 				</div>
 
                 <div class="mt-4 flex justify-end gap-2">
                     <app-button-secundary-form color="text-red-500" label="Cancelar" iconName="close" (pressed)="cancelSave()"></app-button-secundary-form>
-                    <app-button-main-form label="Guardar" iconName="save" (click)="saveProduct()"></app-button-main-form>
+					<app-button-main-form label="Guardar" iconName="save" (pressed)="saveProduct()"></app-button-main-form>
                 </div>
 
+			</div>
 			</div>
 		}
 
@@ -51,7 +74,7 @@
 				<app-label-form label="Productos"></app-label-form>
 			</div>
 
-            <app-table-form label="Productos" [contentLabel]="productName" [content]="productRows" (editSelected)="editProduct($event)"></app-table-form>
+            <app-table-form label="Productos" [contentLabel]="productName" [content]="tableContent()" (editSelected)="editProduct($event)" (deleteSelected)="requestDeleteProduct($event)"></app-table-form>
 			
 		</div>
 	</div>

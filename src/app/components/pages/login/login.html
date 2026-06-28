@@ -13,7 +13,8 @@
           <label for="login_password"
             class="block mb-2 text-sm font-medium text-gray-900 {{darkModeText}}">Password</label>
           <div class="relative">
-            <app-input-pass-solo [inputId]="'login_password'" (valueChange)="onPasswordChange($event)"></app-input-pass-solo>
+            <app-input-pass-solo [inputId]="'login_password'"
+              (valueChange)="onPasswordChange($event)"></app-input-pass-solo>
           </div>
         </div>
         <button type="submit"

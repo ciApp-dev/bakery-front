@@ -64,3 +64,4 @@ export interface Category {
 export interface ProductResponse {
     mensaje: string;
 }
+

@@ -23,11 +23,5 @@ export type SelectorOption = {
   nombre: string;
 };
 
-export type ProductSendData = {
-  nombre: string;
-  codigo: string;
-  categoria_id: number | null;
-  descripcion: string;
-  precio: number;
-  user_id: number;
-};
+
+

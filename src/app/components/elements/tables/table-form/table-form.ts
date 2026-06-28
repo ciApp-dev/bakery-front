@@ -27,6 +27,11 @@ export class TableForm <T>{
   readonly pageSize = signal(5);
    currentPage = signal(1);
   pageSizeInput = signal('5');
+
+  readonly normalizedRows = computed<T[]>(() => {
+    const rawContent = this.content() as unknown;
+    return Array.isArray(rawContent) ? rawContent : [];
+  });
   
 
   onEdit(row: T): void {
@@ -42,6 +47,11 @@ export class TableForm <T>{
 
   onDelete(row: T): void {
     const id = this.getTrackKey(row, 0);
+
+    this.deleteSelected.emit({
+      id: String(id),
+      row,
+    });
     
     this.idSelected.emit(id as number);
     this.pressedDelete.emit();
@@ -49,11 +59,11 @@ export class TableForm <T>{
 
 
   // Computed properties for pagination
-  totalPages = computed(() => Math.max(1, Math.ceil(this.content().length / this.pageSize())));
+  totalPages = computed(() => Math.max(1, Math.ceil(this.normalizedRows().length / this.pageSize())));
   paginatedRows = computed(() => {
     const startIndex = (this.currentPage() - 1) * this.pageSize();
 
-    return this.content().slice(startIndex, startIndex + this.pageSize());
+    return this.normalizedRows().slice(startIndex, startIndex + this.pageSize());
   });
 
   onPageSizeInputChange(event: Event): void {

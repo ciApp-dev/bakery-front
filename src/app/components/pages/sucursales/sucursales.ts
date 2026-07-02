@@ -11,10 +11,11 @@ import { SelectorOption } from 'src/app/interfaces/forms';
 import { EstadosService } from 'src/app/service/estados-service';
 import { CiudadesService } from 'src/app/service/ciudades-service';
 import { ToastService } from 'src/app/service/toast-service';
+import { TableForm } from "../../elements/tables/table-form/table-form";
 
 @Component({
   selector: 'app-sucursales',
-  imports: [InputSearchForm, ButtonMainForm, LabelForm, InputForm, ButtonSecundaryForm, ReactiveFormsModule, ToggleSwitch, SelectorForm],
+  imports: [InputSearchForm, ButtonMainForm, LabelForm, InputForm, ButtonSecundaryForm, ReactiveFormsModule, ToggleSwitch, SelectorForm, TableForm],
   templateUrl: './sucursales.html',
   styleUrl: './sucursales.css',
 })
@@ -40,6 +41,7 @@ export class SucursalesComponent {
     phone: new FormControl('', [Validators.required, Validators.pattern(this.phonePattern)]),
     address: new FormControl('', [Validators.required]),
     postalCode: new FormControl('', [Validators.required, Validators.pattern(/^\d{5}$/)]),
+    branchActive: new FormControl(this.branchActive(), [Validators.required]),
     idEstado: new FormControl<number | null>(null, [Validators.required]),
     idCiudad: new FormControl<number | null>(null, [Validators.required]),
   });

@@ -5,6 +5,7 @@ import { DashboardOverviewPage } from './components/pages/dashboard/dashboard-ov
 import { DashboardSectionPlaceholderPage } from './components/pages/dashboard/dashboard-section-placeholder-page';
 import { RegisterComponent } from './components/pages/register/register';
 import { ProductosComponent } from './components/pages/productos/productos';
+import { SucursalesComponent } from './components/pages/sucursales/sucursales';
 
 
 export const routes: Routes = [
@@ -18,18 +19,13 @@ export const routes: Routes = [
 
             { path: "overview", component: DashboardOverviewPage },
             {
-                path: "sucursales",
-                component: DashboardSectionPlaceholderPage,
-                data: {
-                    title: 'Sucursales',
-                    description: 'Inserta aqui tu pantalla de sucursales.',
-                    placeholder: 'Area lista para app-sucursales',
-                },
-            },
-            {
                 path: "productos",
                 component: ProductosComponent
                 
+            },
+            {
+                path: "sucursales",
+                component: SucursalesComponent
             },
   
             { path: "**", redirectTo: "overview" }

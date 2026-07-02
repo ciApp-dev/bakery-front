@@ -12,9 +12,7 @@ export class InputForm {
   type = input.required<string>();
   value = input<string | number | null>('');
   valueChange = output<string | number>();
-  required = input.required<boolean>();
 
-  errorEstatus = signal(false);
 
   valueAsText(): string {
     const current = this.value();
@@ -25,11 +23,6 @@ export class InputForm {
     const target = event.target as HTMLInputElement | HTMLTextAreaElement;
     const rawValue = target.value;
 
-    if (this.required() && rawValue.trim() === '') {
-      this.errorEstatus.set(true);
-    } else {
-      this.errorEstatus.set(false);
-    }
 
     if (this.type() === 'number') {
       const sanitized = rawValue.replace(/\D+/g, '');
@@ -60,8 +53,32 @@ export class InputForm {
       return;
     }
 
+    if (this.type() === 'phone') {
+      const digits = rawValue.replace(/\D+/g, '').slice(0, 10);
+      const masked = this.formatPhoneValue(digits);
+
+      if (masked !== rawValue) {
+        target.value = masked;
+      }
+
+      this.valueChange.emit(masked);
+      return;
+    }
+
     this.valueChange.emit(rawValue);
     
+  }
+
+  private formatPhoneValue(digits: string): string {
+    if (digits.length <= 3) {
+      return digits;
+    }
+
+    if (digits.length <= 6) {
+      return `${digits.slice(0, 3)} ${digits.slice(3)}`;
+    }
+
+    return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`;
   }
 
   

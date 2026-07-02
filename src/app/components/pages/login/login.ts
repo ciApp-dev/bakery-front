@@ -53,11 +53,15 @@ export class LoginComponent {
     this.loginService.loginUser(loginData).subscribe({
       next: (response: LoginResponse) => {
         localStorage.setItem('access_token', response.access_token);
-        localStorage.setItem('name_user', JSON.stringify(response.user.name));
+        localStorage.setItem('name_user', response.user.name);
         localStorage.setItem('id_user', response.user.id.toString());
-        localStorage.setItem('estado_user', JSON.stringify(response.user.estado));
+        localStorage.setItem('estado_user', response.user.estado);
+        localStorage.setItem('nameSucursal', response.user.sucursales[0].name);
+        localStorage.setItem('idSucursal', response.user.sucursales[0].id.toString());
         this.permissionsService.setPermissions(response.user.permissions);
         this.router.navigate(['/dashboard']);
+
+        console.log('Login successful:', response); // Log the successful login response
       },
       error: (error) => {
         this.tostService.showErrorToast('Error al iniciar sesión', 'Por favor, verifica tus credenciales e intenta nuevamente.');

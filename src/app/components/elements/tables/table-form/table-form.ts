@@ -153,7 +153,13 @@ export class TableForm <T>{
     }
 
     const rawText = String(value);
-    const isPriceColumn = column.name.toLowerCase() === 'price' || column.key.toLowerCase() === 'price';
+    const normalizedName = column.name.toLowerCase();
+    const normalizedKey = column.key.toLowerCase();
+    const isPriceColumn =
+      normalizedName === 'price' ||
+      normalizedKey === 'price' ||
+      normalizedName === 'precio' ||
+      normalizedKey === 'precio';
 
     if (!isPriceColumn) {
       return rawText;

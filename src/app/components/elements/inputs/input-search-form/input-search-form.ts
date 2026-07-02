@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-input-search-form',
@@ -6,4 +6,13 @@ import { Component } from '@angular/core';
   templateUrl: './input-search-form.html',
   styleUrl: './input-search-form.css',
 })
-export class InputSearchForm {}
+export class InputSearchForm {
+  value = input('');
+  valueChange = output<string>();
+
+  onSearchChange(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const nextValue = target.value;
+    this.valueChange.emit(nextValue);
+  }
+}

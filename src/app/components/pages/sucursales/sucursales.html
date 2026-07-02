@@ -1,0 +1,104 @@
+<div class="mx-auto w-full max-w-7xl">
+    <div
+        class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-5">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+            <div class="w-full sm:max-w-2xl lg:max-w-3xl">
+                <app-input-search-form></app-input-search-form>
+            </div>
+
+            <app-button-main-form label="Agregar" iconName="add"
+                (pressed)="showCreateSection.set(true)"></app-button-main-form>
+        </div>
+    </div>
+
+    @if (showCreateSection()) {
+
+    <div>
+        <div
+            class="create-panel-enter mt-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-5">
+            <form [formGroup]="form">
+                <div class="mb-4 flex items-center justify-between">
+
+                    <app-label-form label="{{ modeForm() }}"></app-label-form>
+
+
+                </div>
+
+                <div class="grid gap-3 sm:grid-cols-3">
+
+                    <div>
+                        <app-input-form label="Nombre" placeholder="Nombre de la sucursal" type="text"
+                            [value]="form.controls['name'].value" (valueChange)="onNameChange($event)"></app-input-form>
+                        @if(form.controls['name'].invalid && form.controls['name'].touched) {
+                        <p class="mt-1 text-xs text-red-600">El nombre es obligatorio</p>
+                        }
+
+
+                    </div>
+
+                    <div>
+                        <app-input-form label="Teléfono" placeholder="Teléfono de la sucursal" type="phone"
+                            [value]="form.controls['phone'].value"
+                            (valueChange)="onPhoneChange($event)"></app-input-form>
+                        @if(form.controls['phone'].invalid && form.controls['phone'].touched) {
+                        <p class="mt-1 text-xs text-red-600">{{ form.controls['phone'].hasError('required') ? 'El
+                            teléfono es obligatorio' : 'Usa un teléfono con formato 555 123 4567' }}</p>
+                        }
+
+
+                    </div>
+
+                    <div class="sm:row-span-2">
+                        <app-input-form label="Dirección" placeholder="Dirección de la sucursal" type="textarea"
+                            [value]="form.controls['address'].value"
+                            (valueChange)="onAddressChange($event)"></app-input-form>
+                        @if(form.controls['address'].invalid && form.controls['address'].touched) {
+                        <p class="mt-1 text-xs text-red-600">La dirección es obligatoria</p>
+                        }
+                    </div>
+
+                    <div>
+                        <app-input-form label="Código Postal" 
+                        placeholder="Código Postal de la sucursal"
+                        type="number"
+                            [value]="form.controls['postalCode'].value"
+                            (valueChange)="onPostalCodeChange($event)"></app-input-form>
+                        @if(form.controls['postalCode'].invalid && form.controls['postalCode'].touched) {
+                        <p class="mt-1 text-xs text-red-600">{{ form.controls['postalCode'].hasError('required') ? 'El código postal es obligatorio' : 'Usa un código postal de 5 dígitos' }}</p>
+                        }    
+                </div>
+
+                    <div>
+                        <span class="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300">Tipo de sucursal</span>
+                        <app-toggle-switch [checked]="branchActive()" label="Es producción" (checkedChange)="onBranchActiveChange($event)"></app-toggle-switch>
+                            
+                    </div>
+
+
+                </div>
+
+
+                    <div class="mt-4 flex justify-end gap-2">
+                        <app-button-secundary-form color="text-red-500" label="Cancelar" iconName="close"
+                            (pressed)="cancelSave()"></app-button-secundary-form>
+                        <app-button-main-form label="Guardar" iconName="save"
+                            (pressed)="saveSucursal()"></app-button-main-form>
+                    </div>
+                
+            </form>
+
+        </div>
+    </div>
+    }
+
+    <div
+        class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div class="border-b border-slate-200 px-4 py-3 dark:border-slate-800">
+            <app-label-form label="Productos"></app-label-form>
+        </div>
+
+
+
+    </div>
+</div>

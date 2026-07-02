@@ -1,0 +1,17 @@
+
+    <label class="inline-flex cursor-pointer items-center gap-3 select-none">
+    
+  <input
+    type="checkbox"
+    class="peer sr-only"
+    aria-label="Cambiar estado"
+    [checked]="checked()"
+    (change)="onCheckedChange($event)"
+  />
+
+  <div
+    class="relative h-6 w-11 rounded-full border border-slate-300 bg-slate-200 transition-colors duration-200 ease-out peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-500/20 peer-checked:border-emerald-500 peer-checked:bg-emerald-500 dark:border-slate-600 dark:bg-slate-700 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow-sm after:ring-1 after:ring-slate-300 after:transition-transform after:duration-200 after:ease-out after:content-[''] peer-checked:after:translate-x-5 dark:after:ring-slate-500"
+  ></div>
+
+  <span class="text-sm font-medium text-slate-700 dark:text-slate-200">{{ label() }}</span>
+    </label>

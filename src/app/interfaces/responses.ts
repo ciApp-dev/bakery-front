@@ -48,6 +48,7 @@ export interface LoginResponse {
         estado: string;
         roles: string[];
         permissions: string[];
+        sucursales: SucursalLoginResponse[];
     }
 }
 
@@ -65,3 +66,7 @@ export interface ProductResponse {
     mensaje: string;
 }
 
+export interface SucursalLoginResponse {
+    id: number;
+    name: string;
+}

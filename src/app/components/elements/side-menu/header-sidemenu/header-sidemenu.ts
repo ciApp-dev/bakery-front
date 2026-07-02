@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,signal } from '@angular/core';
 
 @Component({
   selector: 'app-header-sidemenu',
@@ -6,4 +6,19 @@ import { Component } from '@angular/core';
   templateUrl: './header-sidemenu.html',
   styleUrl: './header-sidemenu.css',
 })
-export class HeaderSidemenu {}
+export class HeaderSidemenu {
+
+  name = signal<string | null>(null);
+
+  constructor() {
+    const rawName = localStorage.getItem('nameSucursal');
+
+    if (!rawName) {
+      this.name.set(null);
+      return;
+    }
+
+    const normalized = rawName.replace(/^"|"$/g, '');
+    this.name.set(normalized);
+  }
+}

@@ -14,6 +14,7 @@ import { CategoriaService } from 'src/app/service/categoria-service';
 import { ProductosService } from 'src/app/service/productos-service';
 import { ToastService } from 'src/app/service/toast-service';
 import { ConfirmDialogService } from 'src/app/service/confirm-dialog-service';
+import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 
 
@@ -21,7 +22,7 @@ import { ConfirmDialogService } from 'src/app/service/confirm-dialog-service';
 @Component({
   selector: 'app-productos',
   imports: [InputSearchForm, ButtonMainForm, ButtonSecundaryForm,
-     LabelForm, InputForm, SelectorForm, TableForm],
+     LabelForm, InputForm, SelectorForm, TableForm, ReactiveFormsModule],
   templateUrl: './productos.html',
   styleUrl: './productos.css',
 })
@@ -38,8 +39,20 @@ export class ProductosComponent {
   //Signals
 
   options = signal<SelectorOption[]>([]);
+  allProducts = signal<ProductTableRow[]>([]);
   tableContent = signal<ProductTableRow[]>([]);
+  searchTerm = signal('');
 
+  //forms
+  form = new FormGroup({
+    name: new FormControl('', Validators.required),
+    price: new FormControl(0, [Validators.required, Validators.min(0.01)]),
+    code: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required),
+    idCategory: new FormControl<number | null>(null, Validators.required)
+  });  
+
+  isFormValid = signal(false);
 
   id = signal(0);
   name = signal('');
@@ -67,6 +80,7 @@ export class ProductosComponent {
   productName: ContentLabelTable[] = [
     { id: 1, name: 'Nombre', key: 'nombre' },
     { id: 2, name: 'Categoria', key: 'categoria' },
+    { id: 3, name: 'Precio', key: 'precio' },
     { id: 4, name: 'Codigo', key: 'codigo' },
     { id: 5, name: 'Descripcion', key: 'descripcion' },
     { id: 6, name: 'Acciones', key: 'actions' }
@@ -80,32 +94,51 @@ export class ProductosComponent {
     this.getProducts();
   }
 
+  onSearchChange(value: string): void {
+    this.searchTerm.set(value);
+    this.applySearchFilter();
+  }
+
 
 
   onNameChange(value: string | number): void {
-    this.name.set(String(value));
-    this.validateName();
+    const parsedValue = String(value);
+    this.name.set(parsedValue);
+    this.form.controls.name.setValue(parsedValue);
+    this.form.controls.name.markAsTouched();
+    
   }
 
   onPriceChange(value: string | number): void {
-    const numericValue = typeof value === 'number' ? value : Number(value);
+    const numericValue = typeof value === 'number' ? value : Number(String(value).replace(',', '.'));
     this.price.set(numericValue);
-    this.validatePrice();
+    this.form.controls.price.setValue(Number.isFinite(numericValue) ? numericValue : 0);
+    this.form.controls.price.markAsTouched();
+    
   }
 
   onCodeChange(value: string | number): void {
-    this.code.set(String(value));
-    this.validateCode();
+    const parsedValue = String(value);
+    this.code.set(parsedValue);
+    this.form.controls.code.setValue(parsedValue);
+    this.form.controls.code.markAsTouched();
+    
   }
 
   onDescriptionChange(value: string | number): void {
-    this.description.set(String(value));
-    this.validateDescription();
+    const parsedValue = String(value);
+    this.description.set(parsedValue);
+    this.form.controls.description.setValue(parsedValue);
+    this.form.controls.description.markAsTouched();
+    
   }
 
   onCategoryChange(value: number): void {
-    this.idCategory.set(value > 0 ? value : null);
-    this.validateCategory();
+    const parsedValue = value > 0 ? value : null;
+    this.idCategory.set(parsedValue);
+    this.form.controls.idCategory.setValue(parsedValue);
+    this.form.controls.idCategory.markAsTouched();
+    
   }
 
 
@@ -119,6 +152,7 @@ export class ProductosComponent {
     this.onNameChange(event.row.nombre);
     this.onCodeChange(event.row.codigo);
     this.onDescriptionChange(event.row.descripcion);
+    this.onPriceChange(event.row.precio);
     const matchedCategory = this.options().find(
       (option) => option.nombre.toLowerCase() === String(event.row.categoria).toLowerCase()
     );
@@ -129,6 +163,15 @@ export class ProductosComponent {
       const categoryAsNumber = Number(event.row.categoria);
       this.idCategory.set(Number.isNaN(categoryAsNumber) ? null : categoryAsNumber);
     }
+
+    this.form.patchValue({
+      name: this.name(),
+      code: this.code(),
+      description: this.description(),
+      price: this.price(),
+      idCategory: this.idCategory(),
+    });
+    this.form.markAsUntouched();
     
     this.id.set(Number(event.id));
 
@@ -137,10 +180,11 @@ export class ProductosComponent {
   }
 
   async saveProduct(): Promise<void> {
-    if (!this.validateForm()) {
-      this.toastService.showErrorToast('Campos obligatorios', 'Completa todos los campos requeridos.');
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
       return;
     }
+   
 
     const productData: ProductSendData = {
       nombre: this.name(),
@@ -227,51 +271,19 @@ export class ProductosComponent {
     this.code.set('');
     this.description.set('');
     this.idCategory.set(null);
+    this.form.reset({
+      name: '',
+      price: 0,
+      code: '',
+      description: '',
+      idCategory: null,
+    });
     this.clearValidationErrors();
     this.showCreateSection.set(false);
     
   }
 
-  private validateName(): boolean {
-    const valid = this.name().trim().length > 0;
-    this.nameError.set(valid ? '' : 'El nombre es obligatorio.');
-    return valid;
-  }
-
-  private validateCode(): boolean {
-    const valid = this.code().trim().length > 0;
-    this.codeError.set(valid ? '' : 'El codigo es obligatorio.');
-    return valid;
-  }
-
-  private validateDescription(): boolean {
-    const valid = this.description().trim().length > 0;
-    this.descriptionError.set(valid ? '' : 'La descripcion es obligatoria.');
-    return valid;
-  }
-
-  private validatePrice(): boolean {
-    const valid = Number.isFinite(this.price()) && this.price() > 0;
-    this.priceError.set(valid ? '' : 'El precio debe ser mayor que cero.');
-    return valid;
-  }
-
-  private validateCategory(): boolean {
-    const selectedCategory = this.idCategory();
-    const valid = selectedCategory !== null && selectedCategory > 0;
-    this.categoryError.set(valid ? '' : 'Selecciona una categoria.');
-    return valid;
-  }
-
-  private validateForm(): boolean {
-    const validName = this.validateName();
-    const validCode = this.validateCode();
-    const validDescription = this.validateDescription();
-    const validPrice = this.validatePrice();
-    const validCategory = this.validateCategory();
-
-    return validName && validCode && validDescription && validPrice && validCategory;
-  }
+  
 
   private clearValidationErrors(): void {
     this.nameError.set('');
@@ -297,12 +309,39 @@ export class ProductosComponent {
   getProducts(): void {
     this.productosService.getProducts().subscribe({
       next: (products ) => {
-        this.tableContent.set(products);
+        this.allProducts.set(
+          products.map((product) => ({
+            ...product,
+            precio: Number(product.inventario?.[0]?.precio ?? 0),
+          }))
+        );
+        this.applySearchFilter();
       },
       error: (error) => {
         this.toastService.showErrorToast('Error al obtener los productos',error.message);
       }
     });
+  }
+
+  private applySearchFilter(): void {
+    const term = this.searchTerm().trim().toLowerCase();
+
+    if (!term) {
+      this.tableContent.set(this.allProducts());
+      return;
+    }
+
+    const filtered = this.allProducts().filter((product) => {
+      return (
+        product.nombre.toLowerCase().includes(term) ||
+        product.codigo.toLowerCase().includes(term) ||
+        product.precio.toString().toLowerCase().includes(term) ||
+        product.descripcion.toLowerCase().includes(term) ||
+        product.categoria.toLowerCase().includes(term)
+      );
+    });
+
+    this.tableContent.set(filtered);
   }
 
   async requestDeleteProduct(event: RowActionEvent<ProductTableRow>): Promise<void> {

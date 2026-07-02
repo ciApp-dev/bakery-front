@@ -70,3 +70,8 @@ export interface SucursalLoginResponse {
     id: number;
     name: string;
 }
+
+export interface CiudadResponse {
+    id: number;
+    nombre: string;
+}

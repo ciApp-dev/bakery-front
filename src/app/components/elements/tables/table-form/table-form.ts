@@ -14,6 +14,8 @@ export class TableForm <T>{
 
   label = input.required<string>();
 
+  activeAction = input.required<boolean>();
+
   contentLabel = input.required<ContentLabelTable[]>();
   content = input.required<T[]>();
 

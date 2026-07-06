@@ -1,3 +1,5 @@
+import { SucursalTableRow } from "./sucursales-interfaces";
+
 export interface ApiResponse {
     mensaje: string;
     usuario: {
@@ -5,6 +7,7 @@ export interface ApiResponse {
         email: string;
     }
 }
+
 
 
 
@@ -74,4 +77,9 @@ export interface SucursalLoginResponse {
 export interface CiudadResponse {
     id: number;
     nombre: string;
+}
+
+export interface SucursalResponse {
+    messaje: string;
+    sucursal: SucursalTableRow;
 }

@@ -15,6 +15,8 @@ import { ProductosService } from 'src/app/service/productos-service';
 import { ToastService } from 'src/app/service/toast-service';
 import { ConfirmDialogService } from 'src/app/service/confirm-dialog-service';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ToggleSwitch } from "../../elements/toggle-switch/toggle-switch";
+import { statusRequest } from 'src/app/interfaces/request';
 
 
 
@@ -22,7 +24,7 @@ import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angula
 @Component({
   selector: 'app-productos',
   imports: [InputSearchForm, ButtonMainForm, ButtonSecundaryForm,
-     LabelForm, InputForm, SelectorForm, TableForm, ReactiveFormsModule],
+    LabelForm, InputForm, SelectorForm, TableForm, ReactiveFormsModule, ToggleSwitch],
   templateUrl: './productos.html',
   styleUrl: './productos.css',
 })
@@ -42,6 +44,8 @@ export class ProductosComponent {
   allProducts = signal<ProductTableRow[]>([]);
   tableContent = signal<ProductTableRow[]>([]);
   searchTerm = signal('');
+
+  showDeleted = signal(false);
 
   //forms
   form = new FormGroup({
@@ -99,6 +103,10 @@ export class ProductosComponent {
     this.applySearchFilter();
   }
 
+  onShowDeletedChange(value: boolean): void {
+    this.showDeleted.set(value);
+    this.getProducts();
+  }
 
 
   onNameChange(value: string | number): void {
@@ -307,7 +315,11 @@ export class ProductosComponent {
   
 
   getProducts(): void {
-    this.productosService.getProducts().subscribe({
+
+    const estado: statusRequest = {
+      estado: this.showDeleted() ? 'INA' : 'ACT'
+    };
+    this.productosService.getProducts(estado).subscribe({
       next: (products ) => {
         this.allProducts.set(
           products.map((product) => ({
@@ -345,39 +357,59 @@ export class ProductosComponent {
   }
 
   async requestDeleteProduct(event: RowActionEvent<ProductTableRow>): Promise<void> {
-    const id = Number(event.id);
+    if(this.showDeleted()){
+      const confirmed = await this.confirmDialogService.confirm({
+        title: 'Reactivar producto',
+        message: `¿Desea reactivar el producto ${event.row.nombre}?`,
+        confirmLabel: 'Reactivar',
+        cancelLabel: 'Cancelar',
+        destructive: false,
+        closeOnBackdrop: true,
+      });
+  
+      if (!confirmed) {
+        return;
+      }
 
-    if (Number.isNaN(id) || id <= 0) {
-      this.toastService.showErrorToast('Error al eliminar el producto', 'ID de producto invalido.');
-      return;
-    }
+      this.productosService.reactivateProduct(event.row.id).subscribe({
+        next: (response) => {
+          this.toastService.showSuccessToast('Producto reactivado con éxito');
+          this.getProducts();
+        },
+        error: (error) => {
+          this.toastService.showErrorToast('Error al reactivar el producto', error.message);
+        }
+      });
+    }else{
+      const confirmed = await this.confirmDialogService.confirm({
+        title: 'Eliminar producto',
+        message: `¿Desea eliminar el producto ${event.row.nombre}? Esta acción no se puede deshacer.`,
+        confirmLabel: 'Eliminar',
+        cancelLabel: 'Cancelar',
+        destructive: true,
+        closeOnBackdrop: true,
+      });
+  
+      if (!confirmed) {
+        return;
+      }
 
-    const confirmed = await this.confirmDialogService.confirm({
-      title: 'Eliminar producto',
-      message: `Se eliminara el producto ${event.row.nombre}. Esta accion no se puede deshacer.`,
-      confirmLabel: 'Eliminar',
-      cancelLabel: 'Cancelar',
-      destructive: true,
-      closeOnBackdrop: true,
-    });
-
-    if (!confirmed) {
-      return;
-    }
-
-    this.productosService.deleteProduct(id).subscribe({
-      next: () => {
-        this.toastService.showSuccessToast('Producto eliminado con exito');
-        this.getProducts();
-      },
-      error: (error) => {
-        this.toastService.showErrorToast('Error al eliminar el producto', error.message);
-      },
-    });
+      this.productosService.deleteProduct(event.row.id).subscribe({
+        next: (response) => {
+          this.toastService.showSuccessToast('Producto eliminado con éxito');
+          this.getProducts();
+        },
+        error: (error) => {
+          this.toastService.showErrorToast('Error al eliminar el producto', error.message);
+        }
+      });
+    }   
   }
 
 
 
+
+  
 
   
 

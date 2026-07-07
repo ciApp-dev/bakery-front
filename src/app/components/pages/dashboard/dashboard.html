@@ -15,7 +15,7 @@
 	>
 		<div class="flex h-full flex-col p-5">
 			
-			<app-header-sidemenu></app-header-sidemenu>
+			<app-header-sidemenu [nameSucursal]="nameSucursal()"></app-header-sidemenu>
 
 			<app-option-sidemenu [IsSidebarOpen]="isSidebarOpen()" (IsSidebarOpenChange)="isSidebarOpen.set($event)"></app-option-sidemenu>
 
@@ -40,11 +40,13 @@
 					</div>
 
 					<div class="flex items-center gap-2 sm:gap-3">
-						<button type="button" class="rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-800">Cambiar Sucursal</button>
 						
-						<app-dropdown-form label="Sucursal 1" [options]="sucursales()" ></app-dropdown-form>
+						
+						<app-dropdown-form label="Cambiar Sucursal" 
+						[options]="sucursales()" 
+						(valueChange)="onSucursalChange($event)"></app-dropdown-form>
 					
-						<app-selector-form placeholder="Testing" label="Sucursal 2" [options]="sucursales()" ></app-selector-form>
+						
 					</div>
 				</div>
 			</header>

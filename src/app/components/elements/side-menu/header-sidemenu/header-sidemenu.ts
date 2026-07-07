@@ -1,4 +1,4 @@
-import { Component,signal } from '@angular/core';
+import { Component,signal,input } from '@angular/core';
 
 @Component({
   selector: 'app-header-sidemenu',
@@ -9,6 +9,8 @@ import { Component,signal } from '@angular/core';
 export class HeaderSidemenu {
 
   name = signal<string | null>(null);
+
+  nameSucursal = input.required<string>();
 
   constructor() {
     const rawName = localStorage.getItem('nameSucursal');

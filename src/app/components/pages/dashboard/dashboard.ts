@@ -24,9 +24,11 @@ export class Dashboard implements OnInit {
   sucursales = signal<SelectorOption[]>([]);
 
   sucursalesService = inject(SucursalesService);
+  nameSucursal = signal<string>('');
 
   ngOnInit(): void {
     this.getSucursales();
+    this.nameSucursal.set(localStorage.getItem('nameSucursal') || 'Seleccione una sucursal');
   }
  
 
@@ -68,6 +70,19 @@ export class Dashboard implements OnInit {
         console.error('Error al obtener las sucursales:', error);
       }
     });
+  }
+
+  onSucursalChange(selectedId: string | number): void {
+    const selectedSucursal = this.sucursales().find(sucursal => sucursal.id === Number(selectedId));
+    if (selectedSucursal) {
+      console.log('Sucursal seleccionada:', selectedSucursal.nombre);
+      localStorage.setItem('nameSucursal', selectedSucursal.nombre);
+      localStorage.setItem('idSucursal', selectedSucursal.id.toString());
+      this.nameSucursal.set(selectedSucursal.nombre);
+    } else {
+      console.error('Sucursal no encontrada para el id:', selectedId);
+    }
+
   }
 
 }

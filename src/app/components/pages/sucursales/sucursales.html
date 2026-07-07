@@ -4,7 +4,7 @@
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
             <div class="w-full sm:max-w-2xl lg:max-w-3xl">
-                <app-input-search-form></app-input-search-form>
+                <app-input-search-form [value]="searchTerm()" (valueChange)="onSearchTermChange($event)"    ></app-input-search-form>
             </div>
 
             <app-button-main-form label="Agregar" iconName="add"
@@ -136,7 +136,7 @@
         
         <app-table-form label="Sucursales" 
         [contentLabel]="sucursalName" 
-        [content]="allSucursales()"
+        [content]="tableContent()"
         (editSelected)="editSucursal($event)"
         (deleteSelected)="deleteSucursal($event)"
         [activeAction]="showDeleted()"></app-table-form>

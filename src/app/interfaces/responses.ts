@@ -83,3 +83,17 @@ export interface SucursalResponse {
     messaje: string;
     sucursal: SucursalTableRow;
 }
+
+export interface SucursalLoginResponse {
+    id: number;
+    nombre: string;
+}
+
+
+export interface userResponse {
+    id: number;
+    name: string;
+    email: string;
+    estado: string;
+    sucursales: SucursalLoginResponse[];
+}

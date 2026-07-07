@@ -1,9 +1,9 @@
-import { Injectable,inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { ProductResponse } from '../interfaces/responses';
 import { Observable } from 'rxjs';
-import { ProductSendData,ProductTableRow } from '../interfaces/products-interfaces';
+import { ProductSendData, ProductTableRow } from '../interfaces/products-interfaces';
 import { statusRequest } from '../interfaces/request';
 
 @Injectable({

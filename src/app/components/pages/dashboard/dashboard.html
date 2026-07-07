@@ -41,6 +41,10 @@
 
 					<div class="flex items-center gap-2 sm:gap-3">
 						<button type="button" class="rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-800">Cambiar Sucursal</button>
+						
+						<app-dropdown-form label="Sucursal 1" [options]="sucursales()" ></app-dropdown-form>
+					
+						<app-selector-form placeholder="Testing" label="Sucursal 2" [options]="sucursales()" ></app-selector-form>
 					</div>
 				</div>
 			</header>

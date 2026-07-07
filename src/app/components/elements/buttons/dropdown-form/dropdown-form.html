@@ -1,0 +1,37 @@
+<div class="relative inline-block w-full max-w-xs">
+  <button
+    id="dropdownHoverButton"
+    type="button"
+    (click)="toggleDropdown($event)"
+    class="inline-flex w-full items-center justify-between gap-2 rounded-base border border-default-medium bg-brand px-4 py-2.5 text-sm font-medium leading-5 text-white shadow-xs transition-colors hover:bg-brand-strong focus:outline-none focus:ring-4 focus:ring-brand-medium"
+  >
+    <span class="truncate">{{ label() }}</span>
+    <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
+    </svg>
+  </button>
+
+  <!-- Dropdown menu -->
+  <div
+    id="dropdownHover"
+    class="absolute left-0 top-full z-20 mt-2 w-full rounded-base border border-default-medium bg-neutral-primary-medium shadow-lg"
+    [class.hidden]="!isOpen()"
+    (click)="$event.stopPropagation()"
+  >
+    <ul class="max-h-72 overflow-y-auto p-2 text-sm font-medium text-body" aria-labelledby="dropdownHoverButton">
+      @for (option of options(); track option.id) {
+        <li>
+          <button
+            type="button"
+            class="inline-flex w-full items-center rounded px-3 py-2 text-left hover:bg-neutral-tertiary-medium hover:text-heading"
+            (click)="selectedOption(option)"
+          >
+            {{ option.nombre }}
+          </button>
+        </li>
+      } @empty {
+        <li class="px-3 py-2 text-body/70">No se encontraron opciones</li>
+      }
+    </ul>
+  </div>
+</div>

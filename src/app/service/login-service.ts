@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject,Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { ApiResponse, LoginResponse, LoginUserRequest } from '../interfaces/responses';
+import { ApiResponse, LoginResponse, LoginUserRequest, userResponse } from '../interfaces/responses';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
@@ -19,6 +19,6 @@ export class LoginService {
     return this.http.post<LoginResponse>(this.url + "login", user, { headers: this.headers });
   }
 
-
+ 
 
 }

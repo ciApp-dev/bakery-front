@@ -70,7 +70,6 @@ export class SelectorForm {
     this.query.set(option.nombre);
     this.valueChange.emit(Number(option.id));
     this.isOpen.set(false);
-    console.log('Selected option:', option.id);
   }
 
   clearQuery(): void {

@@ -1,4 +1,4 @@
-import { Component,inject,signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { InputSearchForm } from "../../elements/inputs/input-search-form/input-search-form";
 import { ButtonMainForm } from "../../elements/buttons/button-main-form/button-main-form";
 import { LabelForm } from "../../elements/labels/label-form/label-form";
@@ -34,11 +34,13 @@ export class SucursalesComponent {
   confirmDialogService = inject(ConfirmDialogService);
 
   allSucursales = signal<SucursalTableRow[]>([]);
-  
+  tableContent = signal<SucursalTableRow[]>([]);
+
   modeForm = signal<string>('create');
   idEstado = signal<number | null>(null);
   idCiudad = signal<number | null>(null);
-  
+  searchTerm = signal<string>('');
+
   idSelected = signal<number | null>(null);
   nombre = signal<string>('');
   direccion = signal<string>('');
@@ -49,7 +51,7 @@ export class SucursalesComponent {
   telefono = signal<string>('');
   produccion = signal<string>('NO');
 
-  
+
 
   opcionesEstados = signal<SelectorOption[]>([]);
   opcionesCiudades = signal<SelectorOption[]>([]);
@@ -69,14 +71,14 @@ export class SucursalesComponent {
   showDeleted = signal<boolean>(false);
 
   sucursalName: ContentLabelTable[] = [
-    {id: 1, name: 'Nombre', key: 'nombre'},
-    {id: 2, name: 'Dirección', key: 'direccion'},
-    {id: 3, name: 'Código Postal', key: 'cp'},
-    {id: 4, name: 'Ciudad', key: 'ciudad'},
-    {id: 5, name: 'Estado', key: 'estado'},
-    {id: 6, name: 'Teléfonos', key: 'telefonos'},
-    {id: 7, name: 'Producción', key: 'produccion'},
-    {id: 8, name: 'Acciones', key: 'actions'}
+    { id: 1, name: 'Nombre', key: 'nombre' },
+    { id: 2, name: 'Dirección', key: 'direccion' },
+    { id: 3, name: 'Código Postal', key: 'cp' },
+    { id: 4, name: 'Ciudad', key: 'ciudad' },
+    { id: 5, name: 'Estado', key: 'estado' },
+    { id: 6, name: 'Teléfonos', key: 'telefonos' },
+    { id: 7, name: 'Producción', key: 'produccion' },
+    { id: 8, name: 'Acciones', key: 'actions' }
   ];
 
 
@@ -85,8 +87,12 @@ export class SucursalesComponent {
     this.getSucursales();
   }
 
+  onSearchTermChange(value: string): void {
+    this.searchTerm.set(value);
+    this.applySearchFilter();
+  }
   onNameChange(value: string | number): void {
-    const parsedValue = String(value); 
+    const parsedValue = String(value);
     this.nombre.set(parsedValue);
     this.form.get('name')?.setValue(parsedValue);
     this.form.get('name')?.markAsTouched();
@@ -114,12 +120,12 @@ export class SucursalesComponent {
   }
 
   onBranchActiveChange(value: boolean): void {
-    if(value){
+    if (value) {
       this.produccion.set('SI');
-    }else{
+    } else {
       this.produccion.set('NO');
     }
-    
+
     console.log('Producción:', this.produccion());
   }
 
@@ -136,10 +142,10 @@ export class SucursalesComponent {
     this.getCiudadesByEstado(value);
 
     console.log('Estado seleccionado:', parsedValue);
-    if(parsedValue === null || parsedValue) {
+    if (parsedValue === null || parsedValue) {
 
     }
-    
+
   }
 
   onCiudadChange(value: number): void {
@@ -208,7 +214,7 @@ export class SucursalesComponent {
       next: (response) => {
         // Aquí puedes manejar la respuesta y actualizar tu estado o variables locales
         this.allSucursales.set(response);
-        console.log('Sucursales obtenidas:', this.allSucursales());
+        this.applySearchFilter(); // Aplicar el filtro de búsqueda después de obtener las sucursales
       },
       error: (error) => {
         console.error('Error al obtener las sucursales:', error);
@@ -234,7 +240,7 @@ export class SucursalesComponent {
       produccion: this.produccion(),
     };
 
-    if(this.modeForm() == 'edit'){
+    if (this.modeForm() == 'edit') {
 
       const confirmed = await this.confirmDialogService.confirm({
         title: 'Actualizar Sucursal',
@@ -251,7 +257,7 @@ export class SucursalesComponent {
 
       this.sucursalesService.editSucursal(sucursalData, this.idSelected()!).subscribe({
         next: (response) => {
-          
+
           this.toastService.showSuccessToast('Sucursal actualizada exitosamente');
           this.cancelSave();
           this.getSucursales();
@@ -262,9 +268,9 @@ export class SucursalesComponent {
         }
       });
 
-      
 
-    }else{
+
+    } else {
 
       const confirmed = await this.confirmDialogService.confirm({
         title: this.modeForm() === 'guardar' ? 'Guardar Sucursal' : 'Registrar Sucursal',
@@ -280,17 +286,17 @@ export class SucursalesComponent {
       }
 
       this.sucursalesService.saveSucursal(sucursalData).subscribe({
-      next: (response) => {
-        console.log('Sucursal guardada:', response);
-        this.toastService.showSuccessToast('Sucursal guardada exitosamente');
-        this.cancelSave();
-        this.getSucursales();
-      },
-      error: (error) => {
-        console.error('Error al guardar la sucursal:', error);
-        this.toastService.showErrorToast('Error al guardar la sucursal', 'No se pudo guardar la sucursal. Por favor, inténtalo de nuevo más tarde.');
-      }
-    });
+        next: (response) => {
+          console.log('Sucursal guardada:', response);
+          this.toastService.showSuccessToast('Sucursal guardada exitosamente');
+          this.cancelSave();
+          this.getSucursales();
+        },
+        error: (error) => {
+          console.error('Error al guardar la sucursal:', error);
+          this.toastService.showErrorToast('Error al guardar la sucursal', 'No se pudo guardar la sucursal. Por favor, inténtalo de nuevo más tarde.');
+        }
+      });
     }
   }
 
@@ -301,11 +307,11 @@ export class SucursalesComponent {
     this.onPhoneChange(event.row.telefonos[0] || '');
     this.onAddressChange(event.row.direccion);
     this.onPostalCodeChange(event.row.cp);
-    
-    if(event.row.produccion === 'SI'){
+
+    if (event.row.produccion === 'SI') {
       this.branchActive.set(true);
       this.produccion.set('SI');
-    }else{
+    } else {
       this.branchActive.set(false);
       this.produccion.set('NO');
     }
@@ -322,7 +328,7 @@ export class SucursalesComponent {
       this.onCiudadChange(ciudadOption.id);
     }
 
-    this.showCreateSection.set(true); 
+    this.showCreateSection.set(true);
 
     this.form.patchValue({
       name: event.row.nombre,
@@ -344,64 +350,90 @@ export class SucursalesComponent {
 
   async deleteSucursal(event: RowActionEvent<SucursalTableRow>): Promise<void> {
 
-   if(this.showDeleted()){
-    const confirmed = await this.confirmDialogService.confirm({
-      title: 'Reactivar Sucursal',
-      message: '¿Estás seguro de que deseas reactivar esta sucursal?',
-      confirmLabel: 'Reactivar',
-      cancelLabel: 'Cancelar',
-      destructive: false,
-      closeOnBackdrop: true
-    });
+    if (this.showDeleted()) {
+      const confirmed = await this.confirmDialogService.confirm({
+        title: 'Reactivar Sucursal',
+        message: '¿Estás seguro de que deseas reactivar esta sucursal?',
+        confirmLabel: 'Reactivar',
+        cancelLabel: 'Cancelar',
+        destructive: false,
+        closeOnBackdrop: true
+      });
 
-    if (!confirmed) {
-      return;
-    }
-
-    this.sucursalesService.reactivateSucursal(event.row.id).subscribe({
-      next: (response) => {
-        console.log('Sucursal reactivada:', response);
-        this.toastService.showSuccessToast('Sucursal reactivada exitosamente');
-        this.getSucursales();
-      },
-      error: (error) => {
-        console.error('Error al reactivar la sucursal:', error);
-        this.toastService.showErrorToast('Error al reactivar la sucursal', 'No se pudo reactivar la sucursal. Por favor, inténtalo de nuevo más tarde.');
+      if (!confirmed) {
+        return;
       }
-    });
 
-   }else{
+      this.sucursalesService.reactivateSucursal(event.row.id).subscribe({
+        next: (response) => {
+          console.log('Sucursal reactivada:', response);
+          this.toastService.showSuccessToast('Sucursal reactivada exitosamente');
+          this.getSucursales();
+        },
+        error: (error) => {
+          console.error('Error al reactivar la sucursal:', error);
+          this.toastService.showErrorToast('Error al reactivar la sucursal', 'No se pudo reactivar la sucursal. Por favor, inténtalo de nuevo más tarde.');
+        }
+      });
 
-    const confirmed = await this.confirmDialogService.confirm({
-      title: 'Eliminar Sucursal',
-      message: '¿Estás seguro de que deseas eliminar esta sucursal?',
-      confirmLabel: 'Eliminar',
-      cancelLabel: 'Cancelar',
-      destructive: true,
-      closeOnBackdrop: true
-    });
+    } else {
 
-    if (!confirmed) {
-      return;
-    }
+      const confirmed = await this.confirmDialogService.confirm({
+        title: 'Eliminar Sucursal',
+        message: '¿Estás seguro de que deseas eliminar esta sucursal?',
+        confirmLabel: 'Eliminar',
+        cancelLabel: 'Cancelar',
+        destructive: true,
+        closeOnBackdrop: true
+      });
 
-    this.sucursalesService.deleteSucursal(event.row.id).subscribe({
-      next: (response) => {
-        console.log('Sucursal eliminada:', response);
-        this.toastService.showSuccessToast('Sucursal eliminada exitosamente');
-        this.getSucursales();
-      },
-      error: (error) => {
-        console.error('Error al eliminar la sucursal:', error);
-        this.toastService.showErrorToast('Error al eliminar la sucursal', 'No se pudo eliminar la sucursal. Por favor, inténtalo de nuevo más tarde.');
+      if (!confirmed) {
+        return;
       }
-    });
-   }
 
+      this.sucursalesService.deleteSucursal(event.row.id).subscribe({
+        next: (response) => {
+          console.log('Sucursal eliminada:', response);
+          this.toastService.showSuccessToast('Sucursal eliminada exitosamente');
+          this.getSucursales();
+        },
+        error: (error) => {
+          console.error('Error al eliminar la sucursal:', error);
+          this.toastService.showErrorToast('Error al eliminar la sucursal', 'No se pudo eliminar la sucursal. Por favor, inténtalo de nuevo más tarde.');
+        }
+      });
+    }
 
 
     
-    
+
+
+   
+} 
+
+
+
+applySearchFilter(): void {
+    const term = this.searchTerm().trim().toLowerCase();
+
+    if(!term) {
+      this.tableContent.set(this.allSucursales());
+      return;
+    }
+
+    const filtered = this.allSucursales().filter(sucursal => {
+      return (
+        sucursal.nombre.toLowerCase().includes(term) ||
+        sucursal.direccion.toLowerCase().includes(term) ||
+        sucursal.ciudad.toLowerCase().includes(term) ||
+        sucursal.estado.toLowerCase().includes(term) ||
+        sucursal.cp.toString().includes(term) ||
+        sucursal.telefonos.some(telefono => telefono.includes(term)) ||
+        sucursal.produccion.toLowerCase().includes(term)
+      );
+    });
+
+    this.tableContent.set(filtered); 
 
   }
-  }
+}

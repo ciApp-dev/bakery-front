@@ -3,7 +3,7 @@ import { Injectable,inject } from '@angular/core';
 import { environment } from '@environments/environment';
 import { SucursalSendData, SucursalTableRow } from '../interfaces/sucursales-interfaces';
 import { Observable } from 'rxjs';
-import { SucursalResponse } from '../interfaces/responses';
+import { SucursalResponse, userResponse } from '../interfaces/responses';
 import { statusRequest } from '../interfaces/request';
 
 @Injectable({
@@ -14,6 +14,8 @@ export class SucursalesService {
   URL = environment.apiUrl;
   headers = { 'Content-Type': 'application/json' };
   http = inject(HttpClient);
+
+   token = localStorage.getItem('access_token');
 
 
   getSucursales(estado: statusRequest):Observable<SucursalTableRow[]> {
@@ -35,5 +37,9 @@ export class SucursalesService {
   
   reactivateSucursal(id: number): Observable<SucursalResponse> {
     return this.http.post<SucursalResponse>(`${this.URL}sucursales/${id}/reactivar`, {}, { headers: this.headers });
+  }
+
+   getSucursalesUser (id: number): Observable<userResponse> {
+    return this.http.get<userResponse>(`${this.URL}usuarios/${id}`, { headers: { ...this.headers, Authorization: `Bearer ${this.token}` } });
   }
 }

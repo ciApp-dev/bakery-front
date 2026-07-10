@@ -3,5 +3,6 @@ export const environment = {
     apiUrl : 'http://localhost:8001/api/',
     darkModeDiv: 'dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700',
     darkModeText: 'dark:text-white',
-    darkModeToast: 'dark:bg-gray-500'
+    darkModeToast: 'dark:bg-gray-500',
+    cardTextColor: 'text-gray-900 dark:text-gray-100',
 };

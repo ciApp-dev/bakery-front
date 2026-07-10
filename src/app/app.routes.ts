@@ -2,10 +2,10 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './components/pages/login/login';
 import { Dashboard } from './components/pages/dashboard/dashboard';
 import { DashboardOverviewPage } from './components/pages/dashboard/dashboard-overview-page';
-import { DashboardSectionPlaceholderPage } from './components/pages/dashboard/dashboard-section-placeholder-page';
 import { RegisterComponent } from './components/pages/register/register';
 import { ProductosComponent } from './components/pages/productos/productos';
 import { SucursalesComponent } from './components/pages/sucursales/sucursales';
+import { InventarioComponent } from './components/pages/inventario/inventario';
 
 
 export const routes: Routes = [
@@ -26,6 +26,10 @@ export const routes: Routes = [
             {
                 path: "sucursales",
                 component: SucursalesComponent
+            },
+            {
+                path: "inventario",
+                component: InventarioComponent
             },
   
             { path: "**", redirectTo: "overview" }

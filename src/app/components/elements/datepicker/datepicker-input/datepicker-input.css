@@ -1,0 +1,13 @@
+:host {
+	display: block;
+	width: 100%;
+}
+
+.datepicker-field input::-webkit-calendar-picker-indicator {
+	cursor: pointer;
+	opacity: 0;
+}
+
+.datepicker-field:focus-within .datepicker-icon svg {
+	color: rgb(16 185 129);
+}

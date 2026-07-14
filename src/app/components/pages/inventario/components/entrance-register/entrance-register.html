@@ -1,50 +1,60 @@
 <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/50">
-    <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">Registro de entrada
+    <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">Registro de producción
     </h2>
 
     <div class="mt-3 grid gap-3 sm:grid-cols-2">
-        <label class="block text-sm text-slate-600 dark:text-slate-300">
-            Producto
-            <input type="text" placeholder="Ej. Harina Premium"
-                class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-300 dark:focus:ring-slate-300/20" />
-        </label>
 
-        <label class="block text-sm text-slate-600 dark:text-slate-300">
-            Categoria
-            <select
-                class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:focus:border-slate-300 dark:focus:ring-slate-300/20">
-                <option>Materias primas</option>
-                <option>Empaque</option>
-                <option>Produccion</option>
-            </select>
-        </label>
+        <div>
+        <app-selector-form label="Producto"
+         placeholder="Seleccione un producto"
+         [value]="form.controls['idProducto'].value"
+         [options]="optionsProducts()"
+         (valueChange)="onProductSelected($event)"
+         ></app-selector-form>
+        @if (form.controls['idProducto'].invalid && form.controls['idProducto'].touched) {
+            <p class="mt-1 text-xs text-red-600">Seleccione un producto</p>
+        }
+        </div>
 
-        <label class="block text-sm text-slate-600 dark:text-slate-300">
-            Cantidad
-            <input type="number" placeholder="0"
-                class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-300 dark:focus:ring-slate-300/20" />
-        </label>
+        <div>
+        <app-input-form label="Cantidad"
+         placeholder="Cantidad de producto"
+         type="number"
+         (valueChange)="onCantidadChange($event)"
+         [value]="form.controls['cantidad'].value"
+         ></app-input-form>
+        @if (form.controls['cantidad'].invalid && form.controls['cantidad'].touched) {
+            <p class="mt-1 text-xs text-red-600">Ingrese una cantidad válida</p>
+        }
+        </div>
 
-        <app-datepicker-input></app-datepicker-input>
-
-        <label class="block text-sm text-slate-600 dark:text-slate-300">
-            Fecha
-            <input type="date"
-                class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:focus:border-slate-300 dark:focus:ring-slate-300/20" />
-        </label>
+    
     </div>
 
-    <label class="mt-3 block text-sm text-slate-600 dark:text-slate-300">
-        Nota
-        <textarea rows="3" placeholder="Observaciones opcionales"
-            class="mt-1 w-full resize-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-300 dark:focus:ring-slate-300/20"></textarea>
-    </label>
+
+    
+        <app-input-form
+        label="Nota"
+         placeholder="Agrega una nota"
+         type="textarea"
+         (valueChange)="onMotivoChange($event)"
+         ></app-input-form>
+    
 
     <div class="mt-4 flex flex-wrap justify-end gap-2">
-        <button type="button"
-            class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Cancelar</button>
-        <button type="button"
-            class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500">Guardar
-            entrada</button>
+      
+        
+        <app-button-secundary-form 
+        color="text-red-500"
+        label="Cancelar" (click)="cancel()"
+        iconName="cancel"
+        ></app-button-secundary-form>
+
+        <app-button-main-form
+        label="Guardar entrada"
+        iconName="save"
+        (click)="save()"
+        ></app-button-main-form>
+
     </div>
 </div>

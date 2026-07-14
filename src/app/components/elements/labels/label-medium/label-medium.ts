@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,input } from '@angular/core';
 
 @Component({
   selector: 'app-label-medium',
@@ -6,4 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './label-medium.html',
   styleUrl: './label-medium.css',
 })
-export class LabelMedium {}
+export class LabelMedium {
+  label = input.required<string>();
+}

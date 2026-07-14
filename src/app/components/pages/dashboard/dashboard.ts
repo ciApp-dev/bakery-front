@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { ButtonSidemenu } from "../../elements/side-menu/button-sidemenu/button-sidemenu";
 import { ButtonSidemenuTrick } from "../../elements/side-menu/button-sidemenu-trick/button-sidemenu-trick";
 import { HeaderSidemenu } from "../../elements/side-menu/header-sidemenu/header-sidemenu";
@@ -23,6 +23,8 @@ export class Dashboard implements OnInit {
   readonly isSidebarOpen = signal(false);
   sucursales = signal<SelectorOption[]>([]);
 
+  router = inject(Router);
+
   sucursalesService = inject(SucursalesService);
   nameSucursal = signal<string>('');
 
@@ -30,7 +32,7 @@ export class Dashboard implements OnInit {
     this.getSucursales();
     this.nameSucursal.set(localStorage.getItem('nameSucursal') || 'Seleccione una sucursal');
   }
- 
+
 
   toggleSidebar(): void {
     this.isSidebarOpen.update((isOpen) => !isOpen);
@@ -42,7 +44,7 @@ export class Dashboard implements OnInit {
 
   onNavItemClick(): void {
     if (typeof window !== 'undefined' && window.innerWidth < 1024) {
-      
+
       this.closeSidebar();
     }
 
@@ -79,6 +81,7 @@ export class Dashboard implements OnInit {
       localStorage.setItem('nameSucursal', selectedSucursal.nombre);
       localStorage.setItem('idSucursal', selectedSucursal.id.toString());
       this.nameSucursal.set(selectedSucursal.nombre);
+      this.router.navigate(['/dashboard/overview']);
     } else {
       console.error('Sucursal no encontrada para el id:', selectedId);
     }

@@ -97,3 +97,7 @@ export interface userResponse {
     estado: string;
     sucursales: SucursalLoginResponse[];
 }
+
+export interface genericResponse {
+    mensaje: string;
+}

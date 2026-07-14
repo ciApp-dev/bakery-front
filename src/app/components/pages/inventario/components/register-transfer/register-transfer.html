@@ -1,0 +1,70 @@
+<div class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/50">
+    <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">Registro de movimiento
+        entre sucursales
+    </h2>
+
+    <div
+        class="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-700 dark:bg-slate-900/70">
+        <app-label-small label="Datos en sucursal local"></app-label-small>
+        <div class="mt-3 grid gap-3 sm:grid-cols-2">
+
+            <app-selector-form label="Producto" placeholder="Seleccione un producto" [options]="optionsProducts()"
+                (valueChange)="selectProductLocal($event)"></app-selector-form>
+
+
+            <div>
+                <span class="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300">Stock disponible</span>
+                <app-label-medium label="{{ stockLocal() }} disponibles"></app-label-medium>
+
+            </div>
+
+
+
+            <hr class="col-span-full border-t border-black dark:border-white my-6" />
+
+            <div class="col-span-full">
+
+                <app-label-small label="Datos en sucursal destino"></app-label-small>
+            </div>
+
+
+            <app-selector-form label="Sucursal destino" placeholder="Seleccione una sucursal"
+                [options]="sucursales()"></app-selector-form>
+
+
+            <div>
+
+            </div>
+
+            <app-selector-form label="Producto" placeholder="Seleccione un producto" [options]="optionsProducts()"
+                (valueChange)="selectProductLocal($event)"></app-selector-form>
+
+
+            <div>
+                <span class="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300">Stock disponible</span>
+                <app-label-medium label="{{ stockLocal() }} disponibles"></app-label-medium>
+
+            </div>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+
+        <div class="mt-4 flex flex-wrap justify-end gap-2">
+
+
+            <app-button-secundary-form color="text-red-500" label="Cancelar" (click)="cancel()"
+                iconName="cancel"></app-button-secundary-form>
+
+            <app-button-main-form label="Guardar entrada" iconName="save" (click)="save()"></app-button-main-form>
+
+        </div>
+    </div>

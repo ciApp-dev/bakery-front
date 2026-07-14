@@ -24,4 +24,4 @@ export type SelectorOption = {
 };
 
 
-
+export type InventarioTab = 'produccion'| 'abasto' | 'salidas' | 'stock' | 'reportes';

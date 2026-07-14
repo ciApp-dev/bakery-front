@@ -5,3 +5,34 @@
 @source "../node_modules/flowbite/**/*.js";
 
 @source "../node_modules/flowbite-datepicker";
+
+.datepicker,
+.datepicker-dropdown,
+.datepicker-picker {
+	z-index: 1200 !important;
+}
+
+.datepicker-dropdown,
+.datepicker-picker,
+.datepicker-main,
+.datepicker-view {
+	background-color: #ffffff !important;
+	opacity: 1 !important;
+}
+
+.datepicker-cell,
+.dow,
+.datepicker-controls button {
+	background-color: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+	.datepicker-dropdown,
+	.datepicker-picker,
+	.datepicker-main,
+	.datepicker-view {
+		background-color: #0f172a !important;
+		color: #e2e8f0;
+		border-color: #334155 !important;
+	}
+}

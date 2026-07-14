@@ -7,8 +7,8 @@ RUN npm install -g @angular/cli
 # Copiamos archivos de dependencias
 COPY package*.json ./
 
-# Instalamos dependencias del proyecto + Flowbite en build time
-RUN npm install && npm install flowbite
+# Instalamos dependencias del proyecto
+RUN npm install
 
 # Copiamos el resto del código
 COPY . .

@@ -1,5 +1,5 @@
 <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/50">
-    <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">Registro de producción
+    <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">Registro de {{ titleLabel() }}
     </h2>
 
     <div class="mt-3 grid gap-3 sm:grid-cols-2">
@@ -15,6 +15,12 @@
             <p class="mt-1 text-xs text-red-600">Seleccione un producto</p>
         }
         </div>
+
+        <div>
+                <span class="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300">Stock disponible</span>
+                <app-label-medium label="{{ localStock() }} disponibles"></app-label-medium>
+
+            </div>
 
         <div>
         <app-input-form label="Cantidad"
@@ -38,6 +44,7 @@
          placeholder="Agrega una nota"
          type="textarea"
          (valueChange)="onMotivoChange($event)"
+         [value]="motivo()"
          ></app-input-form>
     
 
@@ -51,7 +58,7 @@
         ></app-button-secundary-form>
 
         <app-button-main-form
-        label="Guardar entrada"
+        label="Guardar {{ titleLabel() }}"
         iconName="save"
         (click)="save()"
         ></app-button-main-form>

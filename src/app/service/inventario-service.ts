@@ -4,7 +4,7 @@ import { environment } from '@environments/environment';
 import { abastoSucursalRequest, statusRequest } from '../interfaces/request';
 import { genericResponse } from '../interfaces/responses';
 import { Observable } from 'rxjs';
-import { productoInterface } from '../interfaces/invetario-interface';
+import { productoInterface, transferenciaInterface } from '../interfaces/invetario-interface';
 
 
 @Injectable({
@@ -24,6 +24,14 @@ export class InventarioService {
 
    getProducts(estado: statusRequest): Observable<productoInterface[]> {
       return this.http.get<productoInterface[]>(`${this.url}productos`, { headers: this.headers, params: { estado: estado.estado } });
+    }
+
+    transferProduct(data: transferenciaInterface): Observable<genericResponse> {
+      return this.http.post<genericResponse>(`${this.url}transferir`, data, { headers: this.headers });
+    }
+
+    outRegister(data: abastoSucursalRequest): Observable<genericResponse> {
+      return this.http.post<genericResponse>(`${this.url}retirar`, data, { headers: this.headers });
     }
 
   }

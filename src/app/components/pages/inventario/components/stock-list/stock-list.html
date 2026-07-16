@@ -1,0 +1,45 @@
+
+<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-5">
+			<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+				
+				<div class="w-full sm:max-w-2xl lg:max-w-3xl">
+					<app-input-search-form [value]="searchTerm()"
+                     (valueChange)="onSearchChange($event)" 
+                     placeholder="Buscar productos..."></app-input-search-form>
+				</div>
+			</div>
+		</div>
+
+<div class="w-full bg-neutral-primary-soft border-slate-200 rounded-base shadow-xs">
+    <ul role="list"
+        class="max-h-96 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden divide-y divide-default">
+        @if (filteredProductList().length === 0) {
+        <li class="px-6 py-8 text-sm text-slate-500 dark:text-slate-400">
+            @if (searchTerm().trim().length > 0) {
+            No hay coincidencias para tu busqueda.
+            } @else {
+            No hay productos para la sucursal seleccionada.
+            }
+        </li>
+        } @else {
+        @for (item of filteredProductList(); track item.nombre + '-' + item.sucursal_id + '-' + item.precio) {
+        <li class="flex flex-col gap-2 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+            <div class="min-w-0 sm:pr-4">
+                <p class="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{{ item.nombre }}</p>
+                <p class="truncate text-xs text-slate-500 dark:text-slate-400">
+                    {{ item.descripcion ? item.descripcion : 'Sin descripción' }}
+                </p>
+                <p class="truncate text-xs text-slate-500 dark:text-slate-400">
+                    {{ item.categoria ? item.categoria : 'Sin categoría' }}
+                </p>
+            </div>
+
+            <div class="shrink-0 text-left sm:text-right">
+                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ item.cantidad }} unidades</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">${{ item.precio }}</p>
+            </div>
+        </li>
+        }
+        }
+    </ul>
+</div>

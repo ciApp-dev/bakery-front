@@ -8,6 +8,7 @@ import { Component, input, output } from '@angular/core';
 })
 export class InputSearchForm {
   value = input('');
+  placeholder = input.required<string>();
   valueChange = output<string>();
 
   onSearchChange(event: Event): void {

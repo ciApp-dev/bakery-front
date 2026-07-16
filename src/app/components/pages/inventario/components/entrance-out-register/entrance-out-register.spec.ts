@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EntranceRegister } from './entrance-register';
+import { EntranceRegister } from './entrance-out-register';
 
 describe('EntranceRegister', () => {
   let component: EntranceRegister;

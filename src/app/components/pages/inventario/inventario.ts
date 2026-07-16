@@ -2,7 +2,7 @@ import { Component, inject,signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { environment } from '@environments/environment';
 import { InfoCards } from "../../elements/cards/info-cards/info-cards";
-import { EntranceRegister } from "./components/entrance-register/entrance-register";
+import { EntranceRegister } from "./components/entrance-out-register/entrance-out-register";
 import { RegisterOut } from './components/register-out/register-out';
 import { InventarioTab, SelectorOption } from 'src/app/interfaces/forms';
 import { RegisterTransfer } from "./components/register-transfer/register-transfer";
@@ -11,11 +11,12 @@ import { productoInterface } from 'src/app/interfaces/invetario-interface';
 import { InventarioService } from 'src/app/service/inventario-service';
 import { ToastService } from 'src/app/service/toast-service';
 import { SucursalesService } from 'src/app/service/sucursales-service';
+import { StockList } from "./components/stock-list/stock-list";
 
 
 @Component({
   selector: 'app-inventario',
-  imports: [NgClass, InfoCards, EntranceRegister, RegisterOut, RegisterTransfer],
+  imports: [NgClass, InfoCards, EntranceRegister, RegisterTransfer, StockList],
   templateUrl: './inventario.html',
   styleUrl: './inventario.css',
 })
@@ -33,6 +34,7 @@ export class InventarioComponent {
     { id: 'abasto', label: 'Abasto a Sucursal' },
     { id: 'salidas', label: 'Salidas' },
     { id: 'stock', label: 'Stock' },
+    { id: 'pendientes', label: 'Pendientes' },
     { id: 'reportes', label: 'Reportes' },
   ];
   

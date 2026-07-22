@@ -139,6 +139,12 @@
         <app-table-form label="Sucursales" 
         [contentLabel]="sucursalName" 
         [content]="tableContent()"
+        [labelBtn1]="'Editar'"
+        [labelBtn2]="'Eliminar'"
+        [iconBtn1]="'edit'"
+        [iconBtn2]="'delete'"
+        [colorBtn1]="'text-yellow-500'"
+        [colorBtn2]="'text-red-500'"
         (editSelected)="editSucursal($event)"
         (deleteSelected)="deleteSucursal($event)"
         [activeAction]="showDeleted()"></app-table-form>

@@ -14,6 +14,13 @@ export class TableForm <T>{
 
   label = input.required<string>();
 
+  labelBtn1 = input.required<string>();
+  labelBtn2 = input.required<string>();
+  iconBtn1 = input.required<string>();
+  iconBtn2 = input.required<string>();
+  colorBtn1 = input.required<string>();
+  colorBtn2 = input.required<string>();
+
   activeAction = input.required<boolean>();
 
   contentLabel = input.required<ContentLabelTable[]>();
@@ -21,8 +28,8 @@ export class TableForm <T>{
 
   editSelected = output<RowActionEvent<T>>();
   deleteSelected = output<RowActionEvent<T>>();
-  pressedEdit = output<void>();
-  pressedDelete = output<void>();
+  pressedBtn1 = output<void>();
+  pressedBtn2 = output<void>();
   idSelected = output<number>();
 
 
@@ -36,7 +43,7 @@ export class TableForm <T>{
   });
   
 
-  onEdit(row: T): void {
+  onAction1(row: T): void {
     const id = this.getTrackKey(row, 0);
     this.editSelected.emit({
       id: String(id),
@@ -44,10 +51,10 @@ export class TableForm <T>{
     });
 
     this.idSelected.emit(Number(id));
-    this.pressedEdit.emit();
+    this.pressedBtn1.emit();
   }
 
-  onDelete(row: T): void {
+  onAction2(row: T): void {
     const id = this.getTrackKey(row, 0);
 
     this.deleteSelected.emit({
@@ -55,8 +62,8 @@ export class TableForm <T>{
       row,
     });
     
-    this.idSelected.emit(id as number);
-    this.pressedDelete.emit();
+    this.idSelected.emit(Number(id));
+    this.pressedBtn2.emit();
   }
 
 

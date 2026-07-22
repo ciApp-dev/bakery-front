@@ -23,12 +23,12 @@
 									</td>
                                     } @else {
                                         <td class="whitespace-nowrap px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
-                                            <app-button-secundary-form color="text-yellow-500" label="Editar" iconName="edit" (pressed)="onEdit(row)"></app-button-secundary-form>
+                                            <app-button-secundary-form [color]="colorBtn1()" [label]="labelBtn1()" [iconName]="iconBtn1()" (pressed)="onAction1(row)"></app-button-secundary-form>
 											@if(activeAction()) {
-												<app-button-secundary-form color="text-green-500" label="Reactivar" iconName="check" (pressed)="onDelete(row)"></app-button-secundary-form>
+												<app-button-secundary-form [color]="colorBtn2()" [label]="labelBtn2()" [iconName]="iconBtn2()" (pressed)="onAction2(row)"></app-button-secundary-form>
 												
 											}@else{
-												<app-button-secundary-form color="text-red-500" label="Eliminar" iconName="delete" (pressed)="onDelete(row)"></app-button-secundary-form>	
+												<app-button-secundary-form [color]="colorBtn2()" [label]="labelBtn2()" [iconName]="iconBtn2()" (pressed)="onAction2(row)"></app-button-secundary-form>
 											}
 
                                             

@@ -1,0 +1,14 @@
+<app-table-form
+label="Registros"
+[content]="allRegisters"
+[contentLabel]="contentLabel"
+[labelBtn1]="'Aprobar'"
+[labelBtn2]="'Cancelar'"
+[iconBtn1]="'check'"
+[iconBtn2]="'cancel'"
+[colorBtn1]="'text-green-500'"
+[colorBtn2]="'text-red-500'"
+(editSelected)="onApprove($event)"
+(deleteSelected)="onCancel($event)"
+[activeAction]="showDeleted()"
+></app-table-form>

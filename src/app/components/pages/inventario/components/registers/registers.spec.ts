@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegisterOut } from './register-out';
+import { Registers } from './registers';
 
-describe('RegisterOut', () => {
-  let component: RegisterOut;
-  let fixture: ComponentFixture<RegisterOut>;
+describe('Registers', () => {
+  let component: Registers;
+  let fixture: ComponentFixture<Registers>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RegisterOut],
+      imports: [Registers],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RegisterOut);
+    fixture = TestBed.createComponent(Registers);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

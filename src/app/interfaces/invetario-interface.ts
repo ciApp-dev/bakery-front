@@ -32,3 +32,25 @@ export interface stockListInterface {
     cantidad: number;
     descripcion?: string;
 }
+
+export interface pendingTransfer {
+    sucursal_id: number;
+    fecha_inicio: string;
+    fecha_fin: string;
+}
+
+export interface pendingTransferResponse {
+    id: number;
+    movimiento_id: number;
+    sucursal_id: number;
+    producto_id: number;
+    producto_nombre: string;
+    user_id: number;
+    user_nombre: string;
+    tipo: string;
+    cantidad: number;
+    motivo: string;
+    sucursal_origen_id: number;
+    sucursal_origen_nombre: string;
+    created_at: string;
+}

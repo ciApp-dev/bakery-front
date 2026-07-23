@@ -4,7 +4,7 @@ import { environment } from '@environments/environment';
 import { abastoSucursalRequest, statusRequest } from '../interfaces/request';
 import { genericResponse } from '../interfaces/responses';
 import { Observable } from 'rxjs';
-import { productoInterface, transferenciaInterface } from '../interfaces/invetario-interface';
+import { pendingTransfer, pendingTransferResponse, productoInterface, transferenciaInterface } from '../interfaces/invetario-interface';
 
 
 @Injectable({
@@ -33,5 +33,9 @@ export class InventarioService {
     outRegister(data: abastoSucursalRequest): Observable<genericResponse> {
       return this.http.post<genericResponse>(`${this.url}retirar`, data, { headers: this.headers });
     }
+
+    getPendingTransfers(data: pendingTransfer): Observable<pendingTransferResponse[]> {
+      return this.http.get<pendingTransferResponse[]>(`${this.url}movimientos/sucursal/${data.sucursal_id}`, { headers: this.headers, params: { fecha_inicio: data.fecha_inicio, fecha_fin: data.fecha_fin } });
+    } 
 
   }

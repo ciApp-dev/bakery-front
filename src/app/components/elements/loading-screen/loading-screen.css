@@ -1,0 +1,332 @@
+.loading-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 60;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+	background:
+		radial-gradient(circle at 20% 18%, rgb(255 229 180 / 24%) 0, transparent 35%),
+		radial-gradient(circle at 85% 80%, rgb(255 182 146 / 20%) 0, transparent 42%),
+		rgb(34 23 16 / 58%);
+	backdrop-filter: blur(6px);
+}
+
+.loading-card {
+	width: min(420px, 100%);
+	padding: 1.25rem 1.25rem 1rem;
+	border-radius: 1.25rem;
+	border: 1px solid rgb(255 200 150 / 40%);
+	box-shadow: 0 18px 44px rgb(65 32 10 / 34%);
+	background: linear-gradient(160deg, #fff6ea 0%, #ffe7d1 100%);
+}
+
+.bakery-scene {
+	position: relative;
+	height: 170px;
+	border-radius: 1rem;
+	overflow: hidden;
+	background:
+		linear-gradient(180deg, #ffd7a5 0%, #ffcb8c 58%, #f4a463 100%);
+	box-shadow: inset 0 -10px 22px rgb(181 93 37 / 28%);
+}
+
+.sparkle {
+	position: absolute;
+	width: 8px;
+	height: 8px;
+	border-radius: 999px;
+	background-color: rgb(255 245 220 / 80%);
+	animation: twinkle 1.8s ease-in-out infinite;
+}
+
+.sparkle-1 {
+	top: 18px;
+	left: 28px;
+}
+
+.sparkle-2 {
+	top: 28px;
+	right: 54px;
+	animation-delay: 0.2s;
+}
+
+.sparkle-3 {
+	top: 52px;
+	left: 130px;
+	animation-delay: 0.45s;
+}
+
+.oven {
+	position: absolute;
+	right: 20px;
+	bottom: 38px;
+	width: 126px;
+	height: 86px;
+	border-radius: 12px;
+	background: linear-gradient(180deg, #c86f3c 0%, #9b4920 100%);
+	box-shadow: inset 0 0 0 3px rgb(113 46 13 / 36%);
+}
+
+.oven::before,
+.oven::after {
+	content: '';
+	position: absolute;
+	top: 14px;
+	width: 12px;
+	height: 12px;
+	border-radius: 999px;
+	background: #ffd37f;
+	box-shadow: 0 0 10px rgb(255 211 127 / 65%);
+}
+
+.oven::before {
+	left: 12px;
+}
+
+.oven::after {
+	right: 12px;
+}
+
+.oven-window {
+	position: absolute;
+	left: 50%;
+	bottom: 12px;
+	width: 84px;
+	height: 48px;
+	transform: translateX(-50%);
+	border-radius: 10px;
+	background: linear-gradient(180deg, #ffb26a 0%, #ff8f3f 100%);
+	box-shadow: inset 0 0 0 3px rgb(113 46 13 / 42%);
+	overflow: hidden;
+}
+
+.path {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 24px;
+	height: 16px;
+	background: linear-gradient(180deg, #aa5e2f 0%, #9a5227 100%);
+}
+
+.path::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: repeating-linear-gradient(
+		90deg,
+		transparent 0,
+		transparent 10px,
+		rgb(252 201 142 / 40%) 10px,
+		rgb(252 201 142 / 40%) 14px
+	);
+}
+
+.bread-runner {
+	position: absolute;
+	left: 22px;
+	bottom: 42px;
+	width: 62px;
+	height: 48px;
+	border-radius: 42px 42px 28px 28px;
+	background: linear-gradient(180deg, #ffdca3 0%, #f2b66e 100%);
+	box-shadow:
+		inset 0 -3px 0 rgb(194 127 57 / 45%),
+		0 7px 0 rgb(140 72 28 / 24%);
+	animation: runBread 2.3s linear infinite;
+}
+
+.bread-runner::before {
+	content: '';
+	position: absolute;
+	top: 7px;
+	left: 9px;
+	width: 10px;
+	height: 7px;
+	border-radius: 100%;
+	border-top: 2px solid rgb(194 127 57 / 70%);
+	transform: rotate(-15deg);
+}
+
+.bread-runner::after {
+	content: '';
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 10px;
+	height: 7px;
+	border-radius: 100%;
+	border-top: 2px solid rgb(194 127 57 / 70%);
+	transform: rotate(12deg);
+}
+
+.bread-face {
+	position: absolute;
+	inset: 0;
+}
+
+.eye {
+	position: absolute;
+	top: 20px;
+	width: 6px;
+	height: 6px;
+	border-radius: 999px;
+	background-color: #633317;
+}
+
+.eye-left {
+	left: 19px;
+}
+
+.eye-right {
+	right: 19px;
+}
+
+.smile {
+	position: absolute;
+	left: 50%;
+	top: 26px;
+	width: 14px;
+	height: 8px;
+	transform: translateX(-50%);
+	border-bottom: 2px solid #633317;
+	border-radius: 0 0 12px 12px;
+}
+
+.leg {
+	position: absolute;
+	bottom: -8px;
+	width: 6px;
+	height: 12px;
+	border-radius: 4px;
+	background: #8a441f;
+}
+
+.leg-left {
+	left: 18px;
+	animation: legKick 0.46s ease-in-out infinite alternate;
+}
+
+.leg-right {
+	right: 18px;
+	animation: legKick 0.46s ease-in-out infinite alternate-reverse;
+}
+
+.steam {
+	position: absolute;
+	bottom: 8px;
+	width: 9px;
+	height: 20px;
+	border-radius: 999px;
+	background: linear-gradient(180deg, rgb(255 233 201 / 86%) 0%, rgb(255 233 201 / 0%) 100%);
+	animation: riseSteam 2s ease-in-out infinite;
+}
+
+.steam-1 {
+	left: 16px;
+}
+
+.steam-2 {
+	left: 38px;
+	animation-delay: 0.35s;
+}
+
+.steam-3 {
+	right: 16px;
+	animation-delay: 0.7s;
+}
+
+.loading-copy {
+	margin-top: 0.85rem;
+	text-align: center;
+}
+
+.loading-title {
+	margin: 0;
+	font-size: 1.02rem;
+	font-weight: 800;
+	letter-spacing: 0.01em;
+	color: #733615;
+}
+
+.loading-subtitle {
+	margin: 0.28rem 0 0;
+	font-size: 0.83rem;
+	color: #90502a;
+}
+
+@media (max-width: 430px) {
+	.loading-card {
+		padding: 1rem 0.9rem 0.9rem;
+	}
+
+	.bakery-scene {
+		height: 155px;
+	}
+
+	.oven {
+		right: 12px;
+		width: 116px;
+		height: 80px;
+	}
+
+	.bread-runner {
+		transform: scale(0.92);
+		transform-origin: left bottom;
+	}
+}
+
+@keyframes runBread {
+	0% {
+		transform: translateX(0) translateY(0);
+	}
+	22% {
+		transform: translateX(54px) translateY(-3px);
+	}
+	50% {
+		transform: translateX(104px) translateY(0);
+	}
+	70% {
+		transform: translateX(150px) translateY(-4px);
+	}
+	100% {
+		transform: translateX(228px) translateY(0);
+	}
+}
+
+@keyframes legKick {
+	from {
+		transform: rotate(11deg);
+	}
+	to {
+		transform: rotate(-15deg);
+	}
+}
+
+@keyframes riseSteam {
+	0% {
+		transform: translateY(6px) scale(0.85);
+		opacity: 0;
+	}
+	38% {
+		opacity: 0.72;
+	}
+	100% {
+		transform: translateY(-20px) scale(1.08);
+		opacity: 0;
+	}
+}
+
+@keyframes twinkle {
+	0%,
+	100% {
+		transform: scale(0.8);
+		opacity: 0.35;
+	}
+	50% {
+		transform: scale(1.15);
+		opacity: 1;
+	}
+}

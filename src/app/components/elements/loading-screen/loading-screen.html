@@ -1,15 +1,40 @@
 @if (loadingService.isLoading()) {
 <div
-	class="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/60 px-4 backdrop-blur-sm"
+	class="loading-overlay"
 	role="status"
 	aria-live="polite"
 	aria-busy="true"
 >
-	<div class="flex flex-col items-center gap-4 rounded-3xl bg-white px-8 py-7 shadow-2xl dark:bg-slate-900">
-		<div class="h-14 w-14 animate-spin rounded-full border-4 border-slate-200 border-t-blue-600 dark:border-slate-700 dark:border-t-blue-400"></div>
-		<div class="text-center">
-			<p class="text-sm font-semibold text-slate-700 dark:text-slate-100">Cargando</p>
-			<p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Procesando la solicitud...</p>
+	<div class="loading-card">
+		<div class="bakery-scene" aria-hidden="true">
+			<div class="sparkle sparkle-1"></div>
+			<div class="sparkle sparkle-2"></div>
+			<div class="sparkle sparkle-3"></div>
+
+			<div class="oven">
+				<div class="oven-window">
+					<div class="steam steam-1"></div>
+					<div class="steam steam-2"></div>
+					<div class="steam steam-3"></div>
+				</div>
+			</div>
+
+			<div class="path"></div>
+
+			<div class="bread-runner">
+				<div class="bread-face">
+					<span class="eye eye-left"></span>
+					<span class="eye eye-right"></span>
+					<span class="smile"></span>
+				</div>
+				<span class="leg leg-left"></span>
+				<span class="leg leg-right"></span>
+			</div>
+		</div>
+
+		<div class="loading-copy">
+			<p class="loading-title">Horneando...</p>
+			<p class="loading-subtitle">Tu solicitud se esta procesando</p>
 		</div>
 	</div>
 </div>

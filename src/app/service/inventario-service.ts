@@ -35,7 +35,14 @@ export class InventarioService {
     }
 
     getPendingTransfers(data: pendingTransfer): Observable<pendingTransferResponse[]> {
-      return this.http.get<pendingTransferResponse[]>(`${this.url}movimientos/sucursal/${data.sucursal_id}`, { headers: this.headers, params: { fecha_inicio: data.fecha_inicio, fecha_fin: data.fecha_fin } });
+      return this.http.get<pendingTransferResponse[]>(`${this.url}movimientos/sucursal/${data.sucursal_id}`, { headers: this.headers, params: { fecha_inicio: data.fecha_inicio, fecha_fin: data.fecha_fin, tipo: data.tipo, estado: data.estado } });
     } 
 
+    approvePendingTransfer(movimiento_id: number): Observable<genericResponse> {
+      return this.http.post<genericResponse>(`${this.url}movimientos/${movimiento_id}/autorizar`, {}, { headers: this.headers });
+    }
+
+    rejectPendingTransfer(movimiento_id: number): Observable<genericResponse> {
+      return this.http.post<genericResponse>(`${this.url}movimientos/${movimiento_id}/rechazar`, {}, { headers: this.headers });
+    }
   }

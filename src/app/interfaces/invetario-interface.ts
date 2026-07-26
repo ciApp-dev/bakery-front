@@ -21,6 +21,7 @@ export interface transferenciaInterface {
     producto_id: number;
     cantidad: number;
     user_id: number;
+    motivo?: string;
 }
 
 export interface stockListInterface {
@@ -37,6 +38,8 @@ export interface pendingTransfer {
     sucursal_id: number;
     fecha_inicio: string;
     fecha_fin: string;
+    tipo: string;
+    estado: string;
 }
 
 export interface pendingTransferResponse {

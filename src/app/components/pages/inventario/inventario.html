@@ -74,7 +74,7 @@
 				<app-stock-list [products]="products()"></app-stock-list>
 				}
 				@case ('pendientes') {
-				<app-registers></app-registers>
+				<app-registers (refreshProductsRequested)="getProducts()"></app-registers>
 				}
 
 

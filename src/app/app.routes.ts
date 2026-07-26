@@ -6,6 +6,7 @@ import { RegisterComponent } from './components/pages/register/register';
 import { ProductosComponent } from './components/pages/productos/productos';
 import { SucursalesComponent } from './components/pages/sucursales/sucursales';
 import { InventarioComponent } from './components/pages/inventario/inventario';
+import { SalesComponent } from './components/pages/sales/sales';
 
 
 export const routes: Routes = [
@@ -30,6 +31,10 @@ export const routes: Routes = [
             {
                 path: "inventario",
                 component: InventarioComponent
+            },
+            {
+                path: "sales",
+                component: SalesComponent
             },
   
             { path: "**", redirectTo: "overview" }

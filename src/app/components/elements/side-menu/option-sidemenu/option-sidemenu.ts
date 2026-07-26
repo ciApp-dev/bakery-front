@@ -22,7 +22,7 @@ export class OptionSidemenu {
     { path: 'sucursales', label: 'Sucursales' },
     { path: 'clientes', label: 'Clientes'},
     { path: 'productos', label: 'Productos'},
-    { path: 'ventas', label: 'Ventas'},
+    { path: 'sales', label: 'Ventas'},
     { path: 'inventario', label: 'Inventario'},
     { path: 'reportes', label: 'Reportes'},
     { path: 'configuracion', label: 'Configuración'},

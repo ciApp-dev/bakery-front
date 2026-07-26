@@ -29,6 +29,7 @@ export class RegisterTransfer {
   selectedProductId = signal<number | null>(null);
   sucursales = input.required<SelectorOption[]>();
 
+
   sucursal_id_destino = signal<number | null>(null);
   sucursal_id_local = signal<number | null>(localStorage.getItem('idSucursal') ? Number(localStorage.getItem('idSucursal')) : null);
 
@@ -38,6 +39,7 @@ export class RegisterTransfer {
     producto_id: new FormControl<number | null>(null, Validators.required),
     cantidad: new FormControl(0,[Validators.required, Validators.min(1)]),
     sucursal_destino_id: new FormControl<number | null>(null, Validators.required),
+    nota_destino: new FormControl<string | null>(null)
   });
 
   isFormValid = signal<boolean>(false);
@@ -74,6 +76,11 @@ export class RegisterTransfer {
     this.syncCantidadValidators();
     
     
+  }
+
+  onNotaDestinoChange(value: string | number): void {
+    this.form.controls['nota_destino'].setValue(value.toString());
+
   }
 
   private syncCantidadValidators(): void {
@@ -122,7 +129,8 @@ export class RegisterTransfer {
       cantidad: Number(this.form.controls['cantidad'].value),
       sucursal_origen_id: Number(this.sucursal_id_local()),
       sucursal_destino_id: Number(this.sucursal_id_destino()),
-      user_id: Number(localStorage.getItem('id_user'))
+      user_id: Number(localStorage.getItem('id_user')),
+      motivo: this.form.controls['nota_destino'].value ? this.form.controls['nota_destino'].value : undefined
     };
 
     const confirm = await this.confirmDialog.confirm({

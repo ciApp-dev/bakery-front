@@ -8,22 +8,35 @@ import { OptionSidemenu } from "../../elements/side-menu/option-sidemenu/option-
 import { DropdownForm } from "../../elements/buttons/dropdown-form/dropdown-form";
 import { SelectorOption } from 'src/app/interfaces/forms';
 import { SucursalesService } from 'src/app/service/sucursales-service';
-import { SelectorForm } from "../../elements/selectors/selector-form/selector-form";
+import { ButtonSecundaryForm } from "../../elements/buttons/button-secundary-form/button-secundary-form";
+import { ActivityStartComponent } from '../../elements/activity-start/activity-start';
 
+type ActivityStartPayload = {
+  activity: string;
+  reference: string;
+};
 
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterOutlet, ButtonSidemenu, ButtonSidemenuTrick, HeaderSidemenu, FooterSidemenu, OptionSidemenu, DropdownForm, SelectorForm],
+  imports: [RouterOutlet, ButtonSidemenu, ButtonSidemenuTrick, HeaderSidemenu, FooterSidemenu, OptionSidemenu, DropdownForm, ButtonSecundaryForm, ActivityStartComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Dashboard implements OnInit {
   readonly isSidebarOpen = signal(false);
+  readonly isActivityStartOpen = signal(false);
   sucursales = signal<SelectorOption[]>([]);
+  readonly activityOptions = [
+    { value: 'inventario', label: 'Inventario' },
+    { value: 'venta', label: 'Venta' },
+    { value: 'produccion', label: 'Produccion' },
+  ];
 
   router = inject(Router);
+
+
 
   sucursalesService = inject(SucursalesService);
   nameSucursal = signal<string>('');
@@ -87,5 +100,20 @@ export class Dashboard implements OnInit {
     }
 
   }
+
+
+  showModal(): void {
+    this.isActivityStartOpen.set(true);
+  }
+
+  onActivityCancel(): void {
+    this.isActivityStartOpen.set(false);
+  }
+
+  onActivityStart(payload: ActivityStartPayload): void {
+    
+    this.isActivityStartOpen.set(false);
+  }
+
 
 }

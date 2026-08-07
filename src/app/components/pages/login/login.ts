@@ -8,6 +8,9 @@ import { LoginResponse, LoginUserRequest } from 'src/app/interfaces/responses';
 import { LoginService } from 'src/app/service/login-service';
 import { PermissionsService } from 'src/app/service/permissions-service';
 import { ToastService } from 'src/app/service/toast-service';
+import { ActivitiesService } from 'src/app/service/activities-service';
+import { ActivityUserRequest, StartedResgister } from 'src/app/interfaces/actividades-interface';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
@@ -22,6 +25,7 @@ export class LoginComponent {
   loginService = inject(LoginService);
   permissionsService = inject(PermissionsService);
   tostService = inject(ToastService);
+  activityService = inject(ActivitiesService);
 
   showPassword = signal<boolean>(false);
   email = signal<string>('');
@@ -51,13 +55,19 @@ export class LoginComponent {
 
   loginUser(loginData: LoginUserRequest): void {
     this.loginService.loginUser(loginData).subscribe({
-      next: (response: LoginResponse) => {
+      next: async (response: LoginResponse) => {
         localStorage.setItem('access_token', response.access_token);
+        localStorage.setItem('access_token_expires_at', (Date.now() + response.expires_in * 1000).toString());
+        if (response.refresh_token) {
+          localStorage.setItem('refresh_token', response.refresh_token);
+        }
         localStorage.setItem('name_user', response.user.name);
         localStorage.setItem('id_user', response.user.id.toString());
         localStorage.setItem('estado_user', response.user.estado);
         localStorage.setItem('nameSucursal', response.user.sucursales[0].name);
         localStorage.setItem('idSucursal', response.user.sucursales[0].id.toString());
+
+        await this.getActivityByUser(response.user.id);
         this.permissionsService.setPermissions(response.user.permissions);
         this.router.navigate(['/dashboard']);
 
@@ -68,6 +78,25 @@ export class LoginComponent {
       }
     });
   }
+
+
+
+  async getActivityByUser(userId: number): Promise<void> {
+    console.log('Fetching activities for user ID:', userId);
+      try {
+        const data: ActivityUserRequest = {
+          usuario_id: userId,
+          sucursal_id: Number(localStorage.getItem('idSucursal')) || 0
+        };
+        
+        const response = await firstValueFrom(this.activityService.getActivityByUser(data));
+        localStorage.setItem('actividad_id', response.actividad_id.toString());
+        localStorage.setItem('caja_id', response.caja_id.toString());
+        localStorage.setItem('nombre_caja', response.nombre);
+      } catch (response: any) {
+        console.error('Error al obtener las actividades del usuario:', response);
+      }
+    }
 
   
 

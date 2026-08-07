@@ -5,6 +5,7 @@ export const environment = {
   darkModeText: 'dark:text-white',
   darkModeToast: 'dark:bg-gray-500',
   cardTextColor: 'text-gray-900 dark:text-gray-100',
+  cardTextColorGood: 'text-emerald-600 dark:text-emerald-400',
   cardTextColorBad: 'text-red-600 dark:text-red-400',
   cardTextColorWarning: 'text-yellow-600 dark:text-yellow-400',
 };

@@ -1,0 +1,37 @@
+ <section class="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-label="Indicadores principales">
+      <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Ventas del dia</p>
+        <p class="mt-2 text-2xl font-bold text-slate-900">$ 0.00</p>
+        <p class="mt-1 text-xs font-medium text-emerald-700">Espacio listo para datos en vivo</p>
+      </article>
+      <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pedidos activos</p>
+        <p class="mt-2 text-2xl font-bold text-slate-900">0</p>
+        <p class="mt-1 text-xs font-medium text-emerald-700">Conecta modulo de ordenes</p>
+      </article>
+      <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Stock critico</p>
+        <p class="mt-2 text-2xl font-bold text-slate-900">0 Items</p>
+        <p class="mt-1 text-xs font-medium text-emerald-700">Placeholder para alertas</p>
+      </article>
+      <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Satisfaccion cliente</p>
+        <p class="mt-2 text-2xl font-bold text-slate-900">--</p>
+        <p class="mt-1 text-xs font-medium text-emerald-700">Espacio para NPS o encuestas</p>
+      </article>
+    </section>
+
+    <section class="rounded-2xl border border-dashed border-slate-300 bg-white p-5 shadow-sm sm:p-6" aria-label="Area principal para secciones">
+      <h3 class="text-lg font-bold text-slate-900">Resumen General</h3>
+      <p class="mt-2 text-sm text-slate-500">Esta vista vive en una ruta hija independiente y puedes reemplazarla por un componente real cuando lo necesites.</p>
+      <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+        Ejemplo de reemplazo futuro: aqui puedes insertar componentes como app-resumen, widgets con datos o cualquier layout propio.
+      </div>
+    </section>
+
+    <app-activity-start
+		[isOpen]="isActivityStartOpen()"
+		[options]="activityOptions"
+		(start)="onActivityStart($event)"
+		(cancel)="onActivityCancel()"
+	></app-activity-start>

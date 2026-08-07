@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject,Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { ApiResponse, LoginResponse, LoginUserRequest, userResponse } from '../interfaces/responses';
+import { LoginResponse, LoginUserRequest, RefreshTokenResponse } from '../interfaces/responses';
 import { Observable } from 'rxjs';
-import { delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +16,19 @@ export class LoginService {
 
   loginUser(user: LoginUserRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.url + "login", user, { headers: this.headers });
+  }
+
+  refreshToken(): Observable<RefreshTokenResponse> {
+    const accessToken = localStorage.getItem('access_token');
+    const refreshHeaders = accessToken
+      ? { ...this.headers, Authorization: `Bearer ${accessToken}` }
+      : this.headers;
+
+    return this.http.post<RefreshTokenResponse>(
+      this.url + 'refresh',
+      {},
+      { headers: refreshHeaders }
+    );
   }
 
  

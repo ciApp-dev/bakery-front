@@ -24,7 +24,19 @@
     ></textarea>
     }
 
-    @if(type()!=="decimal" && type()!=="number" && type()!=="textarea"){
+    @if(type()==="password"){
+        <div class="relative">
+            <input [type]="showPassword() ? 'text' : 'password'" placeholder="{{ placeholder() }}"
+            [value]="valueAsText()"
+            (input)="onValueChange($event)"
+            class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 pr-10 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20" 
+            >
+        <app-pass-inputs-button [showPassword]="showPassword()" (showPasswordChange)="showPassword.set($event)"></app-pass-inputs-button>
+        </div>
+        
+    }   
+
+    @if(type()!=="decimal" && type()!=="number" && type()!=="textarea" && type()!=="password"){
     <input type="text" inputmode="text" placeholder="{{ placeholder() }}"
         [value]="valueAsText()"
         (input)="onValueChange($event)"

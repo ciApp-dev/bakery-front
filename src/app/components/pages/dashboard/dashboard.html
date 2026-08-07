@@ -19,6 +19,7 @@
 
 			<app-option-sidemenu [IsSidebarOpen]="isSidebarOpen()" (IsSidebarOpenChange)="isSidebarOpen.set($event)"></app-option-sidemenu>
 
+
 				<div class="mt-auto rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4">
 					<app-footer-sidemenu></app-footer-sidemenu>
 				</div>
@@ -54,4 +55,11 @@
 			<router-outlet></router-outlet>
 		</main>
 	</div>
+
+	<app-activity-start
+		[isOpen]="isActivityStartOpen()"
+		[options]="activityOptions"
+		(start)="onActivityStart($event)"
+		(cancel)="onActivityCancel()"
+	></app-activity-start>
 </div>

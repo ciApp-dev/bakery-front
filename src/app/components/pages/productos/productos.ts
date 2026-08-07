@@ -47,6 +47,10 @@ export class ProductosComponent {
 
   showDeleted = signal(false);
 
+  lblBtn2 = signal<string>('Eliminar');
+  iconBtn2 = signal<string>('delete');
+  colorBtn2 = signal<string>('text-red-500');
+
   //forms
   form = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -105,6 +109,10 @@ export class ProductosComponent {
 
   onShowDeletedChange(value: boolean): void {
     this.showDeleted.set(value);
+
+    this.lblBtn2.set(value ? 'Reactivar' : 'Eliminar');
+    this.iconBtn2.set(value ? 'refresh' : 'delete');
+    this.colorBtn2.set(value ? 'text-green-500' : 'text-red-500');
     this.getProducts();
   }
 
@@ -302,7 +310,10 @@ export class ProductosComponent {
   }
   
   getCategories(): void {
-    this.categoriaService.getCategorias().subscribe({
+    const estado: statusRequest  ={
+      estado: 'ACT'
+    }
+    this.categoriaService.getCategorias(estado).subscribe({
       next: (categories) => {
         console.log('Fetched categories:', categories);
         this.options.set(categories.map(category => ({ id: category.id, nombre: category.nombre })));

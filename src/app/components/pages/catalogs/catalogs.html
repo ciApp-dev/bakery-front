@@ -1,0 +1,38 @@
+<div class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/50">
+
+    <div class="divide-y divide-slate-200 dark:divide-slate-700">
+      @for (item of items; track item.id) {
+        <article>
+          <h2>
+            <button
+              type="button"
+              (click)="toggleItem(item.id)"
+              class="flex w-full items-center justify-between gap-3 px-4 py-4 text-left transition hover:bg-amber-50 dark:hover:bg-amber-500/10"
+              [attr.aria-expanded]="openItemId() === item.id"
+            >
+              <span class="text-sm font-semibold text-slate-800 dark:text-slate-100">{{ item.title }}</span>
+              <svg class="h-5 w-5 shrink-0 transition-transform" [class.rotate-180]="openItemId() === item.id" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="m5 15 7-7 7 7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+              </svg>
+            </button>
+          </h2>
+
+          @if (openItemId() === item.id) {
+            <div class="border-t border-slate-200 bg-slate-50 px-4 py-4 dark:border-slate-700 dark:bg-slate-800/50">
+              @switch (item.id) {
+                @case (1) {
+                  <app-products-categories></app-products-categories>
+                }
+                @case (2) {
+                  <app-payments-categories></app-payments-categories>
+                }
+                @default {
+                  
+                }
+              }
+            </div>
+          }
+        </article>
+      }
+    </div>
+

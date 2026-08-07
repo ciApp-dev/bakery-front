@@ -1,0 +1,75 @@
+<div class="grid gap-4 lg:grid-cols-[360px_minmax(0,1fr)]">
+
+            
+
+                        <span class="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300"></span>
+                        <app-toggle-switch [checked]="showDeleted()" label="Mostrar eliminados"
+                            (checkedChange)="onShowDeletedChange($event)"></app-toggle-switch>
+
+
+                    
+
+			<article class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/50">
+				<h2 class="text-sm font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">{{ formTitle() }}</h2>
+
+				<div class="mt-3 space-y-3">
+					
+                    <app-input-form
+                        label="Nombre de la categoria"
+                        placeholder="Ingrese el nombre de la categoria"
+                        type="text"
+                        (valueChange)="onNameInputChange($event)"
+                        [value]="nameInput()"
+                    ></app-input-form>
+
+                    <app-input-form
+                        label="Descripcion"
+                        placeholder="Ingrese una descripcion"
+                        type="textarea"
+                        (valueChange)="onReferenceRequireChange($event)"
+                        (valueChange)="onReferenceRequireChange($event)"
+                        [value]="referenceRequire()"
+                    ></app-input-form>
+                    <div></div>
+
+					<div class="flex gap-2">
+						<button
+							type="button"
+							(click)="savePaymentCategory()"
+							class="flex-1 rounded-lg bg-emerald-600 px-3 py-2 text-sm font-bold text-white transition hover:bg-emerald-700"
+						>
+							{{ submitLabel() }}
+						</button>
+
+						@if (isEditing()) {
+							<button
+								type="button"
+								(click)="cancelEdit()"
+								class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+							>
+								Cancelar
+							</button>
+						}
+					</div>
+
+					@if (feedback()) {
+						<p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300">
+							{{ feedback() }}
+						</p>
+					}
+				</div>
+			</article>
+
+			<app-list-form
+			[showDeleted]="showDeleted()"
+			[labelBtn1]="'Editar'"
+			[labelBtn2]="lblBtn2()"
+			[iconBtn1]="'edit'"
+			[iconBtn2]="iconBtn2()"
+			[colorBtn1]="'text-yellow-500'"
+			[colorBtn2]="colorBtn2()"
+			(editSelected)="startEdit($event)"
+			(deleteSelected)="removePaymentCategory($event)"
+			[content]="paymentCategories()"></app-list-form>
+		</div>
+	

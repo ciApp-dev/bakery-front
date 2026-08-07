@@ -17,8 +17,8 @@ export class OptionSidemenu {
   IsSidebarOpenChange = output<boolean>();
 
    readonly navItems: DashboardNavItem[] = [
-    { path: 'overview', label: 'Resumen General' },
-    { path: 'administracion', label: 'Administración' },
+    { path: 'summary', label: 'Resumen General' },
+    { path: 'catalogs', label: 'Catalogos' },
     { path: 'sucursales', label: 'Sucursales' },
     { path: 'clientes', label: 'Clientes'},
     { path: 'productos', label: 'Productos'},

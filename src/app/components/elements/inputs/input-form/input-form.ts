@@ -1,8 +1,9 @@
 import { Component,input, output, signal } from '@angular/core';
+import { PassInputsButton } from "../../pass-inputs-button/pass-inputs-button";
 
 @Component({
   selector: 'app-input-form',
-  imports: [],
+  imports: [PassInputsButton],
   templateUrl: './input-form.html',
   styleUrl: './input-form.css',
 })
@@ -12,6 +13,8 @@ export class InputForm {
   type = input.required<string>();
   value = input<string | number | null>('');
   valueChange = output<string | number>();
+
+  showPassword = signal<boolean>(false);
 
 
   valueAsText(): string {
@@ -67,6 +70,10 @@ export class InputForm {
 
     this.valueChange.emit(rawValue);
     
+
+    if(this.type() === 'password'){
+      this.valueChange.emit(rawValue);
+    }
   }
 
   private formatPhoneValue(digits: string): string {

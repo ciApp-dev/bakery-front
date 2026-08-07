@@ -8,7 +8,8 @@ export type ProductSendData = {
 };
 
 export type InventoryProductData = {
-  tienda: string;
+  sucursal_id: string;
+  sucursal:string;
   cantidad: number;
   precio: number | string;
 }
@@ -22,3 +23,13 @@ export type ProductTableRow = {
   precio: number;
   inventario: InventoryProductData[];
 };
+
+
+export interface ProductSales {
+  stock: number;
+  id: number;
+  nombre: string;
+  precio: number;
+  categoria: string;
+  icono: string;
+}

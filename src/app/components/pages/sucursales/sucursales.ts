@@ -51,6 +51,10 @@ export class SucursalesComponent {
   telefono = signal<string>('');
   produccion = signal<string>('NO');
 
+  lblBtn2 = signal<string>('Eliminar');
+  iconBtn2 = signal<string>('delete');
+  colorBtn2 = signal<string>('text-red-500');
+
 
 
   opcionesEstados = signal<SelectorOption[]>([]);
@@ -131,6 +135,9 @@ export class SucursalesComponent {
 
   onShowDeletedChange(value: boolean): void {
     this.showDeleted.set(value);
+    this.lblBtn2.set(value ? 'Reactivar' : 'Eliminar');
+    this.iconBtn2.set(value ? 'refresh' : 'delete');
+    this.colorBtn2.set(value ? 'text-green-500' : 'text-red-500');
     this.getSucursales();
   }
 
@@ -141,10 +148,7 @@ export class SucursalesComponent {
     this.form.controls.idEstado.markAsTouched();
     this.getCiudadesByEstado(value);
 
-    console.log('Estado seleccionado:', parsedValue);
-    if (parsedValue === null || parsedValue) {
-
-    }
+  
 
   }
 

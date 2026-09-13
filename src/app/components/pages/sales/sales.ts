@@ -9,6 +9,13 @@ import { statusRequest } from 'src/app/interfaces/request';
 import { CategoriaService } from 'src/app/service/categoria-service';
 import { ProductosService } from 'src/app/service/productos-service';
 import { InventoryProductData, ProductSales } from 'src/app/interfaces/products-interfaces';
+import { SelectorForm } from "../../elements/selectors/selector-form/selector-form";
+import { CustomersService } from 'src/app/service/customers-service';
+import { Customer } from 'src/app/interfaces/customers-interface';
+import { InputForm } from "../../elements/inputs/input-form/input-form";
+import { PaymentsService } from 'src/app/service/payments-service';
+import { PaymentMethod } from 'src/app/interfaces/payment-interface';
+import { PosService } from 'src/app/service/pos-service';
 
 /*
 interface Producto {
@@ -28,10 +35,12 @@ interface ItemCarrito {
 interface SaleTab {
   id: number;
   title: string;
+  customerId: number;
   customerName: string;
   customerPhone: string;
   customerEmail: string;
-  paymentMethod: 'Efectivo' | 'Tarjeta' | 'Transferencia';
+  paymentMethodId: number;
+  paymentMethod: string;
   receivedAmount: number;
   discount: number;
   cart: ItemCarrito[];
@@ -39,20 +48,29 @@ interface SaleTab {
 
 @Component({
   selector: 'app-sales',
-  imports: [],
+  imports: [SelectorForm, InputForm],
   templateUrl: './sales.html',
   styleUrl: './sales.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SalesComponent {
 
+ varDarkModeDiv = environment.darkModeDiv;
+ varDarkModeCardText = environment.cardTextColor;
+
   activityService = inject(ActivitiesService);
   toastService = inject(ToastService);
   categoriaService = inject(CategoriaService);
   productService = inject(ProductosService);
+  customerService = inject(CustomersService);
+  paymentsService = inject(PaymentsService);
+  posService = inject(PosService);
 
   actividadId = signal<number>(Number(localStorage.getItem('actividad_id')) || 0);
   router = inject(Router);
+
+  idCustomer = signal<number>(0);
+  idPaymentMethod = signal<number>(0);
 
   protected readonly darkModeDiv = environment.darkModeDiv;
   protected readonly cardTextColor = environment.cardTextColor;
@@ -82,9 +100,11 @@ export class SalesComponent {
     {
       id: 1,
       title: 'Venta 1',
+      customerId: 0,
       customerName: 'Cliente Predeterminado',
       customerPhone: '',
       customerEmail: '',
+      paymentMethodId: 0,
       paymentMethod: 'Efectivo',
       receivedAmount: 0,
       discount: 0,
@@ -98,10 +118,17 @@ export class SalesComponent {
   protected readonly activeCategory = signal('Todos');
 
 
+  customerOptions = signal<SelectorOption[]>([]);
+  paymentMethodOptions = signal<PaymentMethod[]>([]);
+
+
+
   constructor() {
     this.validateActivityStart();
     this.getCategories();
     this.getProducts();
+    this.getCustomerOptions();
+    this.getPaymentMethodOptions();
   }
 
   protected readonly activeTab = computed(() => {
@@ -153,9 +180,11 @@ export class SalesComponent {
     const newTab: SaleTab = {
       id: tabId,
       title: `Venta ${tabId}`,
+      customerId: 0,
       customerName: 'Cliente nuevo',
       customerPhone: '',
       customerEmail: '',
+      paymentMethodId: 0,
       paymentMethod: 'Efectivo',
       receivedAmount: 0,
       discount: 0,
@@ -268,6 +297,38 @@ export class SalesComponent {
     this.patchTab({ receivedAmount: value });
   }
 
+  onCustomerChange(value: number): void {
+    const parsedValue = value > 0 ? value : 0;
+    this.idCustomer.set(parsedValue);
+    this.patchTab({ customerId: parsedValue });
+    this.getCustomerInfo(parsedValue); //We fetch the customer information based on the selected customer ID.
+  }
+
+  onPaymentMethodChange(value: number): void {
+    const parsedValue = value > 0 ? value : 0;
+    this.idPaymentMethod.set(parsedValue);
+    this.patchTab({ paymentMethodId: parsedValue });
+    
+  }
+
+  getCustomerInfo(customerId: number): void {
+    if (customerId > 0) {
+      this.customerService.getCustomer(customerId).subscribe({
+        next: (customer: Customer) => {
+          this.patchTab({
+            customerName: customer.nombre,
+            customerPhone: customer.telefono,
+            customerEmail: customer.email,
+          });
+        },
+        error: () => {
+          this.toastService.showErrorToast('Error', 'No se pudo obtener la información del cliente.');
+        },
+      });
+    }
+  }
+
+  
   protected setExactAmount(): void {
     this.patchTab({ receivedAmount: this.total() });
   }
@@ -435,6 +496,34 @@ export class SalesComponent {
       });
     }
 
+    getCustomerOptions(): void {
+      const estado: statusRequest = {
+        estado: 'ACT'
+      };
+      this.customerService.getCustomers(estado).subscribe({
+        next: (response: Customer[]) => {
+          this.customerOptions.set(response.map(customer => ({ id: customer.id ?? 0, nombre: customer.nombre })));
+        },
+        error: (error) => {
+          console.error('Error fetching customers:', error);
+        }
+      });
+    }
+
+    getPaymentMethodOptions(): void {
+      const estado: statusRequest = {
+        estado: 'ACT'
+      };
+      this.paymentsService.getPaymentCategories(estado).subscribe({
+        next: (methods: PaymentMethod[]) => {
+          this.paymentMethodOptions.set(methods.map(method => ({ id: method.id, nombre: method.nombre })));
+        },
+        error: (error) => {
+          console.error('Error fetching payment methods:', error);
+        }
+      });
+    }
+
     convertToIcon(productName: string): string {
       // Implement your logic to convert product name to icon representation
       // For example, you can return the first two letters of the product name as an icon
@@ -451,4 +540,24 @@ export class SalesComponent {
       return Number(stock?.cantidad ?? 0);
     }
 
+
+    testPrint(): void {
+      const activeTab = this.activeTab();
+      if (!activeTab) {
+        return;
+      }
+      this.posService.printTicket(activeTab).subscribe({
+        next: (blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'ticket.pdf';
+          a.click();
+          window.URL.revokeObjectURL(url);
+        },
+        error: (error) => {
+          console.error('Error printing ticket:', error);
+        }
+      });
+    }
       }

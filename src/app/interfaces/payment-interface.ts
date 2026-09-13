@@ -10,3 +10,14 @@ export interface PaymentCategoryList{
     name: string;
     referenceRequire: string;
 }
+
+export interface PaymentCategoryRequest {
+  id?: number;
+  nombre: string;
+  requiere_referencia: string;
+}
+
+export interface PaymentMethod {
+  id: number;
+  nombre: string;
+}

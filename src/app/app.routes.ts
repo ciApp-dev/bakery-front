@@ -63,6 +63,11 @@ export const routes: Routes = [
         title: 'Dashboard | Catálogos',
         loadComponent: () => import('./components/pages/catalogs/catalogs').then(m => m.CatalogsComponent)
       },
+      {
+        path: 'customers',
+        title: 'Dashboard | Clientes',
+        loadComponent: () => import('./components/pages/customers/customers').then(m => m.CustomersComponent)
+      },
       { 
         path: '**', 
         redirectTo: 'overview' 

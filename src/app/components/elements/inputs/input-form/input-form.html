@@ -4,6 +4,7 @@
     <input type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" placeholder="0.00"
         [value]="valueAsText()"
         (input)="onValueChange($event)"
+        [disabled]="disabled()"
         class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20" />
     }
 
@@ -11,6 +12,7 @@
     <input type="text" inputmode="numeric" pattern="[0-9]*" placeholder="0"
         [value]="valueAsText()"
         (input)="onValueChange($event)"
+        [disabled]="disabled()"
         class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20" />
     }
 
@@ -20,6 +22,7 @@
         placeholder="{{ placeholder() }}"
         [value]="valueAsText()"
         (input)="onValueChange($event)"
+        [disabled]="disabled()"
         class="w-full min-h-[5.5rem] rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20"
     ></textarea>
     }
@@ -29,6 +32,7 @@
             <input [type]="showPassword() ? 'text' : 'password'" placeholder="{{ placeholder() }}"
             [value]="valueAsText()"
             (input)="onValueChange($event)"
+            [disabled]="disabled()"
             class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 pr-10 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20" 
             >
         <app-pass-inputs-button [showPassword]="showPassword()" (showPasswordChange)="showPassword.set($event)"></app-pass-inputs-button>
@@ -40,6 +44,7 @@
     <input type="text" inputmode="text" placeholder="{{ placeholder() }}"
         [value]="valueAsText()"
         (input)="onValueChange($event)"
+        [disabled]="disabled()"
         class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20" />
     }
     

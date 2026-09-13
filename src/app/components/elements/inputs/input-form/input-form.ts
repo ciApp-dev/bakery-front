@@ -13,6 +13,7 @@ export class InputForm {
   type = input.required<string>();
   value = input<string | number | null>('');
   valueChange = output<string | number>();
+  disabled = input<boolean>(false);
 
   showPassword = signal<boolean>(false);
 

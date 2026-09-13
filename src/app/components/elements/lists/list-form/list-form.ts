@@ -31,7 +31,15 @@ export class ListForm <L>{
 
   content = input.required<L[]>();
   private readonly primaryObjectKeys = ['nombre', 'name', 'titulo', 'title'];
-  private readonly secondaryObjectKeys = ['descripcion', 'description', 'detalle', 'detail'];
+  private readonly secondaryObjectKeys = [
+    'descripcion',
+    'description',
+    'detalle',
+    'detail',
+    'referenceRequire',
+    'requiere_referencia',
+    'reference',
+  ];
 
   getTrackKey(row: L, index: number): unknown {
     const raw = row as unknown;
@@ -109,6 +117,7 @@ export class ListForm <L>{
   }
 
   hasSecondaryValue(row: L): boolean {
+    
     return this.getSecondaryValue(row).trim().length > 0;
   }
 

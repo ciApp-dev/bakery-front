@@ -11,6 +11,16 @@
 	box-shadow: inset 0 0 0 1px rgba(217, 119, 6, 0.25);
 }
 
+.payment-method-card {
+	background-image: linear-gradient(135deg, rgba(148, 163, 184, 0.08), rgba(15, 23, 42, 0));
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.payment-method-card:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+}
+
 @media (max-width: 1023px) {
 	.pos-shell {
 		font-size: 13px;

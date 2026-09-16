@@ -16,35 +16,14 @@ import { InputForm } from "../../elements/inputs/input-form/input-form";
 import { PaymentsService } from 'src/app/service/payments-service';
 import { PaymentMethod } from 'src/app/interfaces/payment-interface';
 import { PosService } from 'src/app/service/pos-service';
+import { ConfirmDialogService } from 'src/app/service/confirm-dialog-service';
+import { Sell, SaleTab, payments } from 'src/app/interfaces/pos-interface';
 
-/*
-interface Producto {
-  stock: number;
-  id: number;
-  nombre: string;
-  precio: number;
-  categoria: string;
-  icono: string;
-}*/
 
-interface ItemCarrito {
-  producto: ProductSales;
-  cantidad: number;
-}
 
-interface SaleTab {
-  id: number;
-  title: string;
-  customerId: number;
-  customerName: string;
-  customerPhone: string;
-  customerEmail: string;
-  paymentMethodId: number;
-  paymentMethod: string;
-  receivedAmount: number;
-  discount: number;
-  cart: ItemCarrito[];
-}
+
+
+
 
 @Component({
   selector: 'app-sales',
@@ -59,6 +38,7 @@ export class SalesComponent {
  varDarkModeCardText = environment.cardTextColor;
 
   activityService = inject(ActivitiesService);
+  confirmDialogService = inject(ConfirmDialogService);
   toastService = inject(ToastService);
   categoriaService = inject(CategoriaService);
   productService = inject(ProductosService);
@@ -78,7 +58,7 @@ export class SalesComponent {
   protected readonly cardTextColorBad = environment.cardTextColorBad;
   protected readonly cardTextColorWarning = environment.cardTextColorWarning;
 
-  categories = signal<SelectorOption[]>([]); 
+  categories = signal<SelectorOption[]>([]);
 
   //protected readonly categories = ['Todos', 'Pan Dulce', 'Pan Salado', 'Pasteles', 'Bebidas'];
   protected readonly quickAmounts = [50, 100, 200, 500];
@@ -104,11 +84,11 @@ export class SalesComponent {
       customerName: 'Cliente Predeterminado',
       customerPhone: '',
       customerEmail: '',
-      paymentMethodId: 0,
-      paymentMethod: 'Efectivo',
+      payments: [],
       receivedAmount: 0,
       discount: 0,
       cart: [],
+      comments: '',
     },
   ]);
 
@@ -184,11 +164,11 @@ export class SalesComponent {
       customerName: 'Cliente nuevo',
       customerPhone: '',
       customerEmail: '',
-      paymentMethodId: 0,
-      paymentMethod: 'Efectivo',
+      payments: [],
       receivedAmount: 0,
       discount: 0,
       cart: [],
+      comments: '',
     };
 
     this.saleTabs.update((tabs) => [...tabs, newTab]);
@@ -243,13 +223,13 @@ export class SalesComponent {
       }
 
       const updated = tab.cart.map((item) =>
-        item.producto.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item,
+        item.producto.id === producto.id ? { ...item, cantidad: item.cantidad + 1, subtotal: (item.cantidad + 1) * item.producto.precio } : item,
       );
       this.patchTab({ cart: updated });
       return;
     }
 
-    this.patchTab({ cart: [...tab.cart, { producto, cantidad: 1 }] });
+    this.patchTab({ cart: [...tab.cart, { producto, cantidad: 1, subtotal: producto.precio }] });
   }
 
   protected updateQty(productoId: number, delta: number): void {
@@ -273,6 +253,7 @@ export class SalesComponent {
         return {
           ...item,
           cantidad: Math.max(0, Math.min(item.producto.stock, nextQty)),
+          subtotal: nextQty * item.producto.precio,
         };
       })
       .filter((item) => item.cantidad > 0);
@@ -297,6 +278,10 @@ export class SalesComponent {
     this.patchTab({ receivedAmount: value });
   }
 
+  onCommentsChange(value: string | number): void {
+    this.patchTab({ comments: value.toString() });
+  }
+
   onCustomerChange(value: number): void {
     const parsedValue = value > 0 ? value : 0;
     this.idCustomer.set(parsedValue);
@@ -305,10 +290,32 @@ export class SalesComponent {
   }
 
   onPaymentMethodChange(value: number): void {
+    console.log('onPaymentMethodChange called with value:', value);
     const parsedValue = value > 0 ? value : 0;
     this.idPaymentMethod.set(parsedValue);
-    this.patchTab({ paymentMethodId: parsedValue });
-    
+      const metodo = this.paymentMethodOptions().find(option => option.id === parsedValue)?.nombre || '';
+
+      const payment: payments = {
+        metodo_pago_id: parsedValue,
+        metodo: metodo,
+        monto: 0,
+        referencia: 'testing',
+      };
+      console.log('test payment', payment);
+      this.patchTab({ payments: [payment] });
+  }
+
+  onPaymentChange(id: number, name:string, amount: number, reference: string): void {
+    const tab = this.activeTab();
+    if (!tab) {
+      return;
+    }
+
+    const updatedPayments = tab.payments.map((payment) =>
+      payment.metodo_pago_id === id ? { ...payment, metodo: name, monto: amount, referencia: reference } : payment
+    );
+
+    this.patchTab({ payments: updatedPayments });
   }
 
   getCustomerInfo(customerId: number): void {
@@ -343,12 +350,6 @@ export class SalesComponent {
 
   protected setCustomerEmail(value: string): void {
     this.patchTab({ customerEmail: value });
-  }
-
-  protected setPaymentMethod(value: string): void {
-    if (value === 'Efectivo' || value === 'Tarjeta' || value === 'Transferencia') {
-      this.patchTab({ paymentMethod: value });
-    }
   }
 
   protected setReceivedAmount(value: string): void {
@@ -516,7 +517,9 @@ export class SalesComponent {
       };
       this.paymentsService.getPaymentCategories(estado).subscribe({
         next: (methods: PaymentMethod[]) => {
-          this.paymentMethodOptions.set(methods.map(method => ({ id: method.id, nombre: method.nombre })));
+          const data = {id: 0, nombre: 'Varios'};
+          this.paymentMethodOptions.set(
+            [data, ...methods.map(method => ({ id: method.id, nombre: method.nombre }))]);
         },
         error: (error) => {
           console.error('Error fetching payment methods:', error);
@@ -560,4 +563,42 @@ export class SalesComponent {
         }
       });
     }
+
+
+    async sendSale(): Promise<void> {
+      const confirmed = await this.confirmDialogService.confirm({
+        title: 'Confirmar venta',
+        message: '¿Está seguro de que desea realizar la venta?',
+        confirmLabel: 'Confirmar',
+        cancelLabel: 'Cancelar',
+        destructive: false,
+        closeOnBackdrop: true
+      });
+      if (!confirmed) {
+        return;
+      }
+      
+      const data: Sell = {
+        sucursal_id: Number(localStorage.getItem('idSucursal')) || 0,
+        cliente_id: Number(this.activeTab()?.customerId ?? 0),
+        user_id: Number(localStorage.getItem('id_user')) || 0,
+        caja_actividad_id: Number(localStorage.getItem('caja_id')) || 0,
+        total: this.total(),
+        productos: this.activeTab()?.cart?.map(item => ({
+          producto_id: item.producto.id,
+          cantidad: item.cantidad,
+          precio: item.producto.precio,
+          subtotal: item.subtotal,
+          descuento: 0, // Feature to add discount per product in the future
+          total: item.subtotal,
+        })) ?? [],
+        comentarios: this.activeTab()?.comments ?? '',
+        payments: this.activeTab()?.payments ?? []
+        
+      };
+
+
+      console.log('Sending sale with data:', data);
+    }
+
       }

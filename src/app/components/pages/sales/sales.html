@@ -1,57 +1,46 @@
 <section class="pos-shell mx-auto w-full max-w-[1600px] p-3 {{ darkModeDiv }}">
-	<div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
+	<div
+		class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
 		<header class="border-b border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-700 dark:bg-slate-800">
 			<div class="mb-2 flex flex-wrap items-center gap-2">
 				@for (tab of saleTabs(); track tab.id) {
-					<div
-						class="flex items-center rounded-lg border px-1"
-						[class]="activeTabId() === tab.id ? 'border-amber-400 bg-amber-50 dark:border-amber-500/40 dark:bg-amber-500/10' : 'border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-900'"
-					>
-						<button
-							type="button"
-							(click)="selectTab(tab.id)"
-							class="px-2 py-1 text-xs font-semibold"
-							[class]="activeTabId() === tab.id ? 'text-amber-700 dark:text-amber-300' : 'text-slate-600 dark:text-slate-300'"
-						>
-							{{ tab.title }}
-						</button>
-						<button
-							type="button"
-							(click)="closeTab(tab.id)"
-							[disabled]="saleTabs().length === 1"
-							class="rounded-md px-2 py-1 text-xs text-slate-400 transition hover:bg-red-100 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-40 dark:hover:bg-red-500/20"
-						>
-							x
-						</button>
-					</div>
+				<div class="flex items-center rounded-lg border px-1"
+					[class]="activeTabId() === tab.id ? 'border-amber-400 bg-amber-50 dark:border-amber-500/40 dark:bg-amber-500/10' : 'border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-900'">
+					<button type="button" (click)="selectTab(tab.id)" class="px-2 py-1 text-xs font-semibold"
+						[class]="activeTabId() === tab.id ? 'text-amber-700 dark:text-amber-300' : 'text-slate-600 dark:text-slate-300'">
+						{{ tab.title }}
+					</button>
+					<button type="button" (click)="closeTab(tab.id)" [disabled]="saleTabs().length === 1"
+						class="rounded-md px-2 py-1 text-xs text-slate-400 transition hover:bg-red-100 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-40 dark:hover:bg-red-500/20">
+						x
+					</button>
+				</div>
 				}
 
-				<button
-					type="button"
-					(click)="addTab()"
-					class="rounded-lg border border-slate-300 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-				>
+				<button type="button" (click)="addTab()"
+					class="rounded-lg border border-slate-300 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800">
 					+ Nueva venta
 				</button>
 			</div>
 
 			<div class="grid gap-2 lg:grid-cols-[minmax(0,1fr)_300px]">
 				<label class="relative block">
-					<svg class="pointer-events-none absolute left-3 top-2.5 h-5 w-5 text-slate-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentColor" stroke-width="2"/>
-						<path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+					<svg class="pointer-events-none absolute left-3 top-2.5 h-5 w-5 text-slate-400" viewBox="0 0 24 24"
+						fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z"
+							stroke="currentColor" stroke-width="2" />
+						<path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
 					</svg>
-					<input
-						type="text"
-						[value]="searchText()"
-						(input)="setSearch($any($event.target).value)"
+					<input type="text" [value]="searchText()" (input)="setSearch($any($event.target).value)"
 						placeholder="Buscar producto por nombre..."
-						class="block w-full rounded-lg border border-slate-300 bg-white py-2 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:ring-amber-500 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
-					/>
+						class="block w-full rounded-lg border border-slate-300 bg-white py-2 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:ring-amber-500 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100" />
 				</label>
 
 				<div class="flex items-center justify-end">
-					<span class="rounded-lg bg-amber-100 px-3 py-2 text-sm font-semibold text-amber-700 dark:bg-amber-500/20 dark:text-amber-300">Punto de venta</span>
+					<span
+						class="rounded-lg bg-amber-100 px-3 py-2 text-sm font-semibold text-amber-700 dark:bg-amber-500/20 dark:text-amber-300">Punto
+						de venta</span>
 				</div>
 			</div>
 		</header>
@@ -60,31 +49,28 @@
 			<section class="space-y-3">
 				<div class="flex gap-2 overflow-x-auto pb-1">
 					@for (cat of categories(); track cat.id) {
-						<button
-							type="button"
-							(click)="setCategory(cat.nombre)"
-							class="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-semibold transition"
-							[class]="activeCategory() === cat.nombre ? 'bg-amber-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'"
-						>
-							{{ cat.nombre }}
-						</button>
+					<button type="button" (click)="setCategory(cat.nombre)"
+						class="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-semibold transition"
+						[class]="activeCategory() === cat.nombre ? 'bg-amber-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'">
+						{{ cat.nombre }}
+					</button>
 					}
 				</div>
 
 				<div class="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">
 					@for (prod of filteredProducts(); track prod.id) {
-						<button
-							type="button"
-							(click)="addToCart(prod)"
-							
-							class="rounded-xl border border-amber-200/70 bg-amber-50/50 p-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:bg-amber-100/70 dark:border-amber-500/30 dark:bg-amber-500/10 dark:hover:bg-amber-500/20"
-						>
-							<span class="product-key mb-2 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-xs font-black text-amber-700 dark:bg-slate-800 dark:text-amber-300">{{ prod.icono }}</span>
-							<p class="line-clamp-1 text-sm font-bold text-slate-800 dark:text-slate-100">{{ prod.nombre }}</p>
-							<p class="text-xs font-extrabold text-amber-700 dark:text-amber-300">${{ prod.precio.toFixed(2) }}</p>
-							<p class="text-xs font-semibold text-slate-500 dark:text-slate-400">Stock: {{ prod.stock }}</p>
-							
-						</button>
+					<button type="button" (click)="addToCart(prod)"
+						class="rounded-xl border border-amber-200/70 bg-amber-50/50 p-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:bg-amber-100/70 dark:border-amber-500/30 dark:bg-amber-500/10 dark:hover:bg-amber-500/20">
+						<span
+							class="product-key mb-2 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-xs font-black text-amber-700 dark:bg-slate-800 dark:text-amber-300">{{
+							prod.icono }}</span>
+						<p class="line-clamp-1 text-sm font-bold text-slate-800 dark:text-slate-100">{{ prod.nombre }}
+						</p>
+						<p class="text-xs font-extrabold text-amber-700 dark:text-amber-300">${{ prod.precio.toFixed(2)
+							}}</p>
+						<p class="text-xs font-semibold text-slate-500 dark:text-slate-400">Stock: {{ prod.stock }}</p>
+
+					</button>
 					}
 				</div>
 			</section>
@@ -92,11 +78,8 @@
 			<section class="space-y-3">
 				<div class="flex items-center justify-between">
 					<h3 class="text-lg font-black {{ cardTextColor }}">Carrito</h3>
-					<button
-						type="button"
-						(click)="clearCart()"
-						class="text-xs font-semibold {{ cardTextColorBad }} hover:underline"
-					>
+					<button type="button" (click)="clearCart()"
+						class="text-xs font-semibold {{ cardTextColorBad }} hover:underline">
 						Vaciar carrito
 					</button>
 				</div>
@@ -111,109 +94,152 @@
 								<th class="px-3 py-2"></th>
 							</tr>
 						</thead>
-						<tbody class="divide-y divide-slate-100 dark:divide-slate-700 {{varDarkModeDiv}} {{varDarkModeCardText}}">
+						<tbody
+							class="divide-y divide-slate-100 dark:divide-slate-700 {{varDarkModeDiv}} {{varDarkModeCardText}}">
 							@if (activeTab(); as tab) {
-								@for (item of tab.cart; track item.producto.id) {
-									<tr>
-										<td class="px-3 py-2">
-											<div class="flex items-center gap-1 {{varDarkModeCardText}}">
-												<button type="button" (click)="updateQty(item.producto.id, -1)" class="h-5 w-5 rounded bg-slate-200 text-xs hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600">-</button>
-												<span class="text-xs font-bold">{{ item.cantidad }}</span>
-												<button type="button" (click)="updateQty(item.producto.id, 1)" class="h-5 w-5 rounded bg-slate-200 text-xs hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600">+</button>
-											</div>
-										</td>
-										<td class="px-3 py-2 text-xs font-medium">{{ item.producto.nombre }}</td>
-										<td class="px-3 py-2 text-right text-xs font-bold">${{ (item.producto.precio * item.cantidad).toFixed(2) }}</td>
-										<td class="px-3 py-2 text-right">
-											<button type="button" (click)="removeItem(item.producto.id)" class="text-slate-400 hover:text-red-500">x</button>
-										</td>
-									</tr>
-								}
+							@for (item of tab.cart; track item.producto.id) {
+							<tr>
+								<td class="px-3 py-2">
+									<div class="flex items-center gap-1 {{varDarkModeCardText}}">
+										<button type="button" (click)="updateQty(item.producto.id, -1)"
+											class="h-5 w-5 rounded bg-slate-200 text-xs hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600">-</button>
+										<span class="text-xs font-bold">{{ item.cantidad }}</span>
+										<button type="button" (click)="updateQty(item.producto.id, 1)"
+											class="h-5 w-5 rounded bg-slate-200 text-xs hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600">+</button>
+									</div>
+								</td>
+								<td class="px-3 py-2 text-xs font-medium">{{ item.producto.nombre }}</td>
+								<td class="px-3 py-2 text-right text-xs font-bold">${{ (item.producto.precio *
+									item.cantidad).toFixed(2) }}</td>
+								<td class="px-3 py-2 text-right">
+									<button type="button" (click)="removeItem(item.producto.id)"
+										class="text-slate-400 hover:text-red-500">x</button>
+								</td>
+							</tr>
+							}
 
-								@if (tab.cart.length === 0) {
-									<tr>
-										<td colspan="4" class="px-3 py-12 text-center text-sm text-slate-400">Agrega productos para iniciar la venta.</td>
-									</tr>
-								}
+							@if (tab.cart.length === 0) {
+							<tr>
+								<td colspan="4" class="px-3 py-12 text-center text-sm text-slate-400">Agrega productos
+									para iniciar la venta.</td>
+							</tr>
+							}
 							}
 						</tbody>
 					</table>
 				</div>
 
-				<div class="rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800/50 {{varDarkModeCardText}}" >
-					<h4 class="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">Resume of sale</h4>
+				<div
+					class="rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800/50 {{varDarkModeCardText}}">
+					@if (activeTab(); as tab) {
+					<app-input-form [value]="tab.comments" label="Comentarios" placeholder="agrega un comentario"
+						type="textarea" (valueChange)="onCommentsChange($event)"></app-input-form>
+					}
+				</div>
+
+				<div
+					class="rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800/50 {{varDarkModeCardText}}">
+					<h4 class="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">
+						Resumen de venta</h4>
 					<div class="space-y-1 text-sm">
-						<p class="flex items-center justify-between"><span>Subtotal</span><span class="font-semibold">${{ subtotal().toFixed(2) }}</span></p>
+						<p class="flex items-center justify-between"><span>Subtotal</span><span
+								class="font-semibold">${{ subtotal().toFixed(2) }}</span></p>
 						@if (activeTab(); as tab) {
-							<p class="flex items-center justify-between"><span>Discount</span><span class="font-semibold">${{ tab.discount.toFixed(2) }}</span></p>
+						<p class="flex items-center justify-between"><span>Descuento</span><span
+								class="font-semibold">${{ tab.discount.toFixed(2) }}</span></p>
 						}
-						<p class="flex items-center justify-between border-t border-slate-200 pt-2 text-base font-black dark:border-slate-600"><span>Total</span><span class="text-amber-600 dark:text-amber-300">${{ total().toFixed(2) }}</span></p>
+						<p
+							class="flex items-center justify-between border-t border-slate-200 pt-2 text-base font-black dark:border-slate-600">
+							<span>Total</span><span class="text-amber-600 dark:text-amber-300">${{ total().toFixed(2)
+								}}</span></p>
 					</div>
 				</div>
 			</section>
 
 			<aside class="space-y-3">
-				<article class="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
+				<article
+					class="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
 					<h3 class="mb-2 text-base font-black {{ cardTextColor }}">Cliente</h3>
 					@if (activeTab(); as tab) {
-						<div class="space-y-2">
+					<div class="space-y-2">
 
-							<app-selector-form [options]="customerOptions()"
-								[value]="tab.customerId"
-								label="Cliente" placeholder="Seleccione un cliente"
-								(valueChange)="onCustomerChange($event)"></app-selector-form>
-
+						<app-selector-form [options]="customerOptions()" [value]="tab.customerId" label="Cliente"
+							placeholder="Seleccione un cliente"
+							(valueChange)="onCustomerChange($event)"></app-selector-form>
 
 
-							<app-input-form [value]="tab.customerPhone"  label="Telefono del cliente" placeholder="Telefono del cliente" type="phone" [disabled]="true"></app-input-form>
 
-							<app-input-form [value]="tab.customerEmail"  label="Email del cliente" placeholder="Email del cliente" type="email" [disabled]="true"></app-input-form>
+						<app-input-form [value]="tab.customerPhone" label="Telefono del cliente"
+							placeholder="Telefono del cliente" type="phone" [disabled]="true"></app-input-form>
 
-						</div>
+						<app-input-form [value]="tab.customerEmail" label="Email del cliente"
+							placeholder="Email del cliente" type="email" [disabled]="true"></app-input-form>
+
+					</div>
 					}
 				</article>
 
-				<article class="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
+				<article
+					class="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
 					<h3 class="mb-2 text-base font-black {{ cardTextColor }}">Modulo de Pago</h3>
 					@if (activeTab(); as tab) {
-						<app-selector-form [options]="paymentMethodOptions()"
-							[value]="tab.paymentMethodId"
-							label="Metodo de Pago" placeholder="Seleccione un metodo de pago"
-							(valueChange)="onPaymentMethodChange($event)"></app-selector-form>
-
-							<div class="grid grid-cols-2 gap-2">
-								@for (amount of quickAmounts; track amount) {
-									<button type="button" (click)="setQuickAmount(amount)" class="rounded-lg bg-emerald-50 px-2 py-2 text-sm font-extrabold text-emerald-700 transition hover:bg-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-300 dark:hover:bg-emerald-500/20">${{ amount }}</button>
-								}
-							
-
-							<button type="button" (click)="setExactAmount()" class="w-full rounded-lg border border-blue-300 bg-blue-50 py-2 text-xs font-bold text-blue-700 transition hover:bg-blue-100 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-300 dark:hover:bg-blue-500/20">Pago exacto</button>
+					<app-selector-form [options]="paymentMethodOptions()" [value]="tab.payments.length > 0 ? tab.payments[0].metodo_pago_id : null"
+						label="Metodo de Pago" placeholder="Seleccione un metodo de pago"
+						(valueChange)="onPaymentMethodChange($event)"></app-selector-form>
 
 
-							<app-input-form
-								[value]="tab.receivedAmount"
-								[label]="'Monto recibido'"
-								[placeholder]="'Ingrese el monto recibido'"
-								[type]="'number'"
-								>
-							</app-input-form>
+					<div class="grid grid-cols-2 gap-2">
+						
+						@if(tab.payments.length > 0 && tab.payments[0].metodo.toLowerCase().includes('efectivo')) {
+						@for (amount of quickAmounts; track amount) {
+						<button type="button" (click)="setQuickAmount(amount)"
+							class="rounded-lg bg-emerald-50 px-2 py-2 text-sm font-extrabold text-emerald-700 transition hover:bg-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-300 dark:hover:bg-emerald-500/20">${{
+							amount }}</button>
+						}
+						}@else if(tab.payments.length > 0 && tab.payments[0].metodo.toLowerCase().includes('varios')) {
+						@for(payment of paymentMethodOptions(); track payment) {
+						@if(payment.nombre.toLowerCase()!=='varios') {
 
-
-
-							<div class="rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
-								<p class="text-xs text-slate-500 dark:text-slate-400">Cambio</p>
-								<p class="text-xl font-black" [class]="change() > 0 ? cardTextColorGood : cardTextColorWarning">${{ change().toFixed(2) }}</p>
+							<div class="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
+								
+								<app-input-form [value]="tab.receivedAmount" label="{{ payment.nombre }}"
+								placeholder="Ingrese el monto para {{ payment.nombre }}" type="number"></app-input-form>
+					
 							</div>
+							
+						}
+						}
+						}
+
+						@if(tab.payments.length === 0 || tab.payments[0].metodo.toLowerCase() !== 'varios') {
+
+						<button type="button" (click)="setExactAmount()"
+							class="w-full rounded-lg border border-blue-300 bg-blue-50 py-2 text-xs font-bold text-blue-700 transition hover:bg-blue-100 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-300 dark:hover:bg-blue-500/20">Pago
+							exacto</button>
+						}
+					
+
+
+						<app-input-form [value]="tab.receivedAmount" [label]="'Monto recibido'"
+							[placeholder]="'Ingrese el monto recibido'" [type]="'number'">
+						</app-input-form>
+
+
+
+						<div class="rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
+							<p class="text-xs text-slate-500 dark:text-slate-400">Cambio</p>
+							<p class="text-xl font-black"
+								[class]="change() > 0 ? cardTextColorGood : cardTextColorWarning">${{
+								change().toFixed(2) }}</p>
 						</div>
+					</div>
 					}
 				</article>
 
-				<button
-					type="button"
-					[disabled]="total() <= 0 || (activeTab().paymentMethod === 'Efectivo' && activeTab().receivedAmount < total())"
+				<button type="button"
+					[disabled]="total() <= 0 || (activeTab().payments[0]?.metodo === 'Efectivo' && activeTab().receivedAmount < total())"
 					class="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-base font-black text-white transition hover:bg-emerald-700 disabled:bg-slate-300 disabled:text-slate-500 dark:disabled:bg-slate-700 dark:disabled:text-slate-400"
-					(click)="testPrint()"
-				>
+					(click)="sendSale()">
 					COBRAR
 				</button>
 			</aside>

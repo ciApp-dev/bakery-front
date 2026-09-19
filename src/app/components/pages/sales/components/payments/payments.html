@@ -1,1 +1,70 @@
-<p>payments works!</p>
+<article
+					class="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
+					<h3 class="mb-2 text-base font-black {{ cardTextColor }}">Modulo de Pago</h3>
+					
+					<app-selector-form [options]="paymentMethodOptions()" [value]="idPaymentSelected()"
+						label="Metodo de Pago" placeholder="Seleccione un metodo de pago"
+						(valueChange)="onPaymentMethodChange($event)"></app-selector-form>
+
+
+					<div class="grid grid-cols-2 gap-2">
+						
+						@if(getnamePayment(idPaymentSelected()).toLowerCase().includes('efectivo')) {
+						@for (amount of quickAmounts; track amount) {
+						<button type="button" (click)="setQuickAmount(amount)"
+							class="rounded-lg bg-emerald-50 px-2 py-2 text-sm font-extrabold text-emerald-700 transition hover:bg-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-300 dark:hover:bg-emerald-500/20">${{
+							amount }}</button>
+						}
+						}@else if(getnamePayment(idPaymentSelected()).toLowerCase().includes('varios')) {
+						@for(payment of paymentMethodOptions(); track payment.id) {
+						@if(payment.nombre.toLowerCase()!=='varios') {
+
+							<div class="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
+								<h4 class="mb-2 text-sm font-black {{ cardTextColor }}">{{ payment.nombre }}</h4>
+								<app-input-form
+									[value]="getSplitAmount(payment.id)"
+									label="Monto"
+									placeholder="Ingrese el monto"
+									type="number"
+									(valueChange)="onSplitAmountChange(payment.id, payment.nombre, $event)"></app-input-form>
+
+								@if (paymentRequiresReference(payment)) {
+								<app-input-form
+									[value]="getSplitReference(payment.id)"
+									label="Referencia"
+									placeholder="Ingrese la referencia"
+									type="text"
+									(valueChange)="onSplitReferenceChange(payment.id, payment.nombre, $event)"></app-input-form>
+								}
+							</div>
+							
+						}
+						}
+						}
+
+						@if(getnamePayment(idPaymentSelected()).toLowerCase() !== 'varios') {
+
+						<button type="button" (click)="setExactAmount()"
+							class="w-full rounded-lg border border-blue-300 bg-blue-50 py-2 text-xs font-bold text-blue-700 transition hover:bg-blue-100 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-300 dark:hover:bg-blue-500/20">Pago
+							exacto</button>
+						}
+					
+
+
+						<app-input-form [value]="paymentAmountVar()" [label]="'Monto recibido'"
+							[placeholder]="'Ingrese el monto recibido'" [type]="'number'"
+							[disabled]="isSplitPaymentMode()"
+							(valueChange)="onAmountReceivedChange($event)">
+						</app-input-form>
+
+
+
+						<div class="rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
+							<p class="text-xs text-slate-500 dark:text-slate-400">Cambio</p>
+							<p class="text-xl font-black"
+								[class]="change() > 0 ? cardTextColorGood : cardTextColorWarning">${{
+								change().toFixed(2) }}</p>
+						</div>
+					</div>
+					
+				</article>

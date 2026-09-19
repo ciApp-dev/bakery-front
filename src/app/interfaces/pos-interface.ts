@@ -6,9 +6,11 @@ export interface Sell {
   user_id: number;
   caja_actividad_id: number;
   total: number;
+  recibido: number;
+  cambio: number;
   productos: products[];
   comentarios: string;
-  payments: payments[];
+  pagos: payments[];
 }
 
 export interface products{
@@ -45,5 +47,10 @@ export interface SaleTab {
   discount: number;
   cart: ItemCarrito[];
   comments: string;
-  payments: payments[];
+  pagos: payments[];
+}
+
+export interface SaleResponse {
+    mensaje: string;
+    folio: number;
 }

@@ -9,25 +9,19 @@ import { statusRequest } from 'src/app/interfaces/request';
 import { CategoriaService } from 'src/app/service/categoria-service';
 import { ProductosService } from 'src/app/service/productos-service';
 import { InventoryProductData, ProductSales } from 'src/app/interfaces/products-interfaces';
-import { SelectorForm } from "../../elements/selectors/selector-form/selector-form";
 import { CustomersService } from 'src/app/service/customers-service';
 import { Customer } from 'src/app/interfaces/customers-interface';
-import { InputForm } from "../../elements/inputs/input-form/input-form";
 import { PaymentsService } from 'src/app/service/payments-service';
-import { PaymentMethod } from 'src/app/interfaces/payment-interface';
+import { PaymentCategory, PaymentMethod } from 'src/app/interfaces/payment-interface';
 import { PosService } from 'src/app/service/pos-service';
 import { ConfirmDialogService } from 'src/app/service/confirm-dialog-service';
 import { Sell, SaleTab, payments } from 'src/app/interfaces/pos-interface';
-
-
-
-
-
+import { MainPos } from "./components/main-pos/main-pos";
 
 
 @Component({
   selector: 'app-sales',
-  imports: [SelectorForm, InputForm],
+  imports: [MainPos],
   templateUrl: './sales.html',
   styleUrl: './sales.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -59,11 +53,12 @@ export class SalesComponent {
   protected readonly cardTextColorWarning = environment.cardTextColorWarning;
 
   categories = signal<SelectorOption[]>([]);
-
-  //protected readonly categories = ['Todos', 'Pan Dulce', 'Pan Salado', 'Pasteles', 'Bebidas'];
-  protected readonly quickAmounts = [50, 100, 200, 500];
-
   catalogo = signal<ProductSales[]>([]);
+  paymentMethodOptions = signal<PaymentCategory[]>([]);
+  searchText = signal<string>('');
+  resetPayment = signal(false);
+
+  
 
   /*protected readonly catalogo = signal<Producto[]>([
     { id: 1, nombre: 'Concha Chocolate', precio: 15, categoria: 'Pan Dulce', icono: 'CO' },
@@ -84,7 +79,7 @@ export class SalesComponent {
       customerName: 'Cliente Predeterminado',
       customerPhone: '',
       customerEmail: '',
-      payments: [],
+      pagos: [],
       receivedAmount: 0,
       discount: 0,
       cart: [],
@@ -94,20 +89,19 @@ export class SalesComponent {
 
   protected readonly activeTabId = signal(1);
   private readonly nextTabId = signal(2);
-  protected readonly searchText = signal('');
-  protected readonly activeCategory = signal('Todos');
+  
+  
 
 
   customerOptions = signal<SelectorOption[]>([]);
-  paymentMethodOptions = signal<PaymentMethod[]>([]);
-
+  
 
 
   constructor() {
     this.validateActivityStart();
+    this.getCustomerOptions();
     this.getCategories();
     this.getProducts();
-    this.getCustomerOptions();
     this.getPaymentMethodOptions();
   }
 
@@ -116,16 +110,7 @@ export class SalesComponent {
     return this.saleTabs().find((tab) => tab.id === activeId) ?? this.saleTabs()[0];
   });
 
-  protected readonly filteredProducts = computed(() => {
-    const text = this.searchText().trim().toLowerCase();
-    const category = this.activeCategory();
-
-    return this.catalogo().filter((producto) => {
-      const matchCategory = category === 'Todos' || producto.categoria === category;
-      const matchText = text.length === 0 || producto.nombre.toLowerCase().includes(text);
-      return matchCategory && matchText;
-    });
-  });
+  
 
   protected readonly subtotal = computed(() => {
     const tab = this.activeTab();
@@ -164,7 +149,7 @@ export class SalesComponent {
       customerName: 'Cliente nuevo',
       customerPhone: '',
       customerEmail: '',
-      payments: [],
+      pagos: [],
       receivedAmount: 0,
       discount: 0,
       cart: [],
@@ -174,6 +159,7 @@ export class SalesComponent {
     this.saleTabs.update((tabs) => [...tabs, newTab]);
     this.activeTabId.set(tabId);
     this.nextTabId.update((id) => id + 1);
+    this.resetPayment.set(true);
   }
 
   protected closeTab(tabId: number): void {
@@ -200,79 +186,10 @@ export class SalesComponent {
     this.searchText.set(value);
   }
 
-  protected setCategory(category: string): void {
-    this.activeCategory.set(category);
-  }
+ 
 
-  protected addToCart(producto: ProductSales): void {
-    const tab = this.activeTab();
-    if (!tab) {
-      return;
-    }
+  
 
-    if(producto.stock <= 0) {
-      this.toastService.showErrorToast('Producto sin stock', `El producto "${producto.nombre}" no tiene stock disponible.`);
-      return;
-    }
-
-    const existing = tab.cart.find((item) => item.producto.id === producto.id);
-    if (existing) {
-      if (existing.cantidad >= producto.stock) {
-        this.toastService.showErrorToast('Stock insuficiente', `Solo hay ${producto.stock} unidad(es) disponibles de "${producto.nombre}".`);
-        return;
-      }
-
-      const updated = tab.cart.map((item) =>
-        item.producto.id === producto.id ? { ...item, cantidad: item.cantidad + 1, subtotal: (item.cantidad + 1) * item.producto.precio } : item,
-      );
-      this.patchTab({ cart: updated });
-      return;
-    }
-
-    this.patchTab({ cart: [...tab.cart, { producto, cantidad: 1, subtotal: producto.precio }] });
-  }
-
-  protected updateQty(productoId: number, delta: number): void {
-    const tab = this.activeTab();
-    if (!tab) {
-      return;
-    }
-
-    const updated = tab.cart
-      .map((item) => {
-        if (item.producto.id !== productoId) {
-          return item;
-        }
-
-        const nextQty = item.cantidad + delta;
-        if (delta > 0 && nextQty > item.producto.stock) {
-          this.toastService.showErrorToast('Stock insuficiente', `Solo hay ${item.producto.stock} unidad(es) disponibles de "${item.producto.nombre}".`);
-          return item;
-        }
-
-        return {
-          ...item,
-          cantidad: Math.max(0, Math.min(item.producto.stock, nextQty)),
-          subtotal: nextQty * item.producto.precio,
-        };
-      })
-      .filter((item) => item.cantidad > 0);
-
-    this.patchTab({ cart: updated });
-  }
-
-  protected removeItem(productoId: number): void {
-    const tab = this.activeTab();
-    if (!tab) {
-      return;
-    }
-
-    this.patchTab({ cart: tab.cart.filter((item) => item.producto.id !== productoId) });
-  }
-
-  protected clearCart(): void {
-    this.patchTab({ cart: [], receivedAmount: 0 });
-  }
 
   protected setQuickAmount(value: number): void {
     this.patchTab({ receivedAmount: value });
@@ -289,33 +206,18 @@ export class SalesComponent {
     this.getCustomerInfo(parsedValue); //We fetch the customer information based on the selected customer ID.
   }
 
-  onPaymentMethodChange(value: number): void {
-    console.log('onPaymentMethodChange called with value:', value);
-    const parsedValue = value > 0 ? value : 0;
-    this.idPaymentMethod.set(parsedValue);
-      const metodo = this.paymentMethodOptions().find(option => option.id === parsedValue)?.nombre || '';
-
-      const payment: payments = {
-        metodo_pago_id: parsedValue,
-        metodo: metodo,
-        monto: 0,
-        referencia: 'testing',
-      };
-      console.log('test payment', payment);
-      this.patchTab({ payments: [payment] });
-  }
-
+  
   onPaymentChange(id: number, name:string, amount: number, reference: string): void {
     const tab = this.activeTab();
     if (!tab) {
       return;
     }
 
-    const updatedPayments = tab.payments.map((payment) =>
+    const updatedPayments = tab.pagos.map((payment) =>
       payment.metodo_pago_id === id ? { ...payment, metodo: name, monto: amount, referencia: reference } : payment
     );
 
-    this.patchTab({ payments: updatedPayments });
+    this.patchTab({ pagos: updatedPayments });
   }
 
   getCustomerInfo(customerId: number): void {
@@ -365,6 +267,27 @@ export class SalesComponent {
   private patchTab(patch: Partial<SaleTab>): void {
     const currentId = this.activeTabId();
     this.saleTabs.update((tabs) => tabs.map((tab) => (tab.id === currentId ? { ...tab, ...patch } : tab)));
+  }
+
+  onActiveTabPatch(patch: Partial<SaleTab>): void {
+    this.patchTab(patch);
+  }
+
+  protected clearActiveSaleData(): void {
+    this.patchTab({
+      customerId: 0,
+      customerName: 'Cliente Predeterminado',
+      customerPhone: '',
+      customerEmail: '',
+      pagos: [],
+      receivedAmount: 0,
+      discount: 0,
+      cart: [],
+      comments: '',
+    });
+
+    this.getCategories();
+    this.getProducts();
   }
 
 
@@ -459,43 +382,7 @@ export class SalesComponent {
   }
 
 
-   getCategories(): void {
-      const estado: statusRequest  ={
-        estado: 'ACT'
-      }
-      this.categoriaService.getCategorias(estado).subscribe({
-        next: (categories) => {
-          console.log('Fetched categories:', categories);
-          this.categories.set(categories.map(category => ({ id: category.id, nombre: category.nombre })));
-          this.categories.update((cats) => [{ id: 0, nombre: 'Todos' }, ...cats]);
-        },
-        error: (error) => {
-          console.error('Error fetching categories:', error);
-        }
-      });
-    } 
-
-    getProducts(): void {
-      const estado: statusRequest  ={
-        estado: 'ACT'
-      }
-      this.productService.getProducts(estado).subscribe({
-        next: (products) => {
-          console.log('Fetched products:', products);
-          this.catalogo.set(products.map(product => ({
-            id: product.id,
-            nombre: product.nombre,
-            precio: Number(product.inventario[0]?.precio) || 0,
-            categoria: product.categoria,
-            icono: this.convertToIcon(product.nombre), // Assuming you have a function to convert product name to icon
-            stock: this.getStockForProduct(product.inventario ?? []),
-          })));
-        },
-        error: (error) => {
-          console.error('Error fetching products:', error);
-        }
-      });
-    }
+   
 
     getCustomerOptions(): void {
       const estado: statusRequest = {
@@ -511,45 +398,19 @@ export class SalesComponent {
       });
     }
 
-    getPaymentMethodOptions(): void {
-      const estado: statusRequest = {
-        estado: 'ACT'
-      };
-      this.paymentsService.getPaymentCategories(estado).subscribe({
-        next: (methods: PaymentMethod[]) => {
-          const data = {id: 0, nombre: 'Varios'};
-          this.paymentMethodOptions.set(
-            [data, ...methods.map(method => ({ id: method.id, nombre: method.nombre }))]);
-        },
-        error: (error) => {
-          console.error('Error fetching payment methods:', error);
-        }
-      });
-    }
+   
 
-    convertToIcon(productName: string): string {
-      // Implement your logic to convert product name to icon representation
-      // For example, you can return the first two letters of the product name as an icon
-      return productName.substring(0, 2).toUpperCase();
-    } 
+ 
 
-    getStockForProduct(inventory?: InventoryProductData[] | null): number {
-      if (!Array.isArray(inventory) || inventory.length === 0) {
-        return 0;
-      }
-
-      const idSucursal = String(Number(localStorage.getItem('idSucursal')) || 0);
-      const stock = inventory.find((item) => String(item.sucursal_id) === idSucursal);
-      return Number(stock?.cantidad ?? 0);
-    }
+  
 
 
-    testPrint(): void {
+    testPrint(id:number): void {
       const activeTab = this.activeTab();
       if (!activeTab) {
         return;
       }
-      this.posService.printTicket(activeTab).subscribe({
+      this.posService.printTicket(id).subscribe({
         next: (blob) => {
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement('a');
@@ -584,6 +445,8 @@ export class SalesComponent {
         user_id: Number(localStorage.getItem('id_user')) || 0,
         caja_actividad_id: Number(localStorage.getItem('caja_id')) || 0,
         total: this.total(),
+        recibido: this.activeTab()?.receivedAmount ?? 0,
+        cambio: (this.activeTab()?.receivedAmount ?? 0) - this.total(),
         productos: this.activeTab()?.cart?.map(item => ({
           producto_id: item.producto.id,
           cantidad: item.cantidad,
@@ -593,12 +456,108 @@ export class SalesComponent {
           total: item.subtotal,
         })) ?? [],
         comentarios: this.activeTab()?.comments ?? '',
-        payments: this.activeTab()?.payments ?? []
+        pagos: this.activeTab()?.pagos ?? []
         
       };
 
-
       console.log('Sending sale with data:', data);
+
+      
+      this.posService.sendSale(data).subscribe({
+        next: (response) => {
+          this.toastService.showSuccessToast('Venta realizada con éxito');
+          this.testPrint(response.folio);
+          this.clearActiveSaleData();
+          this.resetPayment.update((value) => !value);
+        },
+        error: (error) => {
+          this.toastService.showErrorToast('Error al realizar la venta',error);
+        }
+      });
+      
+      
     }
 
+
+      getCategories(): void {
+            const estado: statusRequest  ={
+              estado: 'ACT'
+            }
+            this.categoriaService.getCategorias(estado).subscribe({
+              next: (categories) => {
+                console.log('Fetched categories:', categories);
+                this.categories.set(categories.map(category => ({ id: category.id, nombre: category.nombre })));
+                this.categories.update((cats) => [{ id: 0, nombre: 'Todos' }, ...cats]);
+              },
+              error: (error) => {
+                console.error('Error fetching categories:', error);
+              }
+            });
+          } 
+      
+          getProducts(): void {
+            const estado: statusRequest  ={
+              estado: 'ACT'
+            }
+            this.productService.getProducts(estado).subscribe({
+              next: (products) => {
+                console.log('Fetched products:', products);
+                this.catalogo.set(products.map(product => ({
+                  id: product.id,
+                  nombre: product.nombre,
+                  precio: Number(product.inventario[0]?.precio) || 0,
+                  categoria: product.categoria,
+                  icono: this.convertToIcon(product.nombre), // Assuming you have a function to convert product name to icon
+                  stock: this.getStockForProduct(product.inventario ?? []),
+                })));
+              },
+              error: (error) => {
+                console.error('Error fetching products:', error);
+              }
+            });
+          }
+    
+             convertToIcon(productName: string): string {
+                // Implement your logic to convert product name to icon representation
+                // For example, you can return the first two letters of the product name as an icon
+                return productName.substring(0, 2).toUpperCase();
+              } 
+    
+                getStockForProduct(inventory?: InventoryProductData[] | null): number {
+          if (!Array.isArray(inventory) || inventory.length === 0) {
+            return 0;
+          }
+    
+          
+    
+          const idSucursal = String(Number(localStorage.getItem('idSucursal')) || 0);
+          const stock = inventory.find((item) => String(item.sucursal_id) === idSucursal);
+          return Number(stock?.cantidad ?? 0);
+        }
+
+
+
+        getPaymentMethodOptions(): void {
+    const estado: statusRequest = {
+      estado: 'ACT',
+    };
+
+    this.paymentsService.getPaymentCategories(estado).subscribe({
+      next: (methods: PaymentCategory[]) => {
+        const data: PaymentCategory = { id: 999, nombre: 'Varios', requiere_referencia: 'no' };
+        this.paymentMethodOptions.set([
+          data,
+          ...methods.map((method) => ({
+            id: method.id,
+            nombre: method.nombre,
+            requiere_referencia: method.requiere_referencia,
+          })),
+        ]);
+      },
+      error: (error) => {
+        console.error('Error fetching payment methods:', error);
+      },
+    });
+  }
+  
       }

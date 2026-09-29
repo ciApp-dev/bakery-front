@@ -21,3 +21,7 @@ export interface PaymentMethod {
   id: number;
   nombre: string;
 }
+
+export interface PaymentChashId {
+  id: number;
+}

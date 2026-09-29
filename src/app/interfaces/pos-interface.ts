@@ -25,6 +25,7 @@ export interface payments{
     metodo_pago_id: number;
     metodo: string;
     monto: number;
+    cambio: number;
     referencia: string;
 }
 

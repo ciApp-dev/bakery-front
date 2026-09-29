@@ -1,0 +1,99 @@
+<div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900/40">
+	<div class="overflow-x-auto">
+				<table class="min-w-full border-separate border-spacing-0 divide-y divide-slate-200 dark:divide-slate-800">
+					<thead class="bg-slate-100 dark:bg-slate-900/80">
+						<tr>
+							@for (label of contentLabel(); track label.id) {
+                                <th
+                                    scope="col"
+									class="whitespace-nowrap border-b border-r border-slate-300/70 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-700 last:border-r-0 dark:border-slate-700 dark:text-slate-200"
+                                >
+                                    {{ label.name }}
+                                </th>
+                            }
+						</tr>
+					</thead>
+
+					<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+						@for (row of paginatedRows(); track getTrackKey(row, $index)) {
+							<tr class="transition odd:bg-white even:bg-slate-50/50 hover:bg-slate-50 dark:odd:bg-slate-900/20 dark:even:bg-slate-800/20 dark:hover:bg-slate-800/40">
+								@for (column of contentLabel(); track column.id; let columnIndex = $index) {
+								@if (column.key !== 'estado') {
+                                    <td class="whitespace-nowrap border-r border-slate-100 px-4 py-3 text-sm text-slate-700 last:border-r-0 dark:border-slate-800 dark:text-slate-200">
+										{{ getCellValue(row, column, columnIndex) }}
+									</td>
+                                    } @else {
+                                        <td class="whitespace-nowrap border-r border-slate-100 px-4 py-3 text-sm text-slate-700 last:border-r-0 dark:border-slate-800 dark:text-slate-200">
+											<span [class]="'rounded-full px-2 py-1 text-xs font-bold ' + statusBadgeClass(getCellValue(row, column, columnIndex))">
+												{{ formatStatus(getCellValue(row, column, columnIndex)) }}
+											</span>
+                                        </td>
+                                    }
+
+								}
+                                
+							</tr>
+
+						} @empty {
+							<tr>
+								<td [attr.colspan]="contentLabel().length" class="px-4 py-8">
+									<div class="empty-state" role="status" aria-live="polite">
+										<div class="empty-gift" aria-hidden="true">
+											<div class="empty-gift-lid"></div>
+											<div class="empty-gift-box"></div>
+											<div class="empty-gift-ribbon-v"></div>
+											<div class="empty-gift-ribbon-h"></div>
+											<div class="empty-gift-bow-left"></div>
+											<div class="empty-gift-bow-right"></div>
+										</div>
+
+										<p class="empty-state-title">No hay informacion que mostrar</p>
+										<p class="empty-state-subtitle">Cuando lleguen nuevos datos, los veras aqui.</p>
+									</div>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+
+			<div class="flex flex-col gap-3 border-t border-slate-200 bg-slate-50/70 px-4 py-3 dark:border-slate-800 dark:bg-slate-900/30 sm:flex-row sm:items-center sm:justify-between">
+				<p class="text-sm text-slate-500 dark:text-slate-400">
+					Page {{ currentPage() }} of {{ totalPages() }}
+				</p>
+
+				<div class="flex w-full max-w-36 items-center gap-2 sm:w-auto">
+					<span class="text-sm text-slate-500 dark:text-slate-400">Rows</span>
+					<input
+						type="text"
+						inputmode="numeric"
+						placeholder="5"
+						[value]="pageSizeInput()"
+						class="w-20 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20"
+						(input)="onPageSizeInputChange($event)"
+						(blur)="applyPageSize()"
+						(keydown.enter)="applyPageSize()"
+					/>
+				</div>
+
+				<div class="flex items-center gap-2">
+					<button
+						type="button"
+						(click)="previousPage()"
+						[disabled]="currentPage() === 1"
+						class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+					>
+						Previous
+					</button>
+
+					<button
+						type="button"
+						(click)="nextPage()"
+						[disabled]="currentPage() === totalPages()"
+						class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+					>
+						Next
+					</button>
+				</div>
+			</div>
+		</div>

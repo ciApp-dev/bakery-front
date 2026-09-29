@@ -2,7 +2,9 @@ import { Injectable, inject } from '@angular/core';
 import { environment } from '@environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ActivityStartResponse, ActivityUserRequest, AvalibleResgisters, StartActivityRequest, StartedResgister, ValidateActivityRequest, ValidateActivityResponse } from '../interfaces/actividades-interface';
+import { ActivityStartResponse, ActivityUserRequest, AvalibleResgisters, PaymentMovement, StartActivityRequest, StartedResgister, ValidateActivityRequest, ValidateActivityResponse, ResumeActivity } from '../interfaces/actividades-interface';
+import { genericResponse } from '../interfaces/responses';
+import { endActivityRequest } from '../interfaces/checkout-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -38,4 +40,13 @@ export class ActivitiesService {
   getActivityByUser(data: ActivityUserRequest): Observable<StartedResgister> {
     return this.http.post<StartedResgister>(this.url + "cajas-actividades/usuario", data, { headers: this.headers });
   }
+
+  getResumeActivity(cajaActividadId: number): Observable<ResumeActivity> {
+    return this.http.get<ResumeActivity>(this.url + "cajas-actividades/" + cajaActividadId, { headers: this.headers });
+  }
+
+  endActivity(cajaActividadId: number,data: endActivityRequest): Observable<genericResponse> {
+    return this.http.put<genericResponse>(this.url + "cajas-actividades/" + cajaActividadId, data, { headers: this.headers });
+  }
+
 }

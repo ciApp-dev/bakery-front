@@ -5,7 +5,7 @@
         [value]="valueAsText()"
         (input)="onValueChange($event)"
         [disabled]="disabled()"
-        class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20" />
+        [class]="'w-full rounded-xl ' + (color() ?? '') + ' bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500  '" />
     }
 
     @if (type()==="number"){
@@ -13,7 +13,7 @@
         [value]="valueAsText()"
         (input)="onValueChange($event)"
         [disabled]="disabled()"
-        class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20" />
+        [class]="'w-full rounded-xl ' + (color() ?? '') + ' bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500  '" />
     }
 
     @if(type()==="textarea"){
@@ -23,7 +23,7 @@
         [value]="valueAsText()"
         (input)="onValueChange($event)"
         [disabled]="disabled()"
-        class="w-full min-h-[5.5rem] rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20"
+        [class]="'w-full rounded-xl ' + (color() ?? '') + ' bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500  '"
     ></textarea>
     }
 
@@ -33,7 +33,7 @@
             [value]="valueAsText()"
             (input)="onValueChange($event)"
             [disabled]="disabled()"
-            class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 pr-10 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20" 
+            [class]="'w-full rounded-xl ' + (color() ?? '') + ' bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500  '" 
             >
         <app-pass-inputs-button [showPassword]="showPassword()" (showPasswordChange)="showPassword.set($event)"></app-pass-inputs-button>
         </div>
@@ -45,7 +45,7 @@
         [value]="valueAsText()"
         (input)="onValueChange($event)"
         [disabled]="disabled()"
-        class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-200 dark:focus:ring-slate-200/20" />
+        [class]="'w-full rounded-xl ' + (color() ?? '') + ' bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500  '" />
     }
     
 </label>

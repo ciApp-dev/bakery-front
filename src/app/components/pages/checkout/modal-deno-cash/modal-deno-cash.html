@@ -1,0 +1,70 @@
+<div
+  class="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/60 px-4 backdrop-blur-sm animate-in fade-in duration-200"
+	(click)="onBackdropClick($event)"
+>
+	<section
+		class="w-full max-w-md rounded-2xl border border-slate-200/70 bg-white p-5 shadow-2xl animate-in zoom-in-95 slide-in-from-bottom-2 duration-200 dark:border-slate-700 dark:bg-slate-900"
+		role="dialog"
+		aria-modal="true"
+		aria-live="assertive"
+		(click)="$event.stopPropagation()"
+	>
+		<header class="mb-4">
+			<h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100"> Conteo de Efectivo</h2>
+			<p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">Ingrese el detalle de los billetes y monedas contados.</p>
+		</header>
+
+		<div class="mb-4 border-b border-slate-200 pb-4 dark:border-slate-700">
+			<p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300"> Billetes</p>
+
+			<div class="grid grid-cols-3 gap-2">
+				@for (denoBill of denoBillCount(); track denoBill.denomination) {
+					<div class="flex flex-col items-center justify-center gap-2 rounded-lg border border-slate-200 p-2 dark:border-slate-700">
+						<app-input-form
+							[type]="'number'"
+							[label]="'Cantidad de $' + denoBill.denomination" [placeholder]="'Ingrese la cantidad'"
+							[value]="denoBill.count"
+							(valueChange)="onBillChange(denoBill, $event)"
+							></app-input-form>
+					</div>
+				}
+				</div>
+
+		</div>
+
+		<div class="mb-4">
+
+			<p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300"> Monedas</p>
+
+			<div class="grid grid-cols-4 gap-2">
+				@for (denoCoin of denoCoinCount(); track denoCoin.denomination) {
+					<div class="flex flex-col items-center justify-center gap-2 rounded-lg border border-slate-200 p-2 dark:border-slate-700">
+						<app-input-form
+							[type]="'number'"
+							[label]="'Cantidad de $' + denoCoin.denomination" [placeholder]="'Ingrese la cantidad'"
+							[value]="denoCoin.count"
+							(valueChange)="onCoinChange(denoCoin, $event)"></app-input-form>
+					</div>
+				}
+			</div>
+
+		</div>
+
+		<div class="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 dark:border-amber-800 dark:bg-amber-950/30">
+			<p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Total contado</p>
+			<p class="mt-1 text-lg font-black text-slate-900 dark:text-slate-100">${{ totalCash().toFixed(2) }}</p>
+		</div>
+
+		<div class="flex justify-end gap-2">
+			<button
+				type="button"
+				class="rounded-lg bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
+				(click)="onEscape()"
+			>
+				Cerrar
+			</button>
+
+			
+		</div>
+	</section>
+</div>

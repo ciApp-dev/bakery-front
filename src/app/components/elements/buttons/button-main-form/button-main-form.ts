@@ -1,4 +1,5 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-button-main-form',
@@ -10,6 +11,12 @@ export class ButtonMainForm {
   label = input.required<string>();
   iconName = input.required<string | null>();
   pressed = output<void>();
+  color = input<string | null>(null);
+
+  protected readonly buttonClasses = computed(() => {
+    const colorClass = this.color() ?? environment.btnMainFormBgColor;
+    return `${colorClass}`;
+  });
 
   onPress(): void {
     this.pressed.emit();

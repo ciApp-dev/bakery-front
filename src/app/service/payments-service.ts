@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
-import { PaymentCategory, PaymentCategoryRequest } from '../interfaces/payment-interface';
+import { PaymentCategory, PaymentCategoryRequest, PaymentChashId } from '../interfaces/payment-interface';
 import { genericResponse } from '../interfaces/responses';
 
 @Injectable({
@@ -34,5 +34,9 @@ export class PaymentsService {
 
   reactivePaymentCategory(id: number): Observable<genericResponse> {
     return this.http.post<genericResponse>(this.url + "metodos-pago/" + id + "/reactivar", { headers: this.headers });
+  }
+
+  getPaymentChashId():Observable<PaymentChashId> {
+    return this.http.get<PaymentChashId>(this.url + "metodos-pago-busqueda/efectivo-id", { headers: this.headers });
   }
 }

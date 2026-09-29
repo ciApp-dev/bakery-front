@@ -1,6 +1,5 @@
 import { Component, computed, effect, input, output, signal, untracked } from '@angular/core';
 import { environment } from '@environments/environment';
-import { statusRequest } from 'src/app/interfaces/request';
 import { PaymentsService } from 'src/app/service/payments-service';
 import { inject } from '@angular/core';
 import { PaymentCategory } from 'src/app/interfaces/payment-interface';
@@ -99,6 +98,7 @@ export class Payments {
       metodo_pago_id: parsedValue,
       metodo: selectedMethod.nombre,
       monto: nextAmount,
+      cambio: current?.cambio ?? 0,
       referencia: current?.referencia ?? '',
     };
 
@@ -182,6 +182,7 @@ export class Payments {
       metodo_pago_id: selectedMethod.id,
       metodo: selectedMethod.nombre,
       monto: normalizedAmount,
+      cambio: this.change(),
       referencia: current?.referencia ?? '',
     };
 
@@ -198,6 +199,7 @@ export class Payments {
         metodo_pago_id: methodId,
         metodo: methodName,
         monto: patch.monto ?? 0,
+        cambio: patch.cambio ?? 0,
         referencia: patch.referencia ?? '',
       };
       this.paymentArray.set([...current, next]);

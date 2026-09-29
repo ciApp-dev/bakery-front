@@ -19,6 +19,7 @@ export class OptionSidemenu {
    readonly navItems: DashboardNavItem[] = [
     { path: 'summary', label: 'Resumen General' },
     { path: 'catalogs', label: 'Catalogos' },
+    { path: 'checkout', label: 'Checkout' },
     { path: 'sucursales', label: 'Sucursales' },
     { path: 'customers', label: 'Clientes'},
     { path: 'productos', label: 'Productos'},

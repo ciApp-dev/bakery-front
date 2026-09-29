@@ -1,5 +1,6 @@
-import { Component,input, output, signal } from '@angular/core';
+import { Component,computed,input, output, signal } from '@angular/core';
 import { PassInputsButton } from "../../pass-inputs-button/pass-inputs-button";
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-input-form',
@@ -8,6 +9,7 @@ import { PassInputsButton } from "../../pass-inputs-button/pass-inputs-button";
   styleUrl: './input-form.css',
 })
 export class InputForm {
+  color = input<string | null>(null);
   label = input.required<string>();
   placeholder = input.required<string | null>();
   type = input.required<string>();
@@ -18,6 +20,10 @@ export class InputForm {
   showPassword = signal<boolean>(false);
 
 
+  protected readonly inputClasses = computed(() => {
+    const borderColorclass = this.color() ?? environment.inputFormBorderColor;
+    return `${borderColorclass} ${this.color() ?? ''}`;
+  });
   valueAsText(): string {
     const current = this.value();
     return current === null || current === undefined ? '' : String(current);

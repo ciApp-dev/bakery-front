@@ -39,6 +39,11 @@ export const routes: Routes = [
         loadComponent: () => import('./components/pages/summary/summary').then(m => m.SummaryComponent)
       },
       {
+        path: 'checkout',
+        title: 'Dashboard | Checkout',
+        loadComponent: () => import('./components/pages/checkout/checkout').then(m => m.CheckoutComponent)
+      },
+      {
         path: 'productos',
         title: 'Dashboard | Productos',
         loadComponent: () => import('./components/pages/productos/productos').then(m => m.ProductosComponent)

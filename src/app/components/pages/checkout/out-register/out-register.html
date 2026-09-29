@@ -1,0 +1,80 @@
+<article class="rounded-2xl border border-rose-200 bg-white p-4 shadow-sm dark:border-rose-800 dark:bg-slate-900">
+			<div class="mb-3 flex items-center justify-between">
+				<h2 class="text-lg font-black text-slate-900 dark:text-slate-100">Movimiento de efectivo de salida</h2>
+				<span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Salida</span>
+			</div>
+
+			<div class="space-y-3">
+				
+
+               
+
+                <div>
+                <app-input-form
+                label="Monto"
+                type="number"
+                placeholder="0.00"
+				[color]="'border-slate-300 focus:border-rose-500 dark:border-slate-300 dark:focus:border-rose-400'"
+                (valueChange)="onAmountChange($event)"
+                [value]="amount()"
+                ></app-input-form>
+                @if(form.controls['amount'].hasError('required') && form.controls['amount'].touched){
+                <p class="text-red-500 text-xs mt-1">El monto es requerido.</p>
+                }
+                @if(form.controls['amount'].hasError('min') && form.controls['amount'].touched){
+                <p class="text-red-500 text-xs mt-1">El monto debe ser mayor o igual a 0.</p>
+                }
+                @if(form.controls['amount'].hasError('max') && form.controls['amount'].touched){
+                <p class="text-red-500 text-xs mt-1">El monto no puede ser mayor al efectivo disponible ({{ cashAmount() }}).</p>
+                }
+                </div>
+
+                <app-input-form
+                label="Concepto"
+                type="text"
+                placeholder="Fondo inicial, ajuste, etc."   
+				[color]="'border-slate-300 focus:border-rose-500 dark:border-slate-300 dark:focus:border-rose-400'"
+                (valueChange)="onConceptChange($event)"
+                [value]="concept()"
+                ></app-input-form>
+                @if(form.controls['concept'].invalid && form.controls['concept'].touched){
+                <p class="text-red-500 text-xs mt-1">El concepto es requerido.</p>
+                }
+
+
+                <app-input-form
+                label="Notas"
+                type="textarea"
+                placeholder="Detalle opcional"
+				[color]="'border-slate-300 focus:border-rose-500 dark:border-slate-300 dark:focus:border-rose-400'"
+                (valueChange)="onCommentChange($event)"
+                [value]="comment()"
+                ></app-input-form>
+
+                <div class="w-full">
+                    
+                </div>
+               
+
+                <div class="flex w-full items-center justify-between">
+
+                <app-button-main-form
+                iconName="save"
+                label="Guardar"
+                type="submit"
+                color="bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:text-white"
+                (click)="onSendMovement()"
+                ></app-button-main-form>
+
+                <app-button-main-form
+                iconName="cancel"
+                label="Cancelar"
+                type="button"
+                color="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 dark:text-white "
+                (click)="clearForm()"
+                ></app-button-main-form>
+
+                </div>
+                
+			</div>
+		</article>

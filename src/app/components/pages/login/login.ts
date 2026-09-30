@@ -56,6 +56,12 @@ export class LoginComponent {
   loginUser(loginData: LoginUserRequest): void {
     this.loginService.loginUser(loginData).subscribe({
       next: async (response: LoginResponse) => {
+
+        if(response.user.estado !== 'ACT') {
+          this.tostService.showErrorToast('Error al iniciar sesión', 'El usuario no está activo.');
+          return;
+        }
+
         localStorage.setItem('access_token', response.access_token);
         localStorage.setItem('access_token_expires_at', (Date.now() + response.expires_in * 1000).toString());
         if (response.refresh_token) {

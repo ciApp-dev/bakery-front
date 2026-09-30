@@ -16,6 +16,7 @@ export interface RegisterUserRequest {
     email: string;
     password: string;
     password_confirmation: string;
+    estado: string;
 }
 
 export interface ToastSuccessfully {

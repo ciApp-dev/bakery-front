@@ -40,7 +40,7 @@ export const routes: Routes = [
       },
       {
         path: 'checkout',
-        title: 'Dashboard | Checkout',
+        title: 'Dashboard | Operaciones de caja',
         loadComponent: () => import('./components/pages/checkout/checkout').then(m => m.CheckoutComponent)
       },
       {
@@ -72,6 +72,11 @@ export const routes: Routes = [
         path: 'customers',
         title: 'Dashboard | Clientes',
         loadComponent: () => import('./components/pages/customers/customers').then(m => m.CustomersComponent)
+      },
+      {
+        path: 'users',
+        title: 'Dashboard | Usuarios',
+        loadComponent: () => import('./components/pages/users/users').then(m => m.UsersComponent)
       },
       { 
         path: '**', 

@@ -1,1 +1,99 @@
-<p>users works!</p>
+
+<div class="mx-auto w-full max-w-7xl">
+	<div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-5">
+		<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+			<div class="w-full sm:max-w-2xl lg:max-w-3xl">
+				<app-input-search-form
+					[value]="searchTerm()"
+					(valueChange)="onSearchChange($event)"
+					placeholder="Buscar usuarios..."
+				></app-input-search-form>
+			</div>
+			<app-button-main-form label="Agregar" iconName="add" (pressed)="showCreateSection.set(true)"></app-button-main-form>
+		</div>
+	</div>
+
+	@if (showCreateSection()) {
+		<div class="create-panel-enter mt-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-5">
+			<form [formGroup]="form" (ngSubmit)="saveUser()">
+				<div class="mb-4">
+					<app-label-form label="Agregar usuario"></app-label-form>
+				</div>
+
+				<div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+					<div>
+						<app-input-form label="Nombre" placeholder="Nombre completo" type="text" [value]="form.controls.nombre.value" (valueChange)="onNombreChange($event)"></app-input-form>
+						@if (form.controls.nombre.invalid && form.controls.nombre.touched) {
+							<p class="mt-1 text-xs text-red-600">El nombre es obligatorio</p>
+						}
+					</div>
+
+					<div>
+						<app-input-form label="Correo electrónico" placeholder="nombre@empresa.com" type="text" [value]="form.controls.email.value" (valueChange)="onEmailChange($event)"></app-input-form>
+						@if (form.controls.email.invalid && form.controls.email.touched) {
+							<p class="mt-1 text-xs text-red-600">{{ form.controls.email.hasError('required') ? 'El correo es obligatorio' : 'Ingresa un correo válido' }}</p>
+						}
+					</div>
+
+					<div>
+						<app-input-form label="Contraseña" placeholder="Mínimo 8 caracteres" type="password" [value]="form.controls.password.value" (valueChange)="onPasswordChange($event)"></app-input-form>
+						@if (form.controls.password.invalid && form.controls.password.touched) {
+							<p class="mt-1 text-xs text-red-600">La contraseña es obligatoria y debe tener al menos 8 caracteres</p>
+						}
+					</div>
+
+					<div>
+						<app-input-form label="Confirmar contraseña" placeholder="Repite la contraseña" type="password" [value]="form.controls.confirmPassword.value" (valueChange)="onConfirmPasswordChange($event)"></app-input-form>
+						@if (form.controls.confirmPassword.invalid && form.controls.confirmPassword.touched) {
+							<p class="mt-1 text-xs text-red-600">Confirma la contraseña</p>
+						} @else if (passwordMismatch()) {
+							<p class="mt-1 text-xs text-red-600">Las contraseñas no coinciden</p>
+						}
+					</div>
+
+					<div>
+						<app-selector-form
+							[options]="roleOptions"
+							[value]="form.controls.role.value"
+							label="Rol"
+							placeholder="Selecciona un rol"
+							(valueChange)="onRoleChange($event)"
+						></app-selector-form>
+						@if (form.controls.role.invalid && form.controls.role.touched) {
+							<p class="mt-1 text-xs text-red-600">Selecciona un rol</p>
+						}
+					</div>
+				</div>
+				<span class="my-4 block h-px w-full bg-slate-200 dark:bg-slate-700" aria-hidden="true"></span>
+
+                <app-user-branch></app-user-branch>
+
+				<div class="mt-4 flex justify-end gap-2">
+					<app-button-secundary-form color="text-red-500" label="Cancelar" iconName="close" (pressed)="cancelSave()"></app-button-secundary-form>
+					<app-button-main-form label="Guardar usuario" iconName="save" (pressed)="saveUser()"></app-button-main-form>
+				</div>
+			</form>
+		</div>
+	}
+
+	<div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+		<div class="border-b border-slate-200 px-4 py-3 dark:border-slate-800">
+			<app-label-form label="Usuarios"></app-label-form>
+		</div>
+		<app-table-form
+			label="Usuarios"
+			[contentLabel]="userLabels"
+			[content]="filteredUsers()"
+			[labelBtn1]="'Editar'"
+			[labelBtn2]="'Eliminar'"
+			[iconBtn1]="'edit'"
+			[iconBtn2]="'delete'"
+			[colorBtn1]="'text-yellow-500'"
+			[colorBtn2]="'text-red-500'"
+			[activeAction]="false"
+			(editSelected)="onEditUser($event)"
+			(deleteSelected)="onDeleteUser($event)"
+		></app-table-form>
+	</div>
+</div>
+

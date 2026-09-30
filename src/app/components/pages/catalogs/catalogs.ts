@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { InventarioComponent } from '../inventario/inventario';
 import { ProductsCategoriesComponent } from "./components/products-categories/products-categories";
 import { PaymentsCategories } from "./components/payments-categories/payments-categories";
+import { RolCategoriesComponent } from './components/rol-categories/rol-categories';
 
 
 interface AccordionItem {
@@ -12,7 +13,7 @@ interface AccordionItem {
 
 @Component({
   selector: 'app-catalogs',
-  imports: [ ProductsCategoriesComponent, PaymentsCategories],
+  imports: [ProductsCategoriesComponent, PaymentsCategories, RolCategoriesComponent],
   templateUrl: './catalogs.html',
   styleUrl: './catalogs.css',
 })
@@ -28,6 +29,10 @@ export class CatalogsComponent {
       title: 'Metodos de pago',
       
     },
+    {
+      id: 3,
+      title: 'Roles',
+    }
   ];
 
   protected readonly openItemId = signal<number>(1);

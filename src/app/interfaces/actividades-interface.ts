@@ -11,15 +11,20 @@ export interface StartActivityRequest {
 }
 
 export interface ActivityStartResponse {
-   id: number;
-   caja_id: number;
-   nombre_caja: string;
-   usuario_apertura_id: number;
-   monto_apertura: number;
-   observaciones?: string;
-   fecha_apertura: string;
-   fecha_cierre?: string;
-   estado: string;
+  data: ActivityInfo;
+
+}
+
+export interface ActivityInfo {
+    id: number;
+    caja_id: number;
+    nombre_caja: string;
+    usuario_apertura_id: number;
+    monto_apertura: number;
+    observaciones?: string;
+    fecha_apertura: string;
+    fecha_cierre?: string;
+    estado: string;
 }
 
 export interface StartedResgister{
@@ -37,10 +42,10 @@ export interface ValidateActivityRequest {
 
 
 export interface ValidateActivityResponse {
-    'id': number;
-    'caja_id':number;
-    'nombre': string;
-    'sucursal_id': number;
+    actividad_id: number;
+    caja_id:number;
+    nombre: string;
+    sucursal_id: number;
 }
 
 export interface ActivityUserRequest {
@@ -92,4 +97,9 @@ export interface resumeSales {
     total_transacciones: number;
     total_canceladas: number;
     total_transacciones_canceladas: number;
+}
+
+export interface endActivityResponse {
+    message: string;
+    data: ActivityInfo;
 }

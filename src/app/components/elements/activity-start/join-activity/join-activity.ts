@@ -86,13 +86,14 @@ joinActivity(): void {
     password: String(this.passwordValue()),
   };
 
-  console.log('Datos enviados para validación:', data);
+  
 
   this.activityService.getValidateActivity(data).subscribe({
     next: (response: ValidateActivityResponse) => {
-      localStorage.setItem('idCaja', String(response.caja_id));
-      localStorage.setItem('idActividad', String(response.id));
-      localStorage.setItem('nombreCaja', response.nombre);
+      console.log('Validación exitosa:', response);
+      localStorage.setItem('caja_id', String(response.caja_id));
+      localStorage.setItem('actividad_id', String(response.actividad_id));
+      localStorage.setItem('nombre_caja', response.nombre);
       this.toastService.showSuccessToast('Validacion exitosa');
       this.completed.emit();
     },

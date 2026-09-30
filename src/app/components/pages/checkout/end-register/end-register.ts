@@ -6,6 +6,8 @@ import { ButtonMainForm } from "src/app/components/elements/buttons/button-main-
 import { ModalDenoCash } from '../modal-deno-cash/modal-deno-cash';
 import { ConfirmDialogService } from 'src/app/service/confirm-dialog-service';
 import { endActivityRequest } from 'src/app/interfaces/checkout-interface';
+import { Router } from '@angular/router';
+import { endActivityResponse } from 'src/app/interfaces/actividades-interface';
 
 @Component({
   selector: 'app-end-register',
@@ -22,6 +24,8 @@ export class EndRegister {
   cashAmount = input.required<number>();// Cash amount counted by the system
   totalCash = signal<number>(0); //Cash amount physically counted
   difference = signal<number>(0);
+
+  router = inject(Router);
 
 
   observations = signal<string>(''); 
@@ -62,11 +66,13 @@ export class EndRegister {
     };
     
     this.activitiesService.endActivity(Number(localStorage.getItem('actividad_id')), data).subscribe({
-      next: (response) => {
+      next: (response: endActivityResponse) => {
         localStorage.removeItem('actividad_id');
         localStorage.removeItem('caja_id');
         localStorage.removeItem('nombre_caja');
         this.toastService.showSuccessToast('Actividad de caja cerrada exitosamente');
+        this.showTicket(Number(response.data.id));
+        this.router.navigate(['dashboard/summary']);
 
       },
       error: (error) => {
@@ -85,5 +91,29 @@ export class EndRegister {
     this.difference.set(0);
     this.observations.set('');
     this.showModal.set(false);
+  }
+
+  showTicket(cajaActividadId: number): void {
+    const ticketTab = window.open('about:blank', '_blank');
+    if (!ticketTab) {
+      this.toastService.showErrorToast(
+        'No se pudo abrir el ticket',
+        'Permite las ventanas emergentes en el navegador e inténtalo de nuevo.'
+      );
+      return;
+    }
+
+    this.activitiesService.endActivityTicket(cajaActividadId).subscribe({
+      next: (blob) => {
+        const pdf = new Blob([blob], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(pdf);
+        ticketTab.location.href = url;
+        window.setTimeout(() => window.URL.revokeObjectURL(url), 60_000);
+      },
+      error: (error) => {
+        ticketTab.close();
+        this.toastService.showErrorToast('Error al generar el ticket', error);
+      }
+    });
   }
 }

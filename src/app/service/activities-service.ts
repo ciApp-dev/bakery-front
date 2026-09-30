@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { environment } from '@environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ActivityStartResponse, ActivityUserRequest, AvalibleResgisters, PaymentMovement, StartActivityRequest, StartedResgister, ValidateActivityRequest, ValidateActivityResponse, ResumeActivity } from '../interfaces/actividades-interface';
+import { ActivityStartResponse, ActivityUserRequest, AvalibleResgisters, PaymentMovement, StartActivityRequest, StartedResgister, ValidateActivityRequest, ValidateActivityResponse, ResumeActivity, endActivityResponse, ActivityInfo } from '../interfaces/actividades-interface';
 import { genericResponse } from '../interfaces/responses';
 import { endActivityRequest } from '../interfaces/checkout-interface';
 
@@ -21,8 +21,8 @@ export class ActivitiesService {
   }
 
 
-  startActivity(data: StartActivityRequest): Observable<ActivityStartResponse> {
-    return this.http.post<ActivityStartResponse>(this.url + "cajas-actividades", data, { headers: this.headers });
+  startActivity(data: StartActivityRequest): Observable<ActivityInfo> {
+    return this.http.post<ActivityInfo>(this.url + "cajas-actividades", data, { headers: this.headers });
   }
 
   getStartedResgisters(data: { sucursal_id: number }): Observable<StartedResgister[]> {
@@ -45,8 +45,12 @@ export class ActivitiesService {
     return this.http.get<ResumeActivity>(this.url + "cajas-actividades/" + cajaActividadId, { headers: this.headers });
   }
 
-  endActivity(cajaActividadId: number,data: endActivityRequest): Observable<genericResponse> {
-    return this.http.put<genericResponse>(this.url + "cajas-actividades/" + cajaActividadId, data, { headers: this.headers });
+  endActivity(cajaActividadId: number,data: endActivityRequest): Observable<endActivityResponse> {
+    return this.http.put<endActivityResponse>(this.url + "cajas-actividades/" + cajaActividadId, data, { headers: this.headers });
   }
+
+  endActivityTicket(cajaActividadId: number): Observable<Blob> {
+    return this.http.get(this.url + "actividad/ticket/"+cajaActividadId, { headers: this.headers, responseType: 'blob' });
+  } 
 
 }

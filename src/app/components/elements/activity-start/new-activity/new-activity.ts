@@ -8,7 +8,7 @@ import { ConfirmDialogService } from 'src/app/service/confirm-dialog-service';
 import { SelectorForm } from "../../selectors/selector-form/selector-form";
 import { SelectorOption } from 'src/app/interfaces/forms';
 import { ActivitiesService } from 'src/app/service/activities-service';
-import { StartActivityRequest } from 'src/app/interfaces/actividades-interface';
+import { ActivityInfo, StartActivityRequest } from 'src/app/interfaces/actividades-interface';
 
 @Component({
   selector: 'app-new-activity',
@@ -101,11 +101,12 @@ export class NewActivity {
       return;
     } 
     this.activitiesService.startActivity(data).subscribe({
-      next: (response) => {
+      next: (response: ActivityInfo) => {
+        
         this.toastService.showSuccessToast('Actividad iniciada correctamente');
-        localStorage.setItem('idCaja', String(response.caja_id));
-        localStorage.setItem('idActividad', String(response.id));
-        localStorage.setItem('nombreCaja', response.nombre_caja);
+        localStorage.setItem('caja_id', String(response.caja_id));
+        localStorage.setItem('actividad_id', String(response.id));
+        localStorage.setItem('nombre_caja', response.nombre_caja);
         this.cancelNewActivity();
         this.getAvalibreRegisters();
         this.completed.emit();

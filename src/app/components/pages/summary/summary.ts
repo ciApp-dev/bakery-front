@@ -48,7 +48,7 @@ export class SummaryComponent {
 
   validateActivityStart(): void {
 
-    const activityId = localStorage.getItem('idActividad');
+    const activityId = localStorage.getItem('actividad_id');
 
 
     if(activityId === null || activityId === undefined || activityId === '') {
@@ -60,21 +60,21 @@ export class SummaryComponent {
 
     this.activityService.getActivityInfo(Number(activityId)).subscribe({
       next: (response: ActivityStartResponse) => {
-        if (response.estado === 'ACT') {
+        if (response.data.estado === 'ACT') {
           
         } else {
-          localStorage.removeItem('idActividad');
-          localStorage.removeItem('nombreCaja');
-          localStorage.removeItem('idCaja');
+          localStorage.removeItem('actividad_id');
+          localStorage.removeItem('nombre_caja');
+          localStorage.removeItem('caja_id');
           this.isActivityStartOpen.set(true);
           this.toastService.showErrorToast('Actividad inválida o no encontrada', 'La actividad que intentas acceder no es válida o no se encuentra disponible.');
         }   
       },
       error: (response: any) => {
         console.error('Error al validar la actividad:', response);
-        localStorage.removeItem('idActividad');
-        localStorage.removeItem('nombreCaja');
-        localStorage.removeItem('idCaja');
+        localStorage.removeItem('actividad_id');
+        localStorage.removeItem('nombre_caja');
+        localStorage.removeItem('caja_id');
         this.isActivityStartOpen.set(true);
         this.toastService.showErrorToast('Actividad inválida o no encontrada', 'La actividad que intentas acceder no es válida o no se encuentra disponible.');
       }

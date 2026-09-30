@@ -292,25 +292,29 @@ export class SalesComponent {
 
 
   validateActivityStart(): void {
+    
        
        if(this.actividadId() === null || this.actividadId() === undefined || this.actividadId() === 0) {
+        
         this.getActivityByUser();
         
       }
 
       if(this.actividadId() === null || this.actividadId() === undefined || this.actividadId() === 0) {
-
+        
           this.getActivityByUser();
           
-
+        
         this.toastService.showErrorToast('Actividad inválida o no encontrada', 'La actividad que intentas acceder no es válida o no se encuentra disponible.');
         this.router.navigate(['dashboard/summary']);
         return;
 
         
       }else {
+        
 
-      if(!this.actividadId() || isNaN(Number(this.actividadId()))) {
+      if(!this.actividadId() || this.actividadId() === null || this.actividadId() === undefined || this.actividadId() === 0) {
+        
         this.router.navigate(['dashboard/summary']);
         localStorage.removeItem('actividad_id');
         localStorage.removeItem('nombre_caja');
@@ -321,7 +325,8 @@ export class SalesComponent {
   
       this.activityService.getActivityInfo(Number(this.actividadId())).subscribe({
         next: (response: ActivityStartResponse) => {
-          if (response.estado === 'ACT') {
+          console.log('Activity is active:', response);
+          if (response.data.estado === 'ACT') {
             
           } else {
             this.router.navigate(['dashboard/summary']);
@@ -407,17 +412,19 @@ export class SalesComponent {
 
     testPrint(id:number): void {
       const activeTab = this.activeTab();
+      const ticketTab = window.open('about:blank', '_blank');
       if (!activeTab) {
+        return;
+      }
+      if (!ticketTab) {
+        console.error('No se pudo abrir el ticket');
         return;
       }
       this.posService.printTicket(id).subscribe({
         next: (blob) => {
           const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'ticket.pdf';
-          a.click();
-          window.URL.revokeObjectURL(url);
+          ticketTab.location.href = url;
+          window.setTimeout(() => window.URL.revokeObjectURL(url), 60_000);
         },
         error: (error) => {
           console.error('Error printing ticket:', error);
@@ -443,7 +450,7 @@ export class SalesComponent {
         sucursal_id: Number(localStorage.getItem('idSucursal')) || 0,
         cliente_id: Number(this.activeTab()?.customerId ?? 0),
         user_id: Number(localStorage.getItem('id_user')) || 0,
-        caja_actividad_id: Number(localStorage.getItem('caja_id')) || 0,
+        caja_actividad_id: Number(localStorage.getItem('actividad_id')) || 0,
         total: this.total(),
         recibido: this.activeTab()?.receivedAmount ?? 0,
         cambio: (this.activeTab()?.receivedAmount ?? 0) - this.total(),
@@ -460,7 +467,7 @@ export class SalesComponent {
         
       };
 
-      console.log('Sending sale with data:', data);
+      
 
       
       this.posService.sendSale(data).subscribe({
@@ -485,7 +492,7 @@ export class SalesComponent {
             }
             this.categoriaService.getCategorias(estado).subscribe({
               next: (categories) => {
-                console.log('Fetched categories:', categories);
+                
                 this.categories.set(categories.map(category => ({ id: category.id, nombre: category.nombre })));
                 this.categories.update((cats) => [{ id: 0, nombre: 'Todos' }, ...cats]);
               },
@@ -501,7 +508,7 @@ export class SalesComponent {
             }
             this.productService.getProducts(estado).subscribe({
               next: (products) => {
-                console.log('Fetched products:', products);
+                
                 this.catalogo.set(products.map(product => ({
                   id: product.id,
                   nombre: product.nombre,

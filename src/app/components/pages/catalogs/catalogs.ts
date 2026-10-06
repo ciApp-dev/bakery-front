@@ -3,6 +3,7 @@ import { InventarioComponent } from '../inventario/inventario';
 import { ProductsCategoriesComponent } from "./components/products-categories/products-categories";
 import { PaymentsCategories } from "./components/payments-categories/payments-categories";
 import { RolCategoriesComponent } from './components/rol-categories/rol-categories';
+import { RolPermissionsCategoriesComponent } from './components/rol-permissions-categories/rol-permissions-categories';
 
 
 interface AccordionItem {
@@ -13,7 +14,7 @@ interface AccordionItem {
 
 @Component({
   selector: 'app-catalogs',
-  imports: [ProductsCategoriesComponent, PaymentsCategories, RolCategoriesComponent],
+  imports: [ProductsCategoriesComponent, PaymentsCategories, RolCategoriesComponent, RolPermissionsCategoriesComponent],
   templateUrl: './catalogs.html',
   styleUrl: './catalogs.css',
 })
@@ -32,6 +33,10 @@ export class CatalogsComponent {
     {
       id: 3,
       title: 'Roles',
+    },
+    {
+      id: 4,
+      title: 'Permisos para Roles'
     }
   ];
 

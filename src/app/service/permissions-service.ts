@@ -1,9 +1,20 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '@environments/environment.development';
+import { PermissionItem, PermissionResponse } from '../interfaces/Permissions-interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PermissionsService {
+
+  url = environment.apiUrl;
+  header = {
+    'Content-Type': 'application/json',
+  };
+
+  http = inject(HttpClient);
   private readonly _permissions = signal<string[]>([]);
 
   readonly permissions = this._permissions.asReadonly();
@@ -27,6 +38,10 @@ export class PermissionsService {
 
   hasAll(permissions: readonly string[]): boolean {
     return permissions.every((permission) => this.has(permission));
+  }
+
+  getPermissions(): Observable<PermissionResponse> {
+    return this.http.get<PermissionResponse>(`${this.url}permissions`, { headers: this.header });
   }
 
 }

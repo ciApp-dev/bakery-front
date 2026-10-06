@@ -2,8 +2,10 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
-import { RoleCategory, RoleRequest } from '../interfaces/roles-interface';
+import { RoleCategory, RolePermissionResponse, RoleRequest } from '../interfaces/roles-interface';
 import { genericResponse } from '../interfaces/responses';
+
+
 
 @Injectable({
   providedIn: 'root',
@@ -37,4 +39,7 @@ reactivateRole(id: number): Observable<genericResponse> {
   return this.http.post<genericResponse>(this.url + "roles/activar/" + id, {}, { headers: this.headers });
 }
 
+getPermissionsByRole(roleId: number): Observable<RolePermissionResponse> {
+  return this.http.get<RolePermissionResponse>(this.url + "roles/permissions/" + roleId, { headers: this.headers });
+}
 }

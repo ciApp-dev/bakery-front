@@ -25,3 +25,9 @@ export type SelectorOption = {
 
 
 export type InventarioTab = 'produccion'| 'abasto' | 'salidas' | 'stock' | 'pendientes' | 'reportes';
+
+export interface ElementsList{
+  id: number;
+  name: string;
+  description: string;
+}

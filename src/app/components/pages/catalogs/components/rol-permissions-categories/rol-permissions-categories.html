@@ -1,0 +1,27 @@
+<section class="mx-auto w-full max-w-7xl" aria-labelledby="role-permissions-title">
+
+
+	<div class="mb-5 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-5">
+		<div class="max-w-xl">
+			<app-selector-form
+				[options]="roles()"
+				[value]="selectedRoleId()"
+				label="Rol"
+				placeholder="Selecciona un rol"
+				(valueChange)="onRoleChange($event)"
+			></app-selector-form>
+		</div>
+	</div>
+
+	@if (selectedRoleId() === null) {
+		<p class="mb-4 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800 dark:border-sky-900 dark:bg-sky-950/40 dark:text-sky-200" role="status">
+			Selecciona un rol para administrar sus permisos.
+		</p>
+	}
+
+    <app-list-assignments
+    [allElements]="allPermissions()"
+    [assignedElements]="assignedPermissions()"
+    (assignedListReturn)="assignedPermissionsChange($event)"
+    ></app-list-assignments>
+</section>

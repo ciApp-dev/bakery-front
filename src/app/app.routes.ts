@@ -78,6 +78,35 @@ export const routes: Routes = [
         title: 'Dashboard | Usuarios',
         loadComponent: () => import('./components/pages/users/users').then(m => m.UsersComponent)
       },
+      {
+        path: 'reports',
+        title: 'Dashboard | Reportes',
+        loadComponent: () => import('./components/pages/reports/reports').then(m => m.ReportsComponent),
+        children: [
+          { path: '', redirectTo: 'sales', pathMatch: 'full' },
+          {
+            path: 'sales',
+            title: 'Dashboard | Reportes | Ventas',
+            loadComponent: () => import('./components/pages/reports/sales-reports/sales-reports').then(m => m.SalesReportsComponent)
+          },
+          {
+            path: 'dashboard',
+            title: 'Dashboard | Reportes | Dashboard',
+            loadComponent: () => import('./components/pages/reports/report-tabs').then(m => m.ReportDashboardComponent)
+          },
+          {
+            path: 'settings',
+            title: 'Dashboard | Reportes | Settings',
+            loadComponent: () => import('./components/pages/reports/report-tabs').then(m => m.ReportSettingsComponent)
+          },
+          {
+            path: 'invoice',
+            title: 'Dashboard | Reportes | Invoice',
+            loadComponent: () => import('./components/pages/reports/report-tabs').then(m => m.ReportInvoiceComponent)
+          },
+          { path: '**', redirectTo: 'profile' }
+        ]
+      },
       { 
         path: '**', 
         redirectTo: 'overview' 

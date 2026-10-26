@@ -53,7 +53,7 @@
 
 					<div>
 						<app-selector-form
-							[options]="roleOptions"
+							[options]="roleOptions()"
 							[value]="form.controls.role.value"
 							label="Rol"
 							placeholder="Selecciona un rol"
@@ -66,7 +66,15 @@
 				</div>
 				<span class="my-4 block h-px w-full bg-slate-200 dark:bg-slate-700" aria-hidden="true"></span>
 
-                <app-user-branch></app-user-branch>
+                @if(modeForm() === 'edit'){
+                    <span class="block mb-2 font-medium text-slate-700 dark:text-slate-300">Asignaciones de sucursales</span>
+                <app-list-assignments
+                [allElements]="allBranches()"
+                [assignedElements]="assignedBranches()"
+                (assignedListReturn)="assignedBranchesChange($event)"
+                ></app-list-assignments>
+                }
+                
 
 				<div class="mt-4 flex justify-end gap-2">
 					<app-button-secundary-form color="text-red-500" label="Cancelar" iconName="close" (pressed)="cancelSave()"></app-button-secundary-form>
@@ -80,19 +88,28 @@
 		<div class="border-b border-slate-200 px-4 py-3 dark:border-slate-800">
 			<app-label-form label="Usuarios"></app-label-form>
 		</div>
+
+        <div>
+              <span class="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300"></span>
+                        <app-toggle-switch [checked]="showDeletedUsers()" label="Mostrar eliminados"
+                            (checkedChange)="onShowDeletedChange($event)"></app-toggle-switch>
+                        <app-toggle-switch [checked]="showPendingUsers()" label="Mostrar pendientes"
+                            (checkedChange)="onShowPendingChange($event)"></app-toggle-switch>
+        </div>
+
 		<app-table-form
 			label="Usuarios"
 			[contentLabel]="userLabels"
 			[content]="filteredUsers()"
 			[labelBtn1]="'Editar'"
-			[labelBtn2]="'Eliminar'"
+			[labelBtn2]="lblBtn2()"
 			[iconBtn1]="'edit'"
-			[iconBtn2]="'delete'"
+			[iconBtn2]="iconBtn2()"
 			[colorBtn1]="'text-yellow-500'"
-			[colorBtn2]="'text-red-500'"
+			[colorBtn2]="colorBtn2()"
 			[activeAction]="false"
 			(editSelected)="onEditUser($event)"
-			(deleteSelected)="onDeleteUser($event)"
+            (deleteSelected)="onDeleteUser($event)"
 		></app-table-form>
 	</div>
 </div>

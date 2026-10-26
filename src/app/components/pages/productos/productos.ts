@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { PermissionsService } from 'src/app/service/permissions-service';
 import { InputSearchForm } from "../../elements/inputs/input-search-form/input-search-form";
 import { ButtonMainForm } from "../../elements/buttons/button-main-form/button-main-form";
@@ -94,6 +94,16 @@ export class ProductosComponent {
     { id: 6, name: 'Acciones', key: 'actions' }
   ];
 
+  readonly filterProducts = computed(() => {
+    const term = this.searchTerm().toLowerCase();
+    return this.allProducts().filter(product =>
+      product.nombre.toLowerCase().includes(term) ||
+      product.categoria.toLowerCase().includes(term) ||
+      product.precio.toString().includes(term) ||
+      product.codigo.toLowerCase().includes(term) ||
+      product.descripcion.toLowerCase().includes(term)
+    );
+  });
   
 
 

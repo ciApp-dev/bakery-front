@@ -1,0 +1,27 @@
+
+
+<div class="sm:hidden">
+    <label for="tabs" class="sr-only">Select your country</label>
+    <select id="tabs" class="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-xs focus:border-emerald-600 focus:ring-emerald-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100" (change)="onTabChange($event)">
+        
+        @for (item of navTabs; track item.path){
+            <option [value]="item.path">{{item.label}}</option>
+        }
+    </select>
+</div>
+<ul class="hidden -space-x-px text-center text-sm font-medium text-slate-700 dark:text-slate-200 sm:flex">
+
+    @for (item of navTabs; track item.path){
+        
+        <li class="w-full focus-within:z-10">
+            <a [routerLink]="item.path" routerLinkActive="bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200" [routerLinkActiveOptions]="{ exact: true }" class="inline-block w-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium leading-5 text-slate-700 hover:bg-slate-50 hover:text-slate-900 focus:outline-none focus:ring-4 focus:ring-emerald-600/30 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800/70 dark:hover:text-slate-100"
+            [class.rounded-s-lg]="$first"
+            [class.rounded-e-lg]="$last"
+            >{{item.label}}</a>
+        </li>
+    }
+</ul>
+
+<section class="mt-5">
+    <router-outlet></router-outlet>
+</section>

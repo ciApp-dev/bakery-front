@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "flowbite/src/themes/default";
 
 @plugin "flowbite/plugin";
 
@@ -26,6 +27,18 @@
 	background-color: transparent;
 }
 
+.datepicker-cell.focused:not(.selected) {
+	background-color: #d1fae5 !important;
+	color: #065f46 !important;
+}
+
+.datepicker-cell.selected,
+.datepicker-cell.selected:hover {
+	background-color: #047857 !important;
+	color: #ffffff !important;
+	font-weight: 600;
+}
+
 @media (prefers-color-scheme: dark) {
 	.datepicker-dropdown,
 	.datepicker-picker,
@@ -34,5 +47,28 @@
 		background-color: #0f172a !important;
 		color: #e2e8f0;
 		border-color: #334155 !important;
+	}
+
+	.datepicker-title,
+	.datepicker-controls .view-switch,
+	.datepicker-controls .prev-btn,
+	.datepicker-controls .next-btn {
+		background-color: #0f172a !important;
+		color: #f8fafc !important;
+	}
+
+	.datepicker-cell.focused:not(.selected) {
+		background-color: #334155 !important;
+		color: #f1f5f9 !important;
+	}
+
+	.datepicker-cell.selected,
+	.datepicker-cell.selected:hover {
+		background-color: #059669 !important;
+		color: #ffffff !important;
+	}
+
+	.datepicker-cell.disabled {
+		color: #64748b !important;
 	}
 }

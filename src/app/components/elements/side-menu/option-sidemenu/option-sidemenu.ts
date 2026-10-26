@@ -25,8 +25,7 @@ export class OptionSidemenu {
     { path: 'productos', label: 'Productos'},
     { path: 'sales', label: 'Ventas'},
     { path: 'inventario', label: 'Inventario'},
-    { path: 'reportes', label: 'Reportes'},
-    { path: 'configuracion', label: 'Configuración'},
+    { path: 'reports', label: 'Reportes'},
     { path: 'users', label: 'Usuarios' },
     { path: 'ayuda', label: 'Ayuda'}
 

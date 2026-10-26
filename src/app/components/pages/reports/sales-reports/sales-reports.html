@@ -1,0 +1,82 @@
+<section class="space-y-5">
+	<header class="flex flex-col gap-3 border-b border-slate-200 pb-4 dark:border-slate-700 sm:flex-row sm:items-end sm:justify-between">
+		<div>
+			<p class="text-xs font-semibold uppercase text-emerald-700 dark:text-emerald-400">Reportes</p>
+			<h1 class="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-100">Ventas</h1>
+		</div>
+		<button
+			type="button"
+			(click)="downloadExcel()"
+			
+			class="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-600/25 disabled:cursor-not-allowed disabled:opacity-50"
+		>
+			<span class="material-symbols-outlined text-[20px]" aria-hidden="true">download</span>
+			Descargar Excel
+		</button>
+	</header>
+
+	<form class="grid gap-3 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900 sm:grid-cols-2 xl:grid-cols-5" (submit)="$event.preventDefault()">
+	<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">
+        Desde
+        <app-datepicker-input (dateChange)="setStartDate($event)"></app-datepicker-input>
+    </label>
+
+		<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">
+			Hasta
+			<app-datepicker-input (dateChange)="setEndDate($event)"></app-datepicker-input>
+		</label>
+
+		
+			<app-selector-form
+				[options]="allBranches()"
+                label="Sucursal"
+                placeholder="Seleccione una sucursal"
+                (valueChange)="setBranch($event)"
+			></app-selector-form>
+
+		<app-selector-form
+			[options]="statusOptions()"
+			label="Estado"
+			placeholder="Seleccione un estado"
+			(valueChange)="setStatus($event)"
+		></app-selector-form>
+
+        <app-selector-form
+			[options]="userOptions()"
+			label="Usuario"
+			placeholder="Seleccione un usuario"
+			(valueChange)="setUser($event)"
+		></app-selector-form>
+
+        <app-selector-form
+			[options]="customerOptions()"
+			label="Cliente"
+			placeholder="Seleccione un cliente"
+			(valueChange)="setCustomer($event)"
+		></app-selector-form>
+
+		<div class="col-span-full flex justify-end">
+			<app-button-main-form
+				label="Buscar"
+				iconName="search"
+				(pressed)="getsalesContent()"
+			></app-button-main-form>
+		</div>
+	</form>
+
+	<div class="flex flex-wrap items-center justify-between gap-3">
+		<p class="text-sm text-slate-500 dark:text-slate-400">
+			
+		</p>
+		<p class="text-sm text-slate-600 dark:text-slate-300">
+			Total de ventas
+			<strong class="ml-2 text-lg font-semibold text-slate-900 dark:text-slate-100"></strong>
+		</p>
+	</div>
+
+	<app-table-status
+    label="Ventas"
+    [content]="salesContent()"
+    [contentLabel]="salesContentLabel"
+  ></app-table-status>
+</section>

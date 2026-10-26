@@ -40,6 +40,6 @@ export class SucursalesService {
   }
 
    getSucursalesUser (id: number): Observable<userResponse> {
-    return this.http.get<userResponse>(`${this.URL}usuarios/${id}`, { headers: { ...this.headers, Authorization: `Bearer ${this.token}` } });
+    return this.http.get<userResponse>(`${this.URL}users/${id}`, { headers: { ...this.headers, Authorization: `Bearer ${this.token}` } });
   }
 }
